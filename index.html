@@ -6,8 +6,16 @@
     <meta name="theme-color" content="#2c3e50">
     <meta name="description" content="PWA Formatter Laporan Harian Koramil 1609-05/Sukasada">
     <title>Laporan Koramil PWA</title>
+    
+    <!-- Favicon & PWA Assets -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <link rel="manifest" href="manifest.json">
+    <!-- Fallback icon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    
     <style>
         :root {
             --primary: #2c3e50;
@@ -34,10 +42,9 @@
             line-height: 1.6;
             min-height: 100vh;
             padding: 15px;
-            padding-bottom: 80px; /* Space for install button */
+            padding-bottom: 80px;
         }
         
-        /* PWA Install Prompt */
         .install-prompt {
             position: fixed;
             bottom: 20px;
@@ -96,7 +103,6 @@
             color: #666;
         }
         
-        /* Header */
         .header {
             text-align: center;
             margin-bottom: 25px;
@@ -124,7 +130,6 @@
             font-weight: normal;
         }
         
-        /* Connection Status */
         .connection-status {
             position: fixed;
             top: 15px;
@@ -153,7 +158,6 @@
             border: 1px solid #f5c6cb;
         }
         
-        /* Sync Status */
         .sync-status {
             position: fixed;
             top: 50px;
@@ -176,7 +180,6 @@
             color: #856404;
         }
         
-        /* Main Layout */
         .main-container {
             display: grid;
             grid-template-columns: 1fr;
@@ -191,7 +194,6 @@
             }
         }
         
-        /* Form Container */
         .form-container {
             background: white;
             padding: 25px;
@@ -210,7 +212,6 @@
             flex-direction: column;
         }
         
-        /* Section Titles */
         .section-title {
             color: var(--primary);
             font-size: 17px;
@@ -228,7 +229,6 @@
             gap: 8px;
         }
         
-        /* Input Groups */
         .input-group {
             margin-bottom: 20px;
         }
@@ -251,7 +251,6 @@
             margin-bottom: 12px;
         }
         
-        /* Form Elements */
         input[type="text"],
         input[type="number"],
         input[type="date"],
@@ -274,7 +273,6 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
         
-        /* Textarea Auto-resize */
         .auto-resize {
             width: 100%;
             min-height: 70px;
@@ -290,34 +288,33 @@
             transition: all 0.3s;
         }
         
-        /* Preview Textarea */
         .preview-textarea {
-    width: 100%;
-    min-height: 400px;
-    padding: 15px;
-    border: 2px solid #000000; /* Border hitam */
-    font-family: 'Courier New', 'Lucida Console', monospace;
-    font-size: 13px;
-    line-height: 1.6;
-    background: #ffffff !important;
-    color: #000000 !important; /* ⬅️ HITAM PEKAT */
-    resize: none;
-    border-radius: 4px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-weight: 500;
-    -webkit-font-smoothing: none; /* Non-anti-aliased */
+            width: 100%;
+            min-height: 400px;
+            padding: 15px;
+            border: 2px solid #000000;
+            font-family: 'Courier New', 'Lucida Console', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            background: #ffffff !important;
+            color: #000000 !important;
+            resize: none;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-weight: 500;
+            -webkit-font-smoothing: none;
         }
-/* TAMBAHKAN INI untuk mobile: */
-@media (max-width: 768px) {
-    .preview-textarea {
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        color: #000000 !important;
-        -webkit-text-stroke: 0.3px;
-    }
-} 
-        /* Situasi Preview */
+        
+        @media (max-width: 768px) {
+            .preview-textarea {
+                font-size: 14px !important;
+                font-weight: 600 !important;
+                color: #000000 !important;
+                -webkit-text-stroke: 0.3px;
+            }
+        }
+        
         .situasi-preview {
             background-color: #f8f9fa;
             border: 2px solid #e1e8ed;
@@ -331,7 +328,6 @@
             font-family: 'Courier New', monospace;
         }
         
-        /* Periode Info Box */
         .periode-info {
             background: linear-gradient(135deg, #e8f4fd 0%, #d1e8ff 100%);
             border: 2px solid var(--secondary);
@@ -342,7 +338,6 @@
             border-radius: 8px;
         }
         
-        /* Data SIAP OPS Grid */
         .data-siap-ops-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -369,7 +364,6 @@
             font-weight: 600;
         }
         
-        /* Kegiatan Container */
         .kegiatan-container {
             margin-bottom: 25px;
         }
@@ -399,7 +393,6 @@
             flex-grow: 1;
         }
         
-        /* Tombol Add Kegiatan */
         .add-kegiatan-btn {
             background: var(--success);
             color: white;
@@ -489,7 +482,6 @@
             background: var(--danger);
         }
         
-        /* TOMBOL HYBRID UTAMA */
         .hybrid-btn {
             background: linear-gradient(135deg, var(--whatsapp) 0%, var(--sheets) 50%, var(--primary) 100%);
             color: white;
@@ -535,7 +527,6 @@
             transition: width 0.5s ease;
         }
         
-        /* Secondary Buttons */
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -569,7 +560,6 @@
         .history-btn { background: #9b59b6; color: white; }
         .sync-btn { background: #f39c12; color: white; }
         
-        /* Messages */
         .messages-container {
             margin-bottom: 20px;
         }
@@ -619,7 +609,6 @@
             font-size: 20px;
         }
         
-        /* Progress Steps */
         .progress-steps {
             display: none;
             margin: 20px 0;
@@ -680,7 +669,6 @@
             color: #666;
         }
         
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -733,7 +721,6 @@
             justify-content: flex-end;
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -968,10 +955,7 @@
                     <button onclick="toggleAutoGenerate()" id="autoToggle" title="Auto-generate" style="background: #27ae60; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;">⟳ ON</button>
                 </div>
             </h3>
-            #output {
-    color: #000000 !important;
-    font-weight: 500 !important;
-}
+            
             <!-- Messages -->
             <div id="messagesContainer" class="messages-container"></div>
             
@@ -1326,6 +1310,14 @@
                 
                 // Trigger input
                 event.target.dispatchEvent(new Event('input'));
+            }
+        }
+        
+        // Check excess spaces (utility function)
+        function checkExcessSpaces(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.value = field.value.replace(/\s+/g, ' ').trim();
             }
         }
         
