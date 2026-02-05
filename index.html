@@ -244,6 +244,33 @@
             gap: 5px;
         }
         
+        /* Floating label style */
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-wrapper label {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #7f8c8d;
+            background: white;
+            padding: 0 4px;
+            pointer-events: none;
+            transition: all 0.3s;
+            margin-bottom: 0 !important;
+        }
+        
+        .input-wrapper input:focus + label,
+        .input-wrapper input:not(:placeholder-shown) + label {
+            top: -8px;
+            color: var(--secondary);
+        }
+        
         .input-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -258,6 +285,7 @@
         select {
             width: 100%;
             padding: 12px;
+            padding-top: 20px;
             border: 2px solid #e1e8ed;
             font-size: 14px;
             background: white;
@@ -273,6 +301,24 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
         
+        .input-wrapper textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            font-size: 13px;
+            background: white;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-family: Arial, Helvetica, sans-serif;
+            resize: vertical;
+        }
+        
+        .input-wrapper textarea:focus + label {
+            top: 0px;
+            color: var(--secondary);
+        }
+        
         .auto-resize {
             width: 100%;
             min-height: 70px;
@@ -284,7 +330,7 @@
             resize: none;
             overflow: hidden;
             border-radius: 8px;
-            font-family: 'Courier New', 'JetBrains Mono', monospace;
+            font-family: Arial, Helvetica, sans-serif;
             transition: all 0.3s;
         }
         
@@ -293,7 +339,7 @@
             min-height: 400px;
             padding: 15px;
             border: 2px solid #000000;
-            font-family: 'Courier New', 'Lucida Console', monospace;
+            font-family: Arial, Helvetica, sans-serif;
             font-size: 13px;
             line-height: 1.6;
             background: #ffffff !important;
@@ -325,7 +371,7 @@
             color: #555;
             white-space: pre-wrap;
             border-radius: 8px;
-            font-family: 'Courier New', monospace;
+            font-family: Arial, Helvetica, sans-serif;
         }
         
         .periode-info {
@@ -340,28 +386,45 @@
         
         .data-siap-ops-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
         }
         
         .data-item {
             display: flex;
             flex-direction: column;
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            padding: 8px;
+            align-items: center;
+            justify-content: center;
+            min-height: 70px;
+        }
+        
+        .data-item:focus-within {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
         
         .data-label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--primary);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            text-align: center;
+            line-height: 1.2;
         }
         
         .data-input {
-            padding: 10px;
-            border: 2px solid #e1e8ed;
+            padding: 6px 8px;
+            border: 1px solid #e1e8ed;
             border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            width: 100%;
+            background: #f8f9fa;
         }
         
         .kegiatan-container {
@@ -764,8 +827,44 @@
             }
             
             .data-siap-ops-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 6px;
             }
+            
+            .data-item {
+                min-height: 65px;
+                padding: 6px;
+            }
+            
+            .data-label {
+                font-size: 10px;
+            }
+            
+            .data-input {
+                padding: 5px 6px;
+                font-size: 12px;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr 1fr !important;
+            }
+        }
+        
+        /* Toggle button untuk show/hide section */
+        .toggle-section {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 5px;
+            width: 100%;
+        }
+        
+        .toggle-section:hover {
+            background: #2980b9;
         }
     </style>
 </head>
@@ -822,43 +921,44 @@
             <div class="input-group">
                 <label><span>⏰</span> WAKTU LAPORAN</label>
                 <div class="input-row">
-                    <div>
+                    <div class="input-wrapper">
+                        <input type="date" id="reportDate" placeholder=" " oninput="autoGenerateReport()">
                         <label>Tanggal</label>
-                        <input type="date" id="reportDate" oninput="autoGenerateReport()">
                     </div>
-                    <div>
-                        <label>Waktu</label>
+                    <div class="input-wrapper">
                         <select id="reportTime" onchange="autoGenerateReport(); updatePeriodeInfo()">
                             <option value="04.00">04.00 WITA</option>
                             <option value="16.00">16.00 WITA</option>
                             <option value="custom">Custom</option>
                         </select>
+                        <label>Waktu</label>
                     </div>
-                    <div id="customTimeContainer" style="display: none;">
+                    <div id="customTimeContainer" style="display: none;" class="input-wrapper">
+                        <input type="time" id="customTime" placeholder=" " onchange="updateCustomTime()">
                         <label>Waktu Custom</label>
-                        <input type="time" id="customTime" onchange="updateCustomTime()">
                     </div>
                 </div>
-                <div class="periode-info" id="periodeInfo">
+                <div class="periode-info" id="periodeInfo" style="display: none;">
                     <strong>Periode Laporan:</strong><br>
                     • 04.00 WITA: Periode sore (16.00-04.00) hari sebelumnya<br>
                     • 16.00 WITA: Periode pagi (04.00-16.00) hari yang sama
                 </div>
+                <button class="toggle-section" onclick="toggleElement('periodeInfo')">📌 Info Periode</button>
             </div>
             
             <!-- Situasi & Haljol -->
             <div class="input-group">
                 <label><span>📍</span> SITUASI DAN HALJOL</label>
-                <div style="margin-bottom: 10px;">
-                    <label style="font-size: 12px; color: #666;">Situasi (Otomatis)</label>
-                    <div class="situasi-preview" id="situasiPreview">
+                <div class="input-wrapper" style="margin-bottom: 12px;">
+                    <div class="situasi-preview" id="situasiPreview" style="border: 2px solid #e1e8ed; border-radius: 8px; padding: 12px; background: white; min-height: 50px; font-size: 13px; line-height: 1.5;">
                         Pilih tanggal dan waktu untuk generate situasi
                     </div>
+                    <label style="top: -8px; left: 12px;">Situasi (Otomatis)</label>
                 </div>
-                <div>
-                    <label style="font-size: 12px; color: #666;">Haljol</label>
-                    <input type="text" id="haljol" value="Nihil" 
+                <div class="input-wrapper">
+                    <input type="text" id="haljol" placeholder=" " value="Nihil" 
                            oninput="checkExcessSpaces('haljol'); autoGenerateReport()">
+                    <label>Haljol</label>
                 </div>
             </div>
             
@@ -883,23 +983,22 @@
                         <input type="number" id="siapOps" class="data-input" value="10" readonly>
                     </div>
                 </div>
-                <div style="margin-top: 10px; font-size: 12px; color: #666;">
-                    Nilai "Kurang" dihitung otomatis dari Keterangan
-                </div>
             </div>
             
             <!-- KETERANGAN -->
             <div class="input-group">
                 <label><span>📋</span> KETERANGAN</label>
-                <textarea class="auto-resize" id="keterangan" 
-                          placeholder="Format: -Item : Jumlah (contoh: -DD : 0)"
-                          onkeydown="handleKeteranganKeydown(event)"
-                          oninput="updateKurangFromKeterangan(); autoGenerateReport()">-DD : 0
+                <div class="input-wrapper" style="position: relative;">
+                    <textarea class="auto-resize" id="keterangan" placeholder=" "
+                              onkeydown="handleKeteranganKeydown(event)"
+                              oninput="updateKurangFromKeterangan(); autoGenerateReport()" style="padding-top: 30px;">-DD : 0
 -BP : 0
 -Sakit : 0
 -Ijin : 0
 -Cuti : 0
 -Dinas Luar : 0</textarea>
+                    <label style="top: 12px; left: 12px; font-size: 12px;">Format: -Item : Jumlah</label>
+                </div>
             </div>
             
             <!-- KEGIATAN -->
@@ -964,7 +1063,7 @@
                       oninput="autoResize(this)"></textarea>
             
             <!-- Progress Steps -->
-            <div id="progressSteps" class="progress-steps">
+            <div id="progressSteps" class="progress-steps" style="display: none;">
                 <div class="step" id="step1">
                     <div class="step-icon">1</div>
                     <div class="step-info">
@@ -994,6 +1093,7 @@
                     </div>
                 </div>
             </div>
+            <button class="toggle-section" onclick="toggleElement('progressSteps')">📊 Tampilkan Progress</button>
             
             <!-- TOMBOL HYBRID UTAMA -->
             <button class="hybrid-btn" onclick="hybridSaveAndSend()">
@@ -1007,7 +1107,7 @@
             </button>
             
             <!-- Action Buttons -->
-            <div class="action-buttons">
+            <div class="action-buttons" id="actionButtons" style="display: grid;">
                 <button class="action-btn save-btn" onclick="saveToCloud()">
                     <span>💾</span> Simpan
                 </button>
@@ -1115,6 +1215,14 @@
         window.addEventListener('online', updateConnectionStatus);
         window.addEventListener('offline', updateConnectionStatus);
         updateConnectionStatus();
+        
+        // Toggle element visibility
+        function toggleElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.style.display = element.style.display === 'none' ? 'block' : 'none';
+            }
+        }
         
         // Sync Status
         function updateSyncStatus(synced = true) {
@@ -1426,10 +1534,10 @@
                 report += `Yth. Komandan Kodim 1609/Buleleng.\n`;
                 report += `Cc. Kasdim 1609/Buleleng.\n\n`;
                 report += `Selamat ${waktuSalam}, Mohon ijin melaporkan Situasi Satuan Koramil 1609-05/Sukasada Hari ${dateInfo.hari} Tanggal, ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${reportTime} Wita dalam rangka kegiatan Pembinaan Kekuatan Satuan Bulan ${dateInfo.bulan} tahun ${dateInfo.tahun} sebagai berikut :\n\n`;
-                report += `**I. Situasi dan Haljol :**\n\n`;
+                report += `*I. Situasi dan Haljol :*\n\n`;
                 report += `${situasiText}\n\n`;
                 report += `-Haljol : ${haljol}.\n\n`;
-                report += `**II. Data Siap Ops :**\n\n`;
+                report += `*II. Data Siap Ops :*\n\n`;
                 report += `1. Top DSPP : ${topDspp}\n`;
                 report += `2. Nyata : ${nyata}\n`;
                 report += `3. Kurang : ${kurang}\n`;
@@ -1440,10 +1548,10 @@
                     report += `${line}\n`;
                 });
                 
-                report += `\n**III. Kegiatan :**\n\n`;
+                report += `\n*III. Kegiatan :*\n\n`;
                 
                 // Kegiatan Danramil
-                report += `**1. Kegiatan Danramil :**\n\n`;
+                report += `*1. Kegiatan Danramil :*\n\n`;
                 const danramilItems = collectKegiatanData('danramil');
                 if (danramilItems.length > 0) {
                     danramilItems.forEach(item => {
@@ -1456,7 +1564,7 @@
                 report += `\n`;
                 
                 // Kegiatan Koramil
-                report += `**2. Kegiatan Koramil :**\n\n`;
+                report += `*2. Kegiatan Koramil :*\n\n`;
                 const koramilItems = collectKegiatanData('koramil');
                 if (koramilItems.length > 0) {
                     koramilItems.forEach(item => {
@@ -1468,7 +1576,7 @@
                 report += `\n`;
                 
                 // Kegiatan Babinsa
-                report += `**3. Kegiatan Babinsa :**\n\n`;
+                report += `*3. Kegiatan Babinsa :*\n\n`;
                 const babinsaItems = collectKegiatanData('babinsa');
                 if (babinsaItems.length > 0) {
                     babinsaItems.forEach(item => {
