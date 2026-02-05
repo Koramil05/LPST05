@@ -1,12 +1,13 @@
 // Service Worker untuk PWA Laporan Koramil
 const CACHE_NAME = 'koramil-pwa-v1.0';
 const API_CACHE = 'koramil-api-v1.0';
+const BASE_PATH = '/LPST05-main/';
 
 // Assets yang akan di-cache
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
+  BASE_PATH,
+  BASE_PATH + 'index.html',
+  BASE_PATH + 'manifest.json',
   'https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
 ];

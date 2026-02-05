@@ -1055,12 +1055,16 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const basePath = '/LPST05-main/';
-                navigator.serviceWorker.register(basePath + 'sw.js')
+                navigator.serviceWorker.register(basePath + 'sw.js', { scope: basePath })
                     .then(registration => {
                         console.log('ServiceWorker registered:', registration);
+                        // Request notification permission
+                        if ('Notification' in window && Notification.permission === 'default') {
+                            Notification.requestPermission();
+                        }
                     })
                     .catch(error => {
-                        console.log('ServiceWorker registration failed:', error);
+                        console.error('ServiceWorker registration failed:', error);
                     });
             });
         }

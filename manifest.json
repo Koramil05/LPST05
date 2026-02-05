@@ -2,12 +2,12 @@
   "name": "Laporan Koramil PWA",
   "short_name": "Koramil Report",
   "description": "Aplikasi PWA untuk pembuatan laporan harian Koramil 1609-05/Sukasada",
-  "start_url": "/",
+  "start_url": "/LPST05-main/",
   "display": "standalone",
   "background_color": "#2c3e50",
   "theme_color": "#2c3e50",
   "orientation": "portrait",
-  "scope": "/",
+  "scope": "/LPST05-main/",
   "categories": ["productivity", "utilities"],
   "icons": [
     {
@@ -29,15 +29,15 @@
   ],
   "screenshots": [
     {
-      "src": "https://via.placeholder.com/1280x720/2c3e50/ffffff?text=Koramil+PWA",
+      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1280 720%22><rect width='1280' height='720' fill='%232c3e50'/><text x='640' y='360' font-size='120' text-anchor='middle' fill='white'>📊 Koramil PWA</text></svg>",
       "sizes": "1280x720",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "form_factor": "wide"
     },
     {
-      "src": "https://via.placeholder.com/750x1334/2c3e50/ffffff?text=Koramil+PWA",
+      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 750 1334%22><rect width='750' height='1334' fill='%232c3e50'/><text x='375' y='667' font-size='100' text-anchor='middle' fill='white'>📋</text></svg>",
       "sizes": "750x1334",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "form_factor": "narrow"
     }
   ],
@@ -46,7 +46,7 @@
       "name": "Buat Laporan Baru",
       "short_name": "Buat",
       "description": "Buat laporan harian baru",
-      "url": "/?action=new",
+      "url": "/LPST05-main/?action=new",
       "icons": [{
         "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22><rect width='96' height='96' fill='%2325D366'/><text x='48' y='68' font-size='48' text-anchor='middle' fill='white'>➕</text></svg>",
         "sizes": "96x96"
@@ -56,7 +56,7 @@
       "name": "History Laporan",
       "short_name": "History",
       "description": "Lihat history laporan",
-      "url": "/?action=history",
+      "url": "/LPST05-main/?action=history",
       "icons": [{
         "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22><rect width='96' height='96' fill='%233498db'/><text x='48' y='68' font-size='48' text-anchor='middle' fill='white'>📜</text></svg>",
         "sizes": "96x96"
