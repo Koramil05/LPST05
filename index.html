@@ -1535,7 +1535,6 @@
                 const customTime = timeSelect.dataset.custom || '00.00';
                 return `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${customTime} Wita dalam keadaan Aman dan Kondusif`;
             }
-            
             return '';
         }
         
@@ -1572,20 +1571,17 @@
             const container = document.getElementById(`${type}-container`);
             const textareas = container.querySelectorAll('textarea');
             const items = [];
-            
             textareas.forEach(textarea => {
                 if (textarea.value.trim()) {
                     items.push(textarea.value.trim());
                 }
             });
-            
             return items;
         }
         
         // Generate report
         function generateReport() {
             if (!autoGenerateEnabled) return;
-            
             try {
                 const reportDate = new Date(document.getElementById('reportDate').value);
                 const timeSelect = document.getElementById('reportTime');
@@ -1597,7 +1593,6 @@
                 const kurang = document.getElementById('kurang').value;
                 const siapOps = document.getElementById('siapOps').value;
                 const keterangan = document.getElementById('keterangan').value;
-                
                 const dateInfo = formatDateIndonesia(reportDate);
                 const situasiText = generateSituasiText();
                 
@@ -1659,11 +1654,10 @@
                     });
                 } else {
                     report += `-Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.\n`;
-                    report += `-Melaksanakan koordinasi dengan perangkat desa setempat.\n`;
                 }
                 report += `\n`;
                 
-                report += `*DEMIKIAN MMP.*\n\n`;
+                report += `*DEMIKIAN MMP.*\n`;
                 report += `Dokumentasi terlampir.`;
                 
                 document.getElementById('output').value = report;
