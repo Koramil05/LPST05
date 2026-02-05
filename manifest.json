@@ -1,1 +1,74 @@
-
+{
+  "name": "Laporan Koramil PWA",
+  "short_name": "Koramil Report",
+  "description": "Aplikasi PWA untuk pembuatan laporan harian Koramil 1609-05/Sukasada",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2c3e50",
+  "theme_color": "#2c3e50",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%232c3e50%22>📋</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 192 192%22><rect width='192' height='192' fill='%232c3e50'/><text x='96' y='120' font-size='80' text-anchor='middle' fill='white'>📋</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22><rect width='512' height='512' fill='%232c3e50'/><text x='256' y='350' font-size='240' text-anchor='middle' fill='white'>📋</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/1280x720/2c3e50/ffffff?text=Koramil+PWA",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "https://via.placeholder.com/750x1334/2c3e50/ffffff?text=Koramil+PWA",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Buat Laporan Baru",
+      "short_name": "Buat",
+      "description": "Buat laporan harian baru",
+      "url": "/?action=new",
+      "icons": [{
+        "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22><rect width='96' height='96' fill='%2325D366'/><text x='48' y='68' font-size='48' text-anchor='middle' fill='white'>➕</text></svg>",
+        "sizes": "96x96"
+      }]
+    },
+    {
+      "name": "History Laporan",
+      "short_name": "History",
+      "description": "Lihat history laporan",
+      "url": "/?action=history",
+      "icons": [{
+        "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22><rect width='96' height='96' fill='%233498db'/><text x='48' y='68' font-size='48' text-anchor='middle' fill='white'>📜</text></svg>",
+        "sizes": "96x96"
+      }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "protocol_handlers": [
+    {
+      "protocol": "web+koramil",
+      "url": "/?report=%s"
+    }
+  ]
+}
