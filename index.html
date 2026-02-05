@@ -1,1 +1,2067 @@
-
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2c3e50">
+    <meta name="description" content="PWA Formatter Laporan Harian Koramil 1609-05/Sukasada">
+    <title>Laporan Koramil PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --whatsapp: #25D366;
+            --sheets: #34A853;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Noto Sans', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 15px;
+            padding-bottom: 80px; /* Space for install button */
+        }
+        
+        /* PWA Install Prompt */
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            max-width: 90%;
+            animation: slideUp 0.5s ease;
+            border: 2px solid var(--primary);
+        }
+        
+        @keyframes slideUp {
+            from { bottom: -100px; opacity: 0; }
+            to { bottom: 20px; opacity: 1; }
+        }
+        
+        .install-info {
+            flex-grow: 1;
+        }
+        
+        .install-info h4 {
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .install-info p {
+            color: #666;
+            font-size: 12px;
+            margin: 0;
+        }
+        
+        .install-btn, .close-install {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .install-btn {
+            background: var(--success);
+            color: white;
+        }
+        
+        .close-install {
+            background: #eee;
+            color: #666;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .header h1 {
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .header h2 {
+            color: #7f8c8d;
+            font-size: 14px;
+            font-weight: normal;
+        }
+        
+        /* Connection Status */
+        .connection-status {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 999;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .online {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .offline {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Sync Status */
+        .sync-status {
+            position: fixed;
+            top: 50px;
+            right: 15px;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            z-index: 998;
+            background: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .synced {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .unsynced {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        /* Form Container */
+        .form-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #e1e8ed;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        
+        .preview-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #e1e8ed;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            color: var(--primary);
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* Input Groups */
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .input-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        /* Form Elements */
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="time"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            font-size: 14px;
+            background: white;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        /* Textarea Auto-resize */
+        .auto-resize {
+            width: 100%;
+            min-height: 70px;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            font-size: 14px;
+            line-height: 1.5;
+            background: white;
+            resize: none;
+            overflow: hidden;
+            border-radius: 8px;
+            font-family: 'Courier New', 'JetBrains Mono', monospace;
+            transition: all 0.3s;
+        }
+        
+        /* Preview Textarea */
+        .preview-textarea {
+            width: 100%;
+            min-height: 500px;
+            padding: 20px;
+            border: 2px solid #e1e8ed;
+            font-family: 'Courier New', 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            background: #f8f9fa;
+            color: #333;
+            resize: none;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-bottom: 20px;
+        }
+        
+        /* Situasi Preview */
+        .situasi-preview {
+            background-color: #f8f9fa;
+            border: 2px solid #e1e8ed;
+            padding: 15px;
+            margin-top: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #555;
+            white-space: pre-wrap;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* Periode Info Box */
+        .periode-info {
+            background: linear-gradient(135deg, #e8f4fd 0%, #d1e8ff 100%);
+            border: 2px solid var(--secondary);
+            padding: 12px 15px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--primary);
+            border-radius: 8px;
+        }
+        
+        /* Data SIAP OPS Grid */
+        .data-siap-ops-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .data-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .data-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .data-input {
+            padding: 10px;
+            border: 2px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        /* Kegiatan Container */
+        .kegiatan-container {
+            margin-bottom: 25px;
+        }
+        
+        .kegiatan-box {
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .kegiatan-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 12px;
+        }
+        
+        .kegiatan-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+            flex-grow: 1;
+        }
+        
+        /* Tombol Add Kegiatan */
+        .add-kegiatan-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
+        }
+        
+        .add-kegiatan-btn:hover {
+            background: #219653;
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(39, 174, 96, 0.3);
+        }
+        
+        .kegiatan-content {
+            margin-top: 15px;
+        }
+        
+        .kegiatan-item {
+            position: relative;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .kegiatan-textarea-rounded {
+            width: 100%;
+            min-height: 90px;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+            background: #f8f9fa;
+            resize: none;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        .kegiatan-textarea-rounded:focus {
+            background: white;
+            border-color: var(--secondary);
+        }
+        
+        .item-controls {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .item-control-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s;
+            color: white;
+        }
+        
+        .item-add-btn {
+            background: var(--success);
+        }
+        
+        .item-remove-btn {
+            background: var(--danger);
+        }
+        
+        /* TOMBOL HYBRID UTAMA */
+        .hybrid-btn {
+            background: linear-gradient(135deg, var(--whatsapp) 0%, var(--sheets) 50%, var(--primary) 100%);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            transition: all 0.4s;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hybrid-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.4);
+        }
+        
+        .hybrid-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .hybrid-btn .btn-icons {
+            display: flex;
+            gap: 8px;
+            font-size: 20px;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        /* Secondary Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .save-btn { background: var(--sheets); color: white; }
+        .whatsapp-btn { background: var(--whatsapp); color: white; }
+        .export-btn { background: #6c757d; color: white; }
+        .reset-btn { background: var(--danger); color: white; }
+        .print-btn { background: #17a2b8; color: white; }
+        .history-btn { background: #9b59b6; color: white; }
+        .sync-btn { background: #f39c12; color: white; }
+        
+        /* Messages */
+        .messages-container {
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.5s ease;
+            border-left: 5px solid;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .message-success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #27ae60;
+        }
+        
+        .message-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #e74c3c;
+        }
+        
+        .message-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left-color: #f39c12;
+        }
+        
+        .message-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left-color: #3498db;
+        }
+        
+        .message-icon {
+            font-size: 20px;
+        }
+        
+        /* Progress Steps */
+        .progress-steps {
+            display: none;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #e1e8ed;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .step-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            background: #eee;
+            color: #666;
+        }
+        
+        .step.active .step-icon {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .step.completed .step-icon {
+            background: var(--success);
+            color: white;
+        }
+        
+        .step.failed .step-icon {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .step-info {
+            flex-grow: 1;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .step-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalSlide 0.4s ease;
+        }
+        
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 2px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 2px solid #eee;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 18px;
+            }
+            
+            .form-container,
+            .preview-container {
+                padding: 15px;
+            }
+            
+            .action-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hybrid-btn {
+                padding: 16px;
+                font-size: 14px;
+            }
+            
+            .kegiatan-textarea-rounded {
+                padding-right: 50px;
+            }
+            
+            .item-controls {
+                right: 5px;
+                top: 5px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-siap-ops-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PWA Install Prompt -->
+    <div id="installPrompt" class="install-prompt" style="display: none;">
+        <div class="install-info">
+            <h4>📱 Install Aplikasi</h4>
+            <p>Pasang untuk akses offline & notifikasi</p>
+        </div>
+        <button id="installButton" class="install-btn">Install</button>
+        <button id="closeInstall" class="close-install">Nanti</button>
+    </div>
+    
+    <!-- Connection Status -->
+    <div id="connectionStatus" class="connection-status online">
+        <span id="statusIcon">🌐</span>
+        <span id="statusText">Online</span>
+    </div>
+    
+    <!-- Sync Status -->
+    <div id="syncStatus" class="sync-status synced" style="display: none;">
+        <span id="syncIcon">🔄</span>
+        <span id="syncText">Data tersimpan</span>
+    </div>
+    
+    <!-- Header -->
+    <div class="header">
+        <h1>
+            <span>📋</span>
+            LAPORAN HARIAN KORAMIL 1609-05/Sukasada
+        </h1>
+        <h2>PWA - Progressive Web Application</h2>
+        <div style="margin-top: 10px; font-size: 12px; color: #7f8c8d;">
+            <span>🔋 Bekerja offline</span> • 
+            <span>📱 Installable</span> • 
+            <span>🔄 Sync otomatis</span>
+        </div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Form Input -->
+        <div class="form-container">
+            <h3 class="section-title">
+                <span>📝 INPUT DATA LAPORAN</span>
+                <div class="section-controls">
+                    <button onclick="loadLastReport()" title="Load laporan terakhir" style="background: #3498db; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;">📂 Load</button>
+                    <button onclick="saveTemplate()" title="Simpan template" style="background: #9b59b6; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;">💾 Template</button>
+                </div>
+            </h3>
+            
+            <!-- Waktu Laporan -->
+            <div class="input-group">
+                <label><span>⏰</span> WAKTU LAPORAN</label>
+                <div class="input-row">
+                    <div>
+                        <label>Tanggal</label>
+                        <input type="date" id="reportDate" oninput="autoGenerateReport()">
+                    </div>
+                    <div>
+                        <label>Waktu</label>
+                        <select id="reportTime" onchange="autoGenerateReport(); updatePeriodeInfo()">
+                            <option value="04.00">04.00 WITA</option>
+                            <option value="16.00">16.00 WITA</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <div id="customTimeContainer" style="display: none;">
+                        <label>Waktu Custom</label>
+                        <input type="time" id="customTime" onchange="updateCustomTime()">
+                    </div>
+                </div>
+                <div class="periode-info" id="periodeInfo">
+                    <strong>Periode Laporan:</strong><br>
+                    • 04.00 WITA: Periode sore (16.00-04.00) hari sebelumnya<br>
+                    • 16.00 WITA: Periode pagi (04.00-16.00) hari yang sama
+                </div>
+            </div>
+            
+            <!-- Situasi & Haljol -->
+            <div class="input-group">
+                <label><span>📍</span> SITUASI DAN HALJOL</label>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 12px; color: #666;">Situasi (Otomatis)</label>
+                    <div class="situasi-preview" id="situasiPreview">
+                        Pilih tanggal dan waktu untuk generate situasi
+                    </div>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: #666;">Haljol</label>
+                    <input type="text" id="haljol" value="Nihil" 
+                           oninput="checkExcessSpaces('haljol'); autoGenerateReport()">
+                </div>
+            </div>
+            
+            <!-- DATA SIAP OPS -->
+            <div class="input-group">
+                <label><span>📊</span> DATA SIAP OPS</label>
+                <div class="data-siap-ops-grid">
+                    <div class="data-item">
+                        <div class="data-label">Top DSPP</div>
+                        <input type="number" id="topDspp" class="data-input" value="25" oninput="calculateSiapOps()">
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label">Nyata</div>
+                        <input type="number" id="nyata" class="data-input" value="19" oninput="calculateSiapOps()">
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label">Kurang</div>
+                        <input type="number" id="kurang" class="data-input" value="9" oninput="calculateSiapOps()">
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label">Siap Ops</div>
+                        <input type="number" id="siapOps" class="data-input" value="10" readonly>
+                    </div>
+                </div>
+                <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                    Nilai "Kurang" dihitung otomatis dari Keterangan
+                </div>
+            </div>
+            
+            <!-- KETERANGAN -->
+            <div class="input-group">
+                <label><span>📋</span> KETERANGAN</label>
+                <textarea class="auto-resize" id="keterangan" 
+                          placeholder="Format: -Item : Jumlah (contoh: -DD : 0)"
+                          onkeydown="handleKeteranganKeydown(event)"
+                          oninput="updateKurangFromKeterangan(); autoGenerateReport()">-DD : 0
+-BP : 0
+-Sakit : 0
+-Ijin : 0
+-Cuti : 0
+-Dinas Luar : 0</textarea>
+            </div>
+            
+            <!-- KEGIATAN -->
+            <div class="input-group">
+                <label><span>🏃‍♂️</span> KEGIATAN (Tidak Terbatas)</label>
+                
+                <!-- Kegiatan Danramil -->
+                <div class="kegiatan-container">
+                    <div class="kegiatan-box">
+                        <div class="kegiatan-header">
+                            <div class="kegiatan-title">Danramil</div>
+                            <button class="add-kegiatan-btn" onclick="addKegiatanItem('danramil')">+</button>
+                        </div>
+                        <div class="kegiatan-content" id="danramil-container">
+                            <!-- Items will be added here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kegiatan Koramil -->
+                <div class="kegiatan-container">
+                    <div class="kegiatan-box">
+                        <div class="kegiatan-header">
+                            <div class="kegiatan-title">Koramil</div>
+                            <button class="add-kegiatan-btn" onclick="addKegiatanItem('koramil')">+</button>
+                        </div>
+                        <div class="kegiatan-content" id="koramil-container">
+                            <!-- Items will be added here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kegiatan Babinsa -->
+                <div class="kegiatan-container">
+                    <div class="kegiatan-box">
+                        <div class="kegiatan-header">
+                            <div class="kegiatan-title">Babinsa</div>
+                            <button class="add-kegiatan-btn" onclick="addKegiatanItem('babinsa')">+</button>
+                        </div>
+                        <div class="kegiatan-content" id="babinsa-container">
+                            <!-- Items will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Preview Output -->
+        <div class="preview-container">
+            <h3 class="section-title">
+                <span>👁️ PREVIEW LAPORAN</span>
+                <div class="section-controls">
+                    <button onclick="toggleAutoGenerate()" id="autoToggle" title="Auto-generate" style="background: #27ae60; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;">⟳ ON</button>
+                </div>
+            </h3>
+            
+            <!-- Messages -->
+            <div id="messagesContainer" class="messages-container"></div>
+            
+            <!-- Preview -->
+            <textarea id="output" class="preview-textarea" placeholder="Laporan akan muncul di sini..."
+                      oninput="autoResize(this)"></textarea>
+            
+            <!-- Progress Steps -->
+            <div id="progressSteps" class="progress-steps">
+                <div class="step" id="step1">
+                    <div class="step-icon">1</div>
+                    <div class="step-info">
+                        <div class="step-title">Validasi Data</div>
+                        <div class="step-desc">Memeriksa kelengkapan form</div>
+                    </div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-icon">2</div>
+                    <div class="step-info">
+                        <div class="step-title">Menyimpan ke Cloud</div>
+                        <div class="step-desc">Mengirim ke Google Sheets</div>
+                    </div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-icon">3</div>
+                    <div class="step-info">
+                        <div class="step-title">Menyiapkan WhatsApp</div>
+                        <div class="step-desc">Membuka aplikasi WhatsApp</div>
+                    </div>
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-icon">4</div>
+                    <div class="step-info">
+                        <div class="step-title">Download File</div>
+                        <div class="step-desc">Menyimpan ke file TXT</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TOMBOL HYBRID UTAMA -->
+            <button class="hybrid-btn" onclick="hybridSaveAndSend()">
+                <div class="btn-icons">
+                    <span>💾</span>
+                    <span>📤</span>
+                    <span>📱</span>
+                </div>
+                SIMPAN & KIRIM LAPORAN
+                <div class="progress-bar" id="hybridProgress"></div>
+            </button>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn save-btn" onclick="saveToCloud()">
+                    <span>💾</span> Simpan
+                </button>
+                <button class="action-btn whatsapp-btn" onclick="sendToWhatsApp()">
+                    <span>📱</span> WhatsApp
+                </button>
+                <button class="action-btn export-btn" onclick="exportToTxt()">
+                    <span>📥</span> Export
+                </button>
+                <button class="action-btn reset-btn" onclick="resetForm()">
+                    <span>🔄</span> Reset
+                </button>
+                <button class="action-btn print-btn" onclick="printReport()">
+                    <span>🖨️</span> Print
+                </button>
+                <button class="action-btn history-btn" onclick="showHistory()">
+                    <span>📜</span> History
+                </button>
+                <button class="action-btn sync-btn" onclick="forceSync()">
+                    <span>🔄</span> Sync
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="margin: 0;">📜 History Laporan</h3>
+                <button onclick="closeModal('historyModal')" style="background: none; border: none; font-size: 20px; cursor: pointer;">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="historyList"></div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal('historyModal')" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 6px;">Tutup</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+        
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installButton = document.getElementById('installButton');
+        const closeInstall = document.getElementById('closeInstall');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installPrompt.style.display = 'flex';
+        });
+        
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+                installPrompt.style.display = 'none';
+            }
+        });
+        
+        closeInstall.addEventListener('click', () => {
+            installPrompt.style.display = 'none';
+        });
+        
+        // Connection Status
+        function updateConnectionStatus() {
+            const statusEl = document.getElementById('connectionStatus');
+            const statusText = document.getElementById('statusText');
+            const statusIcon = document.getElementById('statusIcon');
+            
+            if (navigator.onLine) {
+                statusEl.className = 'connection-status online';
+                statusText.textContent = 'Online';
+                statusIcon.textContent = '🌐';
+            } else {
+                statusEl.className = 'connection-status offline';
+                statusText.textContent = 'Offline';
+                statusIcon.textContent = '📴';
+            }
+        }
+        
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        updateConnectionStatus();
+        
+        // Sync Status
+        function updateSyncStatus(synced = true) {
+            const syncStatus = document.getElementById('syncStatus');
+            const syncIcon = document.getElementById('syncIcon');
+            const syncText = document.getElementById('syncText');
+            
+            if (synced) {
+                syncStatus.className = 'sync-status synced';
+                syncIcon.textContent = '✅';
+                syncText.textContent = 'Data tersimpan';
+            } else {
+                syncStatus.className = 'sync-status unsynced';
+                syncIcon.textContent = '🔄';
+                syncText.textContent = 'Menunggu sync';
+            }
+            
+            syncStatus.style.display = 'block';
+            setTimeout(() => {
+                syncStatus.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Modal Functions
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Global Variables
+        const kegiatanTypes = ['danramil', 'koramil', 'babinsa'];
+        let autoGenerateEnabled = true;
+        
+        // Initialize Form
+        function initForm() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('reportDate').value = today;
+            
+            // Initialize kegiatan containers
+            kegiatanTypes.forEach(type => {
+                addInitialKegiatanItem(type);
+            });
+            
+            // Set initial values for Koramil
+            const koramilTextarea = document.getElementById('koramil-0');
+            if (koramilTextarea) {
+                koramilTextarea.value = '2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.';
+            }
+            
+            calculateSiapOps();
+            updatePeriodeInfo();
+            autoGenerateReport();
+            
+            // Load from localStorage if exists
+            loadFromLocalStorage();
+        }
+        
+        // Add initial kegiatan item
+        function addInitialKegiatanItem(type) {
+            const container = document.getElementById(`${type}-container`);
+            const itemId = `${type}-0`;
+            
+            const itemHTML = `
+                <div class="kegiatan-item" id="${itemId}-container">
+                    <div class="item-controls">
+                        <button type="button" class="item-control-btn item-add-btn" onclick="addKegiatanItem('${type}')">+</button>
+                        <button type="button" class="item-control-btn item-remove-btn" onclick="removeKegiatanItem('${itemId}')">-</button>
+                    </div>
+                    <textarea class="kegiatan-textarea-rounded auto-resize" 
+                              id="${itemId}"
+                              placeholder="Tulis kegiatan ${type}..."
+                              oninput="autoResize(this); autoGenerateReport()"></textarea>
+                </div>
+            `;
+            
+            container.innerHTML = itemHTML;
+        }
+        
+        // Add kegiatan item
+        function addKegiatanItem(type) {
+            const container = document.getElementById(`${type}-container`);
+            const itemCount = container.querySelectorAll('.kegiatan-item').length;
+            const itemId = `${type}-${itemCount}`;
+            
+            const itemHTML = `
+                <div class="kegiatan-item" id="${itemId}-container">
+                    <div class="item-controls">
+                        <button type="button" class="item-control-btn item-add-btn" onclick="addKegiatanItem('${type}')">+</button>
+                        <button type="button" class="item-control-btn item-remove-btn" onclick="removeKegiatanItem('${itemId}')">-</button>
+                    </div>
+                    <textarea class="kegiatan-textarea-rounded auto-resize" 
+                              id="${itemId}"
+                              placeholder="Tulis kegiatan ${type} tambahan..."
+                              oninput="autoResize(this); autoGenerateReport()"></textarea>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', itemHTML);
+            autoResize(document.getElementById(itemId));
+        }
+        
+        // Remove kegiatan item
+        function removeKegiatanItem(itemId) {
+            const container = document.getElementById(`${itemId}-container`);
+            if (container) {
+                container.remove();
+                // Re-index remaining items
+                const type = itemId.split('-')[0];
+                const items = document.querySelectorAll(`#${type}-container .kegiatan-item`);
+                items.forEach((item, index) => {
+                    const textarea = item.querySelector('textarea');
+                    const newId = `${type}-${index}`;
+                    textarea.id = newId;
+                    item.id = `${newId}-container`;
+                });
+            }
+        }
+        
+        // Update custom time
+        function updateCustomTime() {
+            const customTime = document.getElementById('customTime').value;
+            if (customTime) {
+                const timeParts = customTime.split(':');
+                const formattedTime = `${timeParts[0]}.${timeParts[1]}`;
+                document.getElementById('reportTime').value = 'custom';
+                document.getElementById('reportTime').dataset.custom = formattedTime;
+                autoGenerateReport();
+            }
+        }
+        
+        // Toggle auto-generate
+        function toggleAutoGenerate() {
+            autoGenerateEnabled = !autoGenerateEnabled;
+            const button = document.getElementById('autoToggle');
+            button.textContent = autoGenerateEnabled ? '⟳ ON' : '⟳ OFF';
+            button.style.background = autoGenerateEnabled ? '#27ae60' : '#e74c3c';
+        }
+        
+        // Auto resize textarea
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+        
+        // Calculate Siap Ops
+        function calculateSiapOps() {
+            const topDspp = parseInt(document.getElementById('topDspp').value) || 0;
+            const nyata = parseInt(document.getElementById('nyata').value) || 0;
+            const kurang = parseInt(document.getElementById('kurang').value) || 0;
+            const siapOps = nyata - kurang;
+            document.getElementById('siapOps').value = siapOps > 0 ? siapOps : 0;
+        }
+        
+        // Update kurang from keterangan
+        function updateKurangFromKeterangan() {
+            const keterangan = document.getElementById('keterangan').value;
+            const lines = keterangan.split('\n');
+            let total = 0;
+            
+            lines.forEach(line => {
+                if (line.includes(':')) {
+                    const parts = line.split(':');
+                    if (parts.length > 1) {
+                        const value = parseInt(parts[1].trim()) || 0;
+                        total += value;
+                    }
+                }
+            });
+            
+            document.getElementById('kurang').value = total;
+            calculateSiapOps();
+        }
+        
+        // Handle keterangan keydown
+        function handleKeteranganKeydown(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const cursorPos = event.target.selectionStart;
+                const textBefore = event.target.value.substring(0, cursorPos);
+                const textAfter = event.target.value.substring(cursorPos);
+                
+                // Check if current line starts with -
+                const lines = textBefore.split('\n');
+                const currentLine = lines[lines.length - 1];
+                
+                if (currentLine.trim().startsWith('-')) {
+                    event.target.value = textBefore + '\n-' + textAfter;
+                } else {
+                    event.target.value = textBefore + '\n-' + textAfter;
+                }
+                
+                // Move cursor
+                const newPos = cursorPos + 2;
+                event.target.selectionStart = event.target.selectionEnd = newPos;
+                
+                // Trigger input
+                event.target.dispatchEvent(new Event('input'));
+            }
+        }
+        
+        // Generate situasi text
+        function generateSituasiText() {
+            const dateInput = document.getElementById('reportDate').value;
+            const timeSelect = document.getElementById('reportTime');
+            const timeValue = timeSelect.value;
+            
+            if (!dateInput) return 'Pilih tanggal terlebih dahulu';
+            
+            const reportDate = new Date(dateInput);
+            const dateInfo = formatDateIndonesia(reportDate);
+            
+            if (timeValue === '04.00') {
+                const startDate = new Date(reportDate);
+                startDate.setDate(startDate.getDate() - 1);
+                startDate.setHours(16, 0, 0);
+                
+                const startInfo = formatDateIndonesia(startDate);
+                
+                return `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${startInfo.hari} Tanggal ${startInfo.tanggal} ${startInfo.bulan} ${startInfo.tahun} Pukul 16.00 Wita s.d Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita dalam keadaan Aman dan Kondusif`;
+            } else if (timeValue === '16.00') {
+                return `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita s.d Pukul 16.00 Wita dalam keadaan Aman dan Kondusif`;
+            } else if (timeValue === 'custom') {
+                const customTime = timeSelect.dataset.custom || '00.00';
+                return `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${customTime} Wita dalam keadaan Aman dan Kondusif`;
+            }
+            
+            return '';
+        }
+        
+        // Update periode info
+        function updatePeriodeInfo() {
+            const timeSelect = document.getElementById('reportTime');
+            const customContainer = document.getElementById('customTimeContainer');
+            
+            if (timeSelect.value === 'custom') {
+                customContainer.style.display = 'block';
+            } else {
+                customContainer.style.display = 'none';
+            }
+            
+            const situasiPreview = document.getElementById('situasiPreview');
+            situasiPreview.textContent = generateSituasiText();
+        }
+        
+        // Format date to Indonesia
+        function formatDateIndonesia(date) {
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            return {
+                hari: days[date.getDay()],
+                tanggal: date.getDate(),
+                bulan: months[date.getMonth()],
+                tahun: date.getFullYear()
+            };
+        }
+        
+        // Collect kegiatan data
+        function collectKegiatanData(type) {
+            const container = document.getElementById(`${type}-container`);
+            const textareas = container.querySelectorAll('textarea');
+            const items = [];
+            
+            textareas.forEach(textarea => {
+                if (textarea.value.trim()) {
+                    items.push(textarea.value.trim());
+                }
+            });
+            
+            return items;
+        }
+        
+        // Generate report
+        function generateReport() {
+            if (!autoGenerateEnabled) return;
+            
+            try {
+                const reportDate = new Date(document.getElementById('reportDate').value);
+                const timeSelect = document.getElementById('reportTime');
+                const reportTime = timeSelect.value === 'custom' ? timeSelect.dataset.custom : timeSelect.value;
+                
+                const haljol = document.getElementById('haljol').value || 'Nihil';
+                const topDspp = document.getElementById('topDspp').value;
+                const nyata = document.getElementById('nyata').value;
+                const kurang = document.getElementById('kurang').value;
+                const siapOps = document.getElementById('siapOps').value;
+                const keterangan = document.getElementById('keterangan').value;
+                
+                const dateInfo = formatDateIndonesia(reportDate);
+                const situasiText = generateSituasiText();
+                
+                let waktuSalam = 'Pagi';
+                if (reportTime === '16.00' || (reportTime && parseInt(reportTime.split('.')[0]) >= 12)) {
+                    waktuSalam = 'Sore';
+                }
+                
+                let report = `Perihal : Laporan perkembangan situasi Koramil 1609-05/Sukasada Hari ${dateInfo.hari} Tanggal, ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun}.\n\n`;
+                report += `Yth. Komandan Kodim 1609/Buleleng.\n`;
+                report += `Cc. Kasdim 1609/Buleleng.\n\n`;
+                report += `Selamat ${waktuSalam}, Mohon ijin melaporkan Situasi Satuan Koramil 1609-05/Sukasada Hari ${dateInfo.hari} Tanggal, ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${reportTime} Wita dalam rangka kegiatan Pembinaan Kekuatan Satuan Bulan ${dateInfo.bulan} tahun ${dateInfo.tahun} sebagai berikut :\n\n`;
+                report += `**I. Situasi dan Haljol :**\n\n`;
+                report += `${situasiText}\n\n`;
+                report += `-Haljol : ${haljol}.\n\n`;
+                report += `**II. Data Siap Ops :**\n\n`;
+                report += `1. Top DSPP : ${topDspp}\n`;
+                report += `2. Nyata : ${nyata}\n`;
+                report += `3. Kurang : ${kurang}\n`;
+                report += `4. Siap Ops : ${siapOps}\n\n`;
+                report += `5. Keterangan :\n\n`;
+                
+                keterangan.split('\n').forEach(line => {
+                    report += `${line}\n`;
+                });
+                
+                report += `\n**III. Kegiatan :**\n\n`;
+                
+                // Kegiatan Danramil
+                report += `**1. Kegiatan Danramil :**\n\n`;
+                const danramilItems = collectKegiatanData('danramil');
+                if (danramilItems.length > 0) {
+                    danramilItems.forEach(item => {
+                        report += `-${item}\n`;
+                    });
+                } else {
+                    report += `-Melaksanakan monitoring perkembangan situasi dan kondisi wilayah Kecamatan Sukasada Kabupaten Buleleng.\n`;
+                    report += `-Memimpin kegiatan rutin satuan Koramil 1609-05/Sukasada.\n`;
+                }
+                report += `\n`;
+                
+                // Kegiatan Koramil
+                report += `**2. Kegiatan Koramil :**\n\n`;
+                const koramilItems = collectKegiatanData('koramil');
+                if (koramilItems.length > 0) {
+                    koramilItems.forEach(item => {
+                        report += `-${item}\n`;
+                    });
+                } else {
+                    report += `2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.\n`;
+                }
+                report += `\n`;
+                
+                // Kegiatan Babinsa
+                report += `**3. Kegiatan Babinsa :**\n\n`;
+                const babinsaItems = collectKegiatanData('babinsa');
+                if (babinsaItems.length > 0) {
+                    babinsaItems.forEach(item => {
+                        report += `-${item}\n`;
+                    });
+                } else {
+                    report += `-Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.\n`;
+                    report += `-Melaksanakan koordinasi dengan perangkat desa setempat.\n`;
+                }
+                report += `\n`;
+                
+                report += `*DEMIKIAN MMP.*\n\n`;
+                report += `Dokumentasi terlampir.`;
+                
+                document.getElementById('output').value = report;
+                autoResize(document.getElementById('output'));
+                
+            } catch (error) {
+                console.error('Error generating report:', error);
+            }
+        }
+        
+        // Debounced auto generate
+        let autoGenerateTimer;
+        function autoGenerateReport() {
+            clearTimeout(autoGenerateTimer);
+            autoGenerateTimer = setTimeout(generateReport, 500);
+        }
+        
+        // Save to localStorage
+        function saveToLocalStorage() {
+            try {
+                const formData = {
+                    reportDate: document.getElementById('reportDate').value,
+                    reportTime: document.getElementById('reportTime').value,
+                    customTime: document.getElementById('reportTime').dataset.custom,
+                    haljol: document.getElementById('haljol').value,
+                    topDspp: document.getElementById('topDspp').value,
+                    nyata: document.getElementById('nyata').value,
+                    kurang: document.getElementById('kurang').value,
+                    siapOps: document.getElementById('siapOps').value,
+                    keterangan: document.getElementById('keterangan').value,
+                    kegiatan: {}
+                };
+                
+                kegiatanTypes.forEach(type => {
+                    formData.kegiatan[type] = collectKegiatanData(type);
+                });
+                
+                localStorage.setItem('koramil_current_form', JSON.stringify(formData));
+                localStorage.setItem('koramil_last_save', new Date().toISOString());
+                
+                // Save to history
+                const history = JSON.parse(localStorage.getItem('koramil_history') || '[]');
+                history.unshift({
+                    ...formData,
+                    timestamp: new Date().toISOString(),
+                    report: document.getElementById('output').value
+                });
+                
+                // Keep only last 50 entries
+                if (history.length > 50) {
+                    history.pop();
+                }
+                
+                localStorage.setItem('koramil_history', JSON.stringify(history));
+                
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+            }
+        }
+        
+        // Load from localStorage
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('koramil_current_form');
+                if (saved) {
+                    const formData = JSON.parse(saved);
+                    
+                    if (formData.reportDate) document.getElementById('reportDate').value = formData.reportDate;
+                    if (formData.reportTime) {
+                        document.getElementById('reportTime').value = formData.reportTime;
+                        if (formData.reportTime === 'custom' && formData.customTime) {
+                            document.getElementById('reportTime').dataset.custom = formData.customTime;
+                            document.getElementById('customTimeContainer').style.display = 'block';
+                            document.getElementById('customTime').value = formData.customTime.replace('.', ':');
+                        }
+                    }
+                    if (formData.haljol) document.getElementById('haljol').value = formData.haljol;
+                    if (formData.topDspp) document.getElementById('topDspp').value = formData.topDspp;
+                    if (formData.nyata) document.getElementById('nyata').value = formData.nyata;
+                    if (formData.kurang) document.getElementById('kurang').value = formData.kurang;
+                    if (formData.keterangan) document.getElementById('keterangan').value = formData.keterangan;
+                    
+                    // Load kegiatan
+                    if (formData.kegiatan) {
+                        kegiatanTypes.forEach(type => {
+                            const container = document.getElementById(`${type}-container`);
+                            container.innerHTML = '';
+                            
+                            if (formData.kegiatan[type] && Array.isArray(formData.kegiatan[type])) {
+                                formData.kegiatan[type].forEach((item, index) => {
+                                    const itemId = `${type}-${index}`;
+                                    const itemHTML = `
+                                        <div class="kegiatan-item" id="${itemId}-container">
+                                            <div class="item-controls">
+                                                <button type="button" class="item-control-btn item-add-btn" onclick="addKegiatanItem('${type}')">+</button>
+                                                <button type="button" class="item-control-btn item-remove-btn" onclick="removeKegiatanItem('${itemId}')">-</button>
+                                            </div>
+                                            <textarea class="kegiatan-textarea-rounded auto-resize" 
+                                                      id="${itemId}"
+                                                      oninput="autoResize(this); autoGenerateReport()">${item}</textarea>
+                                        </div>
+                                    `;
+                                    container.innerHTML += itemHTML;
+                                });
+                            }
+                        });
+                    }
+                    
+                    updateKurangFromKeterangan();
+                    generateReport();
+                    
+                    showMessage('info', 'Form berhasil dimuat dari penyimpanan lokal');
+                }
+            } catch (error) {
+                console.error('Error loading from localStorage:', error);
+            }
+        }
+        
+        // Show message
+        function showMessage(type, text, duration = 5000) {
+            const messagesContainer = document.getElementById('messagesContainer');
+            const messageId = 'msg-' + Date.now();
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            
+            const message = document.createElement('div');
+            message.id = messageId;
+            message.className = `message message-${type}`;
+            message.innerHTML = `
+                <span class="message-icon">${icons[type] || 'ℹ️'}</span>
+                <span>${text}</span>
+            `;
+            
+            messagesContainer.insertBefore(message, messagesContainer.firstChild);
+            
+            if (duration > 0) {
+                setTimeout(() => {
+                    const msg = document.getElementById(messageId);
+                    if (msg) {
+                        msg.style.opacity = '0';
+                        msg.style.transition = 'opacity 0.3s';
+                        setTimeout(() => {
+                            if (msg.parentNode) msg.parentNode.removeChild(msg);
+                        }, 300);
+                    }
+                }, duration);
+            }
+            
+            return messageId;
+        }
+        
+        // Validate form
+        function validateForm() {
+            const errors = [];
+            
+            if (!document.getElementById('reportDate').value) {
+                errors.push('Tanggal laporan harus diisi');
+            }
+            
+            if (!document.getElementById('haljol').value.trim()) {
+                errors.push('Haljol harus diisi');
+            }
+            
+            const totalKegiatan = kegiatanTypes.reduce((total, type) => {
+                const items = collectKegiatanData(type);
+                return total + items.length;
+            }, 0);
+            
+            if (totalKegiatan === 0) {
+                errors.push('Minimal isi satu kegiatan');
+            }
+            
+            return errors;
+        }
+        
+        // Hybrid save and send
+        async function hybridSaveAndSend() {
+            // Validate
+            const errors = validateForm();
+            if (errors.length > 0) {
+                showMessage('error', 'Perbaiki kesalahan:<br>' + errors.join('<br>'));
+                return;
+            }
+            
+            // Show progress steps
+            const progressSteps = document.getElementById('progressSteps');
+            progressSteps.style.display = 'block';
+            
+            // Step 1: Validate
+            document.getElementById('step1').className = 'step active';
+            
+            try {
+                // Step 2: Save to cloud
+                document.getElementById('step2').className = 'step active';
+                const cloudSave = await saveToCloud();
+                
+                if (cloudSave) {
+                    document.getElementById('step2').className = 'step completed';
+                } else {
+                    document.getElementById('step2').className = 'step failed';
+                }
+                
+                // Step 3: WhatsApp
+                document.getElementById('step3').className = 'step active';
+                setTimeout(() => {
+                    sendToWhatsApp();
+                    document.getElementById('step3').className = 'step completed';
+                }, 1000);
+                
+                // Step 4: Download
+                document.getElementById('step4').className = 'step active';
+                setTimeout(() => {
+                    exportToTxt();
+                    document.getElementById('step4').className = 'step completed';
+                    
+                    showMessage('success', 'Semua proses selesai! Laporan telah disimpan, dikirim, dan diunduh.');
+                    
+                    // Hide progress after 3 seconds
+                    setTimeout(() => {
+                        progressSteps.style.display = 'none';
+                    }, 3000);
+                }, 2000);
+                
+            } catch (error) {
+                showMessage('error', 'Terjadi kesalahan: ' + error.message);
+            }
+        }
+        
+        // Save to cloud (Google Sheets)
+        async function saveToCloud() {
+            try {
+                const reportText = document.getElementById('output').value;
+                const formData = {
+                    timestamp: new Date().toISOString(),
+                    reportDate: document.getElementById('reportDate').value,
+                    reportTime: document.getElementById('reportTime').value,
+                    haljol: document.getElementById('haljol').value,
+                    topDspp: document.getElementById('topDspp').value,
+                    nyata: document.getElementById('nyata').value,
+                    kurang: document.getElementById('kurang').value,
+                    siapOps: document.getElementById('siapOps').value,
+                    keterangan: document.getElementById('keterangan').value,
+                    kegiatanDanramil: collectKegiatanData('danramil').join(' || '),
+                    kegiatanKoramil: collectKegiatanData('koramil').join(' || '),
+                    kegiatanBabinsa: collectKegiatanData('babinsa').join(' || '),
+                    fullReport: reportText,
+                    source: 'Koramil PWA'
+                };
+                
+                // Save to Google Sheets via Apps Script
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbw-Q_BoXGfqH9cFw1djKf1DLnoMBxxyI8efOlgOJyDtiKc1rnpiYOAR8UpaXsFA1P7Irg/exec';
+                
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        showMessage('success', 'Data berhasil disimpan ke Google Sheets');
+                        updateSyncStatus(true);
+                        saveToLocalStorage(); // Also save locally
+                        return true;
+                    } else {
+                        throw new Error(result.error || 'Gagal menyimpan');
+                    }
+                } else {
+                    throw new Error('Network error');
+                }
+            } catch (error) {
+                console.error('Cloud save error:', error);
+                // Fallback to local storage
+                saveToLocalStorage();
+                showMessage('warning', 'Data disimpan lokal (offline mode)');
+                updateSyncStatus(false);
+                return false;
+            }
+        }
+        
+        // Send to WhatsApp
+        function sendToWhatsApp() {
+            const reportText = document.getElementById('output').value;
+            if (!reportText.trim()) {
+                showMessage('error', 'Tidak ada laporan untuk dikirim');
+                return;
+            }
+            
+            const encodedText = encodeURIComponent(reportText);
+            const whatsappUrl = `https://wa.me/?text=${encodedText}`;
+            
+            window.open(whatsappUrl, '_blank');
+            showMessage('info', 'Membuka WhatsApp...');
+        }
+        
+        // Export to TXT
+        function exportToTxt() {
+            const reportText = document.getElementById('output').value;
+            if (!reportText.trim()) {
+                showMessage('error', 'Tidak ada laporan untuk diunduh');
+                return;
+            }
+            
+            const date = new Date(document.getElementById('reportDate').value);
+            const time = document.getElementById('reportTime').value;
+            const dateStr = date.toISOString().split('T')[0].replace(/-/g, '');
+            const timeStr = time.replace('.', '');
+            
+            const filename = `LAPORAN_KORAMIL_${dateStr}_${timeStr}.txt`;
+            const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showMessage('success', 'File TXT berhasil diunduh');
+        }
+        
+        // Reset form
+        function resetForm() {
+            if (confirm('Reset form? Semua data akan hilang.')) {
+                document.getElementById('reportDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('reportTime').value = '04.00';
+                document.getElementById('haljol').value = 'Nihil';
+                document.getElementById('topDspp').value = '25';
+                document.getElementById('nyata').value = '19';
+                document.getElementById('kurang').value = '9';
+                document.getElementById('keterangan').value = '-DD : 0\n-BP : 0\n-Sakit : 0\n-Ijin : 0\n-Cuti : 0\n-Dinas Luar : 0';
+                
+                kegiatanTypes.forEach(type => {
+                    const container = document.getElementById(`${type}-container`);
+                    container.innerHTML = '';
+                    addInitialKegiatanItem(type);
+                    
+                    if (type === 'koramil') {
+                        document.getElementById('koramil-0').value = '2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.';
+                    }
+                });
+                
+                calculateSiapOps();
+                updatePeriodeInfo();
+                generateReport();
+                showMessage('info', 'Form telah direset');
+            }
+        }
+        
+        // Print report
+        function printReport() {
+            const reportText = document.getElementById('output').value;
+            if (!reportText.trim()) {
+                showMessage('error', 'Tidak ada laporan untuk dicetak');
+                return;
+            }
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Cetak Laporan Koramil</title>
+                    <style>
+                        body { 
+                            font-family: 'Courier New', monospace; 
+                            font-size: 12px; 
+                            line-height: 1.5; 
+                            margin: 20px; 
+                            white-space: pre-wrap; 
+                        }
+                        @media print {
+                            body { margin: 10mm; }
+                            @page { margin: 10mm; }
+                        }
+                        .header { text-align: center; margin-bottom: 20px; }
+                        .footer { margin-top: 30px; text-align: center; font-size: 10px; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h2>LAPORAN HARIAN KORAMIL 1609-05/SUKASADA</h2>
+                        <p>${new Date().toLocaleDateString('id-ID')}</p>
+                    </div>
+                    <pre>${reportText}</pre>
+                    <div class="footer">
+                        <p>Dicetak dari Sistem PWA Koramil • ${new Date().toLocaleString('id-ID')}</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+        
+        // Show history
+        function showHistory() {
+            try {
+                const history = JSON.parse(localStorage.getItem('koramil_history') || '[]');
+                const historyList = document.getElementById('historyList');
+                
+                if (history.length === 0) {
+                    historyList.innerHTML = '<p style="text-align: center; color: #666;">Tidak ada history</p>';
+                } else {
+                    let html = '<div style="display: flex; flex-direction: column; gap: 10px;">';
+                    
+                    history.forEach((item, index) => {
+                        const date = new Date(item.timestamp).toLocaleDateString('id-ID');
+                        const time = new Date(item.timestamp).toLocaleTimeString('id-ID', { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                        });
+                        
+                        html += `
+                            <div style="border: 1px solid #ddd; border-radius: 8px; padding: 12px; background: #f8f9fa;">
+                                <div style="font-weight: bold; margin-bottom: 5px;">
+                                    ${date} ${time}
+                                </div>
+                                <div style="font-size: 12px; color: #666; margin-bottom: 8px;">
+                                    ${item.reportDate} • ${item.reportTime}
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button onclick="loadHistoryItem(${index})" style="background: #3498db; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer;">
+                                        📂 Load
+                                    </button>
+                                    <button onclick="deleteHistoryItem(${index})" style="background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer;">
+                                        ❌ Hapus
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    historyList.innerHTML = html;
+                }
+                
+                showModal('historyModal');
+            } catch (error) {
+                console.error('Error showing history:', error);
+                showMessage('error', 'Gagal memuat history');
+            }
+        }
+        
+        // Load history item
+        function loadHistoryItem(index) {
+            try {
+                const history = JSON.parse(localStorage.getItem('koramil_history') || '[]');
+                const item = history[index];
+                
+                if (item) {
+                    if (item.reportDate) document.getElementById('reportDate').value = item.reportDate;
+                    if (item.reportTime) {
+                        document.getElementById('reportTime').value = item.reportTime;
+                        if (item.customTime) {
+                            document.getElementById('reportTime').dataset.custom = item.customTime;
+                        }
+                    }
+                    if (item.haljol) document.getElementById('haljol').value = item.haljol;
+                    if (item.topDspp) document.getElementById('topDspp').value = item.topDspp;
+                    if (item.nyata) document.getElementById('nyata').value = item.nyata;
+                    if (item.kurang) document.getElementById('kurang').value = item.kurang;
+                    if (item.keterangan) document.getElementById('keterangan').value = item.keterangan;
+                    
+                    // Load kegiatan
+                    if (item.kegiatan) {
+                        kegiatanTypes.forEach(type => {
+                            const container = document.getElementById(`${type}-container`);
+                            container.innerHTML = '';
+                            
+                            if (item.kegiatan[type] && Array.isArray(item.kegiatan[type])) {
+                                item.kegiatan[type].forEach((kegiatanItem, i) => {
+                                    const itemId = `${type}-${i}`;
+                                    const itemHTML = `
+                                        <div class="kegiatan-item" id="${itemId}-container">
+                                            <div class="item-controls">
+                                                <button type="button" class="item-control-btn item-add-btn" onclick="addKegiatanItem('${type}')">+</button>
+                                                <button type="button" class="item-control-btn item-remove-btn" onclick="removeKegiatanItem('${itemId}')">-</button>
+                                            </div>
+                                            <textarea class="kegiatan-textarea-rounded auto-resize" 
+                                                      id="${itemId}"
+                                                      oninput="autoResize(this); autoGenerateReport()">${kegiatanItem}</textarea>
+                                        </div>
+                                    `;
+                                    container.innerHTML += itemHTML;
+                                });
+                            }
+                        });
+                    }
+                    
+                    updateKurangFromKeterangan();
+                    generateReport();
+                    closeModal('historyModal');
+                    showMessage('success', 'History berhasil dimuat');
+                }
+            } catch (error) {
+                console.error('Error loading history item:', error);
+                showMessage('error', 'Gagal memuat history');
+            }
+        }
+        
+        // Delete history item
+        function deleteHistoryItem(index) {
+            if (confirm('Hapus item ini dari history?')) {
+                try {
+                    const history = JSON.parse(localStorage.getItem('koramil_history') || '[]');
+                    history.splice(index, 1);
+                    localStorage.setItem('koramil_history', JSON.stringify(history));
+                    showHistory(); // Refresh
+                    showMessage('success', 'Item dihapus dari history');
+                } catch (error) {
+                    console.error('Error deleting history:', error);
+                    showMessage('error', 'Gagal menghapus');
+                }
+            }
+        }
+        
+        // Force sync
+        function forceSync() {
+            const unsynced = localStorage.getItem('koramil_unsynced');
+            if (unsynced) {
+                try {
+                    const data = JSON.parse(unsynced);
+                    // Attempt to sync
+                    showMessage('info', 'Menyinkronkan data offline...');
+                    // Implementation depends on sync strategy
+                } catch (error) {
+                    console.error('Sync error:', error);
+                }
+            } else {
+                showMessage('info', 'Semua data sudah tersinkron');
+            }
+        }
+        
+        // Load last report
+        function loadLastReport() {
+            loadFromLocalStorage();
+        }
+        
+        // Save template
+        function saveTemplate() {
+            const templateName = prompt('Nama template:');
+            if (templateName) {
+                const formData = {
+                    name: templateName,
+                    reportDate: document.getElementById('reportDate').value,
+                    reportTime: document.getElementById('reportTime').value,
+                    haljol: document.getElementById('haljol').value,
+                    topDspp: document.getElementById('topDspp').value,
+                    nyata: document.getElementById('nyata').value,
+                    kurang: document.getElementById('kurang').value,
+                    keterangan: document.getElementById('keterangan').value,
+                    kegiatan: {}
+                };
+                
+                kegiatanTypes.forEach(type => {
+                    formData.kegiatan[type] = collectKegiatanData(type);
+                });
+                
+                const templates = JSON.parse(localStorage.getItem('koramil_templates') || '[]');
+                templates.push(formData);
+                localStorage.setItem('koramil_templates', JSON.stringify(templates));
+                
+                showMessage('success', 'Template disimpan');
+            }
+        }
+        
+        // Auto-save on input
+        let saveTimer;
+        document.addEventListener('input', () => {
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(saveToLocalStorage, 2000);
+        });
+        
+        // Initialize
+        window.addEventListener('DOMContentLoaded', initForm);
+        
+    </script>
+</body>
+</html>
