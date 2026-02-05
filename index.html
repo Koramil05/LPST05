@@ -292,22 +292,31 @@
         
         /* Preview Textarea */
         .preview-textarea {
-            width: 100%;
-            min-height: 500px;
-            padding: 20px;
-            border: 2px solid #e1e8ed;
-            font-family: 'Courier New', 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            background: #f8f9fa;
-            color: #333;
-            resize: none;
-            border-radius: 10px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            margin-bottom: 20px;
+    width: 100%;
+    min-height: 400px;
+    padding: 15px;
+    border: 2px solid #000000; /* Border hitam */
+    font-family: 'Courier New', 'Lucida Console', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    background: #ffffff !important;
+    color: #000000 !important; /* ⬅️ HITAM PEKAT */
+    resize: none;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-weight: 500;
+    -webkit-font-smoothing: none; /* Non-anti-aliased */
         }
-        
+/* TAMBAHKAN INI untuk mobile: */
+@media (max-width: 768px) {
+    .preview-textarea {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #000000 !important;
+        -webkit-text-stroke: 0.3px;
+    }
+} 
         /* Situasi Preview */
         .situasi-preview {
             background-color: #f8f9fa;
@@ -959,7 +968,10 @@
                     <button onclick="toggleAutoGenerate()" id="autoToggle" title="Auto-generate" style="background: #27ae60; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;">⟳ ON</button>
                 </div>
             </h3>
-            
+            #output {
+    color: #000000 !important;
+    font-weight: 500 !important;
+}
             <!-- Messages -->
             <div id="messagesContainer" class="messages-container"></div>
             
