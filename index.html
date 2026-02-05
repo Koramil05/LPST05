@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#2c3e50">
     <meta name="description" content="PWA Formatter Laporan Harian Koramil 1609-05/Sukasada">
     <title>Laporan Koramil PWA</title>
-    <base href="/LPST05-main/">
+    <base href="/LPST05/">
     
     <!-- Favicon & PWA Assets -->
     <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
@@ -1054,7 +1054,7 @@
         // Register Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                const basePath = '/LPST05-main/';
+                const basePath = '/LPST05/';
                 navigator.serviceWorker.register(basePath + 'sw.js', { scope: basePath })
                     .then(registration => {
                         console.log('ServiceWorker registered:', registration);
