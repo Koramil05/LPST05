@@ -869,8 +869,8 @@
                 </div>
                 <div class="periode-info" id="periodeInfo" style="display: none;">
                     <strong>Periode Laporan:</strong><br>
-                    • 04.00 WITA: Periode sore (16.00-04.00)<br>
-                    • 16.00 WITA: Periode pagi (04.00-16.00)
+                    • 04.00 WITA: Periode Pagi<br>
+                    • 16.00 WITA: Periode Sore
                 </div>
                 <button class="toggle-section" onclick="toggleElement('periodeInfo')">📌 Info Periode</button>
             </div>
@@ -1456,8 +1456,8 @@
                 const situasiText = generateSituasiText();
                 
                 let waktuSalam = 'Pagi';
-                if (reportTime === '16.00' || (reportTime && parseInt(reportTime.split('.')[0]) >= 12)) {
-                    waktuSalam = 'Sore';
+                if (reportTime === '04.00' || (reportTime && parseInt(reportTime.split('.')[0]) >= 12)) {
+                    waktuSalam = 'Pagi';
                 }
                 
                 let report = `Perihal : Laporan perkembangan situasi Koramil 1609-05/Sukasada Hari ${dateInfo.hari} Tanggal, ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun}.\n\n`;
@@ -2054,7 +2054,7 @@
                 setTimeout(() => {
                     document.getElementById('koramil-0').value = '2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.';
                     document.getElementById('danramil-0').value = 'Melaksanakan monitoring perkembangan situasi dan kondisi wilayah Kecamatan Sukasada Kabupaten Buleleng.';
-                    document.getElementById('babinsa-0').value = 'Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.';
+                    document.getElementById('babinsa-0').value = 'Melaksanakan pemantauan situasi wilayah desa binaan masing-masing.';
                 }, 100);
                 
                 calculateSiapOps();
