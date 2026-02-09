@@ -3,1074 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#2c3e50">
-    <meta name="description" content="Formatter Laporan Harian Koramil 1609-05/Sukasada">
     <title>Laporan Koramil 1609-05/Sukasada</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-    
     <style>
-        /* ========== CSS VARIABLES ========== */
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --success: #27ae60;
-            --danger: #e74c3c;
-            --warning: #f39c12;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --whatsapp: #25D366;
-            --sheets: #34A853;
-            --cloud: #3498db;
-            --drive: #4285F4;
-        }
-        
-        /* ========== RESET & BASE STYLES ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Noto Sans', system-ui, -apple-system, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 15px;
-            padding-bottom: 80px;
-        }
-        
-        /* ========== STATUS INDICATORS ========== */
-        .connection-status {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            z-index: 999;
-            background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .online {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .offline {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        /* ========== HEADER ========== */
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid var(--primary);
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-        
-        .header h1 {
-            color: var(--primary);
-            font-size: 22px;
-            margin-bottom: 8px;
-        }
-        
-        .header h2 {
-            color: #7f8c8d;
-            font-size: 14px;
-            font-weight: normal;
-        }
-        
-        /* ========== MAIN LAYOUT ========== */
-        .main-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        @media (min-width: 1024px) {
-            .main-container {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        
-        .form-container, .preview-container {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid #e1e8ed;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-        }
-        
-        .preview-container {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* ========== SECTION TITLES ========== */
-        .section-title {
-            color: var(--primary);
-            font-size: 17px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--light);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        /* ========== FORM INPUTS ========== */
-        .input-group {
-            margin-bottom: 20px;
-        }
-        
-        .input-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .input-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        
-        input[type="text"],
-        input[type="number"],
-        input[type="date"],
-        input[type="time"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e8ed;
-            font-size: 14px;
-            background: white;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-        
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-        
-        /* ========== TEXTAREA STYLES ========== */
-        textarea {
-            font-family: Arial, Helvetica, sans-serif;
-            resize: vertical;
-        }
-        
-        .auto-resize {
-            min-height: 70px;
-            line-height: 1.5;
-            resize: none;
-            overflow: hidden;
-        }
-        
-        /* ========== PREVIEW TEXTAREA ========== */
-        .preview-textarea {
-            min-height: 400px;
-            padding: 15px;
-            border: 2px solid #000000;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 13px;
-            line-height: 1.6;
-            background: #ffffff !important;
-            color: #000000 !important;
-            resize: none;
-            border-radius: 4px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-weight: 500;
-        }
-        
-        .situasi-preview {
-            background-color: #f8f9fa;
-            border: 2px solid #e1e8ed;
-            padding: 15px;
-            margin-top: 8px;
-            font-size: 13px;
-            line-height: 1.5;
-            color: #555;
-            white-space: pre-wrap;
-            border-radius: 8px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        
-        .periode-info {
-            background: linear-gradient(135deg, #e8f4fd 0%, #d1e8ff 100%);
-            border: 2px solid var(--secondary);
-            padding: 12px 15px;
-            margin-top: 10px;
-            font-size: 13px;
-            color: var(--primary);
-            border-radius: 8px;
-        }
-        
-        /* ========== DATA SIAP OPS GRID ========== */
-        .data-siap-ops-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-        
-        .data-item {
-            display: flex;
-            flex-direction: column;
-            background: white;
-            border: 2px solid #e1e8ed;
-            border-radius: 10px;
-            padding: 8px;
-            align-items: center;
-            justify-content: center;
-            min-height: 70px;
-        }
-        
-        .data-item:focus-within {
-            border-color: var(--secondary);
-        }
-        
-        .data-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 4px;
-            text-align: center;
-            line-height: 1.2;
-        }
-        
-        .data-input {
-            padding: 6px 8px;
-            border: 1px solid #e1e8ed;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 700;
-            text-align: center;
-            width: 100%;
-            background: #f8f9fa;
-        }
-        
-        /* ========== KEGIATAN CONTAINER ========== */
-        .kegiatan-container {
-            margin-bottom: 25px;
-        }
-        
-        .kegiatan-box {
-            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
-            border: 2px solid #e1e8ed;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            position: relative;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        
-        .kegiatan-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 12px;
-        }
-        
-        .kegiatan-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--primary);
-            flex-grow: 1;
-        }
-        
-        .add-kegiatan-btn {
-            background: var(--success);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
-        }
-        
-        .add-kegiatan-btn:hover {
-            background: #219653;
-            transform: scale(1.1);
-        }
-        
-        .kegiatan-content {
-            margin-top: 15px;
-        }
-        
-        /* ========== KEGIATAN ITEMS ========== */
-        .kegiatan-item {
-            position: relative;
-            margin-bottom: 20px;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .kegiatan-textarea-rounded {
-            min-height: 90px;
-            padding: 15px;
-            border: 2px solid #e1e8ed;
-            border-radius: 10px;
-            font-size: 14px;
-            line-height: 1.5;
-            background: #f8f9fa;
-            resize: none;
-            overflow: hidden;
-            font-family: 'Segoe UI', sans-serif;
-            transition: all 0.3s;
-        }
-        
-        .kegiatan-textarea-rounded:focus {
-            background: white;
-            border-color: var(--secondary);
-        }
-        
-        .item-controls {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            display: flex;
-            gap: 8px;
-        }
-        
-        .item-control-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.2s;
-            color: white;
-        }
-        
-        .item-add-btn {
-            background: var(--success);
-        }
-        
-        .item-remove-btn {
-            background: var(--danger);
-        }
-        
-        /* ========== MAIN ACTION BUTTONS ========== */
-        .save-cloud-btn {
-            background: linear-gradient(135deg, var(--cloud) 0%, var(--sheets) 100%) !important;
-            color: white;
-            padding: 18px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 25px;
-            transition: all 0.4s;
-            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-        }
-        
-        .save-cloud-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(52, 152, 219, 0.4);
-        }
-        
-        .send-report-btn {
-            background: linear-gradient(135deg, var(--whatsapp) 0%, #2ecc71 100%) !important;
-            color: white;
-            padding: 18px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 25px;
-            transition: all 0.4s;
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-        }
-        
-        .send-report-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.4);
-        }
-        
-        /* ========== ACTION BUTTONS GRID ========== */
-        .action-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-top: 20px;
-        }
-        
-        .action-btn {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .action-btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .save-btn { background: var(--sheets); color: white; }
-        .whatsapp-btn { background: var(--whatsapp); color: white; }
-        .export-btn { background: #6c757d; color: white; }
-        .reset-btn { background: var(--danger); color: white; }
-        .cloud-btn { background: var(--cloud); color: white; }
-        .drive-btn { background: var(--drive); color: white; }
-        
-        /* ========== MESSAGES ========== */
-        .messages-container {
-            margin-bottom: 20px;
-        }
-        
-        .message {
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            animation: slideIn 0.5s ease;
-            border-left: 5px solid;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .message-success {
-            background: #d4edda;
-            color: #155724;
-            border-left-color: #27ae60;
-        }
-        
-        .message-error {
-            background: #f8d7da;
-            color: #721c24;
-            border-left-color: #e74c3c;
-        }
-        
-        .message-warning {
-            background: #fff3cd;
-            color: #856404;
-            border-left-color: #f39c12;
-        }
-        
-        .message-info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border-left-color: #3498db;
-        }
-        
-        .message-icon {
-            font-size: 20px;
-        }
-        
-        /* ========== MODALS ========== */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: modalSlide 0.4s ease;
-        }
-        
-        @keyframes modalSlide {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .modal-header {
-            padding: 20px;
-            border-bottom: 2px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-body {
-            padding: 20px;
-            overflow-y: auto;
-            max-height: 60vh;
-        }
-        
-        .modal-footer {
-            padding: 15px 20px;
-            border-top: 2px solid #eee;
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-        
-        /* ========== RESPONSIVE DESIGN ========== */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .header h1 {
-                font-size: 18px;
-            }
-            
-            .form-container,
-            .preview-container {
-                padding: 15px;
-            }
-            
-            .action-buttons {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .save-cloud-btn,
-            .send-report-btn {
-                padding: 16px;
-                font-size: 14px;
-            }
-            
-            .kegiatan-textarea-rounded {
-                padding-right: 50px;
-            }
-            
-            .item-controls {
-                right: 5px;
-                top: 5px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .action-buttons {
-                grid-template-columns: 1fr;
-            }
-            
-            .input-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .data-siap-ops-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 6px;
-            }
-            
-            .data-item {
-                min-height: 65px;
-                padding: 6px;
-            }
-            
-            .data-label {
-                font-size: 10px;
-            }
-            
-            .data-input {
-                padding: 5px 6px;
-                font-size: 12px;
-            }
-        }
-        
-        /* ========== UTILITY CLASSES ========== */
-        .toggle-section {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 5px;
-            width: 100%;
-        }
-        
-        .toggle-section:hover {
-            background: #2980b9;
-        }
-        
-        .dual-button-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        
-        @media (max-width: 768px) {
-            .dual-button-container {
-                grid-template-columns: 1fr;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: #2c3e50; color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px; }
+        .main { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .main { grid-template-columns: 1fr; } }
+        .panel { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #2c3e50; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+        textarea { min-height: 100px; resize: vertical; }
+        .data-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+        .data-item { text-align: center; }
+        .data-item input { text-align: center; font-weight: bold; }
+        .kegiatan-box { background: #f8f9fa; border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-bottom: 15px; }
+        .kegiatan-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .kegiatan-title { font-weight: bold; color: #2c3e50; }
+        .add-btn { background: #27ae60; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+        .remove-btn { background: #e74c3c; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+        .preview-box { background: #000; color: #fff; font-family: monospace; padding: 15px; border-radius: 5px; min-height: 400px; white-space: pre-wrap; }
+        .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .btn { padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-save { background: #3498db; color: white; }
+        .btn-send { background: #25D366; color: white; }
+        .btn-reset { background: #e74c3c; color: white; }
+        .btn-export { background: #95a5a6; color: white; }
+        .message { padding: 10px; border-radius: 5px; margin-bottom: 10px; display: none; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; display: block; }
     </style>
 </head>
 <body>
-    <!-- ========== CONNECTION STATUS ========== -->
-    <div id="connectionStatus" class="connection-status online">
-        <span id="statusIcon">🌐</span>
-        <span id="statusText">Online</span>
-    </div>
-    
-    <!-- ========== HEADER ========== -->
-    <div class="header">
-        <h1>
-            LAPORAN HARIAN KORAMIL 1609-05/Sukasada
-        </h1>
-        <h2>Jl. Jelantik Gingsir 32 Sukasada Bali</h2>
-        <div style="margin-top: 10px; font-size: 12px; color: #7f8c8d;">
-            <span>📱 PWA Web App</span> • 
-            <span>☁️ Cloud Sync</span> • 
-            <span>📁 Drive TXT</span>
+    <div class="container">
+        <div class="header">
+            <h1>LAPORAN HARIAN KORAMIL 1609-05/SUKASADA</h1>
+            <p>Jl. Jelantik Gingsir 32 Sukasada Bali</p>
         </div>
-        <div id="cloudStatus" style="margin-top: 5px; font-size: 11px; color: var(--success);"></div>
-    </div>
-    
-    <!-- ========== MAIN CONTAINER ========== -->
-    <div class="main-container">
-        <!-- ========== FORM INPUT ========== -->
-        <div class="form-container">
-            <h3 class="section-title">
-                <span>📝 INPUT DATA LAPORAN</span>
-            </h3>
-            
-            <!-- Waktu Laporan -->
-            <div class="input-group">
-                <label><span>📅</span> WAKTU LAPORAN</label>
-                <div class="input-row">
-                    <div>
-                        <input type="date" id="reportDate" oninput="autoGenerateReport()">
-                    </div>
-                    <div>
-                        <select id="reportTime" onchange="autoGenerateReport(); updatePeriodeInfo()">
-                            <option value="pagi">Pagi (04.00 WITA)</option>
-                            <option value="sore">Sore (16.00 WITA)</option>
-                            <option value="custom">Custom</option>
-                        </select>
-                    </div>
-                    <div id="customTimeContainer" style="display: none;">
-                        <input type="time" id="customTime" onchange="updateCustomTime()">
-                    </div>
+        
+        <div class="main">
+            <!-- FORM INPUT -->
+            <div class="panel">
+                <h2>📝 INPUT DATA LAPORAN</h2>
+                
+                <div class="form-group">
+                    <label>Tanggal Laporan</label>
+                    <input type="date" id="reportDate" onchange="generateReport()">
                 </div>
-                <div class="periode-info" id="periodeInfo" style="display: none;">
-                    <strong>Periode Laporan:</strong><br>
-                    • Pagi 04.00 WITA: Laporan situasi pagi<br>
-                    • Sore 16.00 WITA: Laporan situasi sore (04.00-16.00 WITA)
+                
+                <div class="form-group">
+                    <label>Waktu Laporan</label>
+                    <select id="reportTime" onchange="generateReport()">
+                        <option value="04.00">Pagi (04.00 WITA)</option>
+                        <option value="16.00">Sore (16.00 WITA)</option>
+                    </select>
                 </div>
-                <button class="toggle-section" onclick="toggleElement('periodeInfo')">📌 Info Periode</button>
-            </div>
-            
-            <!-- Situasi & Haljol -->
-            <div class="input-group">
-                <label><span>📍</span> SITUASI DAN HALJOL</label>
-                <div style="margin-bottom: 12px;">
-                    <div class="situasi-preview" id="situasiPreview">
-                        Pilih tanggal dan waktu untuk generate situasi
-                    </div>
+                
+                <div class="form-group">
+                    <label>Haljol</label>
+                    <input type="text" id="haljol" value="Nihil" oninput="generateReport()">
                 </div>
-                <div>
-                    <input type="text" id="haljol" value="Nihil" 
-                           oninput="autoGenerateReport()" placeholder="Haljol (contoh: Nihil)">
-                </div>
-            </div>
-            
-            <!-- DATA SIAP OPS -->
-            <div class="input-group">
-                <label><span>📊</span> DATA SIAP OPS</label>
-                <div class="data-siap-ops-grid">
+                
+                <div class="data-grid">
                     <div class="data-item">
-                        <div class="data-label">Top DSPP</div>
-                        <input type="number" id="topDspp" class="data-input" value="25" oninput="calculateSiapOps()">
+                        <label>Top DSPP</label>
+                        <input type="number" id="topDspp" value="25" oninput="calculateSiapOps()">
                     </div>
                     <div class="data-item">
-                        <div class="data-label">Nyata</div>
-                        <input type="number" id="nyata" class="data-input" value="19" oninput="calculateSiapOps()">
+                        <label>Nyata</label>
+                        <input type="number" id="nyata" value="19" oninput="calculateSiapOps()">
                     </div>
                     <div class="data-item">
-                        <div class="data-label">Kurang</div>
-                        <input type="number" id="kurang" class="data-input" value="0" oninput="calculateSiapOps()">
+                        <label>Kurang</label>
+                        <input type="number" id="kurang" value="0" oninput="calculateSiapOps()">
                     </div>
                     <div class="data-item">
-                        <div class="data-label">Siap Ops</div>
-                        <input type="number" id="siapOps" class="data-input" value="19" readonly>
+                        <label>Siap Ops</label>
+                        <input type="number" id="siapOps" value="19" readonly>
                     </div>
                 </div>
-            </div>
-            
-            <!-- KETERANGAN -->
-            <div class="input-group">
-                <label><span>📋</span> KETERANGAN</label>
-                <div>
-                    <textarea class="auto-resize" id="keterangan"
-                              onkeydown="handleKeteranganKeydown(event)"
-                              oninput="updateKurangFromKeterangan(); autoGenerateReport()">-DD : 0
+                
+                <div class="form-group">
+                    <label>Keterangan</label>
+                    <textarea id="keterangan" oninput="updateKurang(); generateReport()">-DD : 0
 -BP : 0
 -Sakit : 0
 -Ijin : 0
 -Cuti : 0
 -Dinas Luar : 0</textarea>
                 </div>
-            </div>
-            
-            <!-- KEGIATAN -->
-            <div class="input-group">
-                <label><span>🏃‍♂️</span> KEGIATAN</label>
                 
-                <!-- Kegiatan Danramil -->
-                <div class="kegiatan-container">
+                <!-- KEGIATAN -->
+                <div class="form-group">
+                    <label>Kegiatan</label>
+                    
                     <div class="kegiatan-box">
                         <div class="kegiatan-header">
                             <div class="kegiatan-title">Danramil</div>
-                            <button class="add-kegiatan-btn" onclick="addKegiatanItem('danramil')">+</button>
+                            <button class="add-btn" onclick="addKegiatan('danramil')">+</button>
                         </div>
-                        <div class="kegiatan-content" id="danramil-container"></div>
+                        <div id="danramil-container">
+                            <textarea placeholder="Kegiatan Danramil..." oninput="generateReport()"></textarea>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Kegiatan Koramil -->
-                <div class="kegiatan-container">
+                    
                     <div class="kegiatan-box">
                         <div class="kegiatan-header">
                             <div class="kegiatan-title">Koramil</div>
-                            <button class="add-kegiatan-btn" onclick="addKegiatanItem('koramil')">+</button>
+                            <button class="add-btn" onclick="addKegiatan('koramil')">+</button>
                         </div>
-                        <div class="kegiatan-content" id="koramil-container"></div>
+                        <div id="koramil-container">
+                            <textarea placeholder="Kegiatan Koramil..." oninput="generateReport()">2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.</textarea>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Kegiatan Babinsa -->
-                <div class="kegiatan-container">
+                    
                     <div class="kegiatan-box">
                         <div class="kegiatan-header">
                             <div class="kegiatan-title">Babinsa</div>
-                            <button class="add-kegiatan-btn" onclick="addKegiatanItem('babinsa')">+</button>
+                            <button class="add-btn" onclick="addKegiatan('babinsa')">+</button>
                         </div>
-                        <div class="kegiatan-content" id="babinsa-container"></div>
+                        <div id="babinsa-container">
+                            <textarea placeholder="Kegiatan Babinsa..." oninput="generateReport()">Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.</textarea>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- ========== PREVIEW OUTPUT ========== -->
-        <div class="preview-container">
-            <h3 class="section-title">
-                <span>👁️ PREVIEW LAPORAN</span>
-            </h3>
             
-            <!-- Messages -->
-            <div id="messagesContainer" class="messages-container"></div>
-            
-            <!-- Preview -->
-            <textarea id="output" class="preview-textarea" placeholder="Laporan akan muncul di sini..."
-                      oninput="autoResize(this)"></textarea>
-            
-            <!-- ========== DUAL BUTTON CONTAINER ========== -->
-            <div class="dual-button-container">
-                <!-- Tombol Simpan ke Cloud -->
-                <button class="save-cloud-btn" onclick="saveToCloudOnly()">
-                    <div class="btn-icons">
-                        <span>💾</span>
-                        <span>☁️</span>
-                    </div>
-                    SIMPAN KE CLOUD
-                </button>
+            <!-- PREVIEW -->
+            <div class="panel">
+                <h2>👁️ PREVIEW LAPORAN</h2>
                 
-                <!-- Tombol Kirim Laporan -->
-                <button class="send-report-btn" onclick="sendCombinedReport()">
-                    <div class="btn-icons">
-                        <span>📱</span>
-                        <span>📤</span>
-                    </div>
-                    KIRIM LAPORAN
-                </button>
-            </div>
-            
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <button class="action-btn save-btn" onclick="saveToCloudOnly()">
-                    <span>💾</span> Simpan
-                </button>
-                <button class="action-btn whatsapp-btn" onclick="sendToWhatsApp()">
-                    <span>📱</span> WhatsApp
-                </button>
-                <button class="action-btn export-btn" onclick="exportToTxt()">
-                    <span>📥</span> Export
-                </button>
-                <button class="action-btn reset-btn" onclick="resetForm()">
-                    <span>🔄</span> Reset
-                </button>
-                <button class="action-btn cloud-btn" onclick="loadLastCloudData()">
-                    <span>☁️</span> Panggil
-                </button>
-                <button class="action-btn drive-btn" onclick="uploadTxtToDrive()">
-                    <span>📁</span> Drive
-                </button>
+                <div id="message" class="message"></div>
+                
+                <div class="preview-box" id="output">
+                    Laporan akan muncul di sini...
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn btn-save" onclick="saveToCloud()">
+                        💾 SIMPAN KE CLOUD
+                    </button>
+                    <button class="btn btn-send" onclick="sendToWhatsApp()">
+                        📱 KIRIM KE WHATSAPP
+                    </button>
+                    <button class="btn btn-export" onclick="exportToTxt()">
+                        📥 DOWNLOAD TXT
+                    </button>
+                    <button class="btn btn-reset" onclick="resetForm()">
+                        🔄 RESET FORM
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    
+
     <script>
-        // ========== GLOBAL VARIABLES ==========
-        const kegiatanTypes = ['danramil', 'koramil', 'babinsa'];
-        let autoGenerateEnabled = true;
-        
-        // ========== CONFIGURATION ==========
+        // CONFIG
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdlvQbwCCB8e0RP0mGm9_2ucBTQN5-WMpGaJYtVf9cI8PutWdMH0DpypAkqnT7yymOBQ/exec';
         const API_KEY = 'koramil2024@secure';
         
-        // ========== SYSTEM FUNCTIONS ==========
-        function initForm() {
+        // INITIALIZE
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('reportDate').value = today;
-            document.getElementById('reportTime').value = 'pagi';
             
-            // Initialize kegiatan containers
-            kegiatanTypes.forEach(type => {
-                addInitialKegiatanItem(type);
-            });
+            // Generate initial report
+            generateReport();
             
-            // Set initial values
-            setTimeout(() => {
-                document.getElementById('koramil-0').value = '2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.';
-                document.getElementById('danramil-0').value = 'Melaksanakan monitoring perkembangan situasi dan kondisi wilayah Kecamatan Sukasada Kabupaten Buleleng.';
-                document.getElementById('babinsa-0').value = 'Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.';
-                
-                // Auto-resize semua textarea
-                document.querySelectorAll('.auto-resize').forEach(textarea => {
-                    autoResize(textarea);
-                });
-            }, 100);
-            
-            calculateSiapOps();
-            updatePeriodeInfo();
-            autoGenerateReport();
-            
-            // Test cloud connection on startup
-            setTimeout(() => {
-                testCloudConnection();
-            }, 2000);
-        }
+            // Test connection
+            setTimeout(testConnection, 1000);
+        });
         
-        function updateConnectionStatus() {
-            const statusEl = document.getElementById('connectionStatus');
-            const statusText = document.getElementById('statusText');
-            const statusIcon = document.getElementById('statusIcon');
-            
-            if (navigator.onLine) {
-                statusEl.className = 'connection-status online';
-                statusText.textContent = 'Online';
-                statusIcon.textContent = '🌐';
-            } else {
-                statusEl.className = 'connection-status offline';
-                statusText.textContent = 'Offline';
-                statusIcon.textContent = '📴';
-            }
-        }
-        
-        window.addEventListener('online', updateConnectionStatus);
-        window.addEventListener('offline', updateConnectionStatus);
-        updateConnectionStatus();
-        
-        // ========== CLOUD CONNECTION TEST ==========
-        async function testCloudConnection() {
+        // TEST CONNECTION
+        async function testConnection() {
             try {
                 const url = `${GOOGLE_SCRIPT_URL}?action=test&apiKey=${encodeURIComponent(API_KEY)}`;
                 const response = await fetch(url);
+                const result = await response.json();
                 
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.success) {
-                        document.getElementById('cloudStatus').innerHTML = '✅ Cloud terhubung';
-                        return true;
-                    }
+                if (result.success) {
+                    showMessage('✅ Terhubung ke server cloud', 'success');
+                } else {
+                    showMessage('⚠️ Server error: ' + result.error, 'error');
                 }
             } catch (error) {
-                console.log('Cloud test failed:', error);
-            }
-            
-            document.getElementById('cloudStatus').innerHTML = '⚠️ Cloud tidak terhubung';
-            return false;
-        }
-        
-        // ========== UTILITY FUNCTIONS ==========
-        function toggleElement(elementId) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.style.display = element.style.display === 'none' ? 'block' : 'none';
+                showMessage('❌ Tidak bisa terhubung ke server', 'error');
             }
         }
         
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = (textarea.scrollHeight) + 'px';
-        }
-        
-        // ========== KEGIATAN FUNCTIONS ==========
-        function addInitialKegiatanItem(type) {
-            const container = document.getElementById(`${type}-container`);
-            const itemId = `${type}-0`;
-            
-            const itemHTML = `
-                <div class="kegiatan-item" id="${itemId}-container">
-                    <div class="item-controls">
-                        <button type="button" class="item-control-btn item-add-btn" onclick="addKegiatanItem('${type}')">+</button>
-                        <button type="button" class="item-control-btn item-remove-btn" onclick="removeKegiatanItem('${itemId}')">-</button>
-                    </div>
-                    <textarea class="kegiatan-textarea-rounded auto-resize" 
-                              id="${itemId}"
-                              placeholder="Tulis kegiatan ${type}..."
-                              oninput="autoResize(this); autoGenerateReport()"></textarea>
-                </div>
-            `;
-            
-            container.innerHTML = itemHTML;
-        }
-        
-        function addKegiatanItem(type) {
-            const container = document.getElementById(`${type}-container`);
-            const itemCount = container.querySelectorAll('.kegiatan-item').length;
-            const itemId = `${type}-${itemCount}`;
-            
-            const itemHTML = `
-                <div class="kegiatan-item" id="${itemId}-container">
-                    <div class="item-controls">
-                        <button type="button" class="item-control-btn item-add-btn" onclick="addKegiatanItem('${type}')">+</button>
-                        <button type="button" class="item-control-btn item-remove-btn" onclick="removeKegiatanItem('${itemId}')">-</button>
-                    </div>
-                    <textarea class="kegiatan-textarea-rounded auto-resize" 
-                              id="${itemId}"
-                              placeholder="Tulis kegiatan ${type} tambahan..."
-                              oninput="autoResize(this); autoGenerateReport()"></textarea>
-                </div>
-            `;
-            
-            container.insertAdjacentHTML('beforeend', itemHTML);
-            autoResize(document.getElementById(itemId));
-        }
-        
-        function removeKegiatanItem(itemId) {
-            const container = document.getElementById(`${itemId}-container`);
-            if (container) {
-                container.remove();
-                const type = itemId.split('-')[0];
-                const items = document.querySelectorAll(`#${type}-container .kegiatan-item`);
-                items.forEach((item, index) => {
-                    const textarea = item.querySelector('textarea');
-                    const newId = `${type}-${index}`;
-                    textarea.id = newId;
-                    item.id = `${newId}-container`;
-                });
-            }
-        }
-        
-        // ========== FORM CALCULATIONS ==========
-        function updateCustomTime() {
-            const customTime = document.getElementById('customTime').value;
-            if (customTime) {
-                const timeParts = customTime.split(':');
-                const formattedTime = `${timeParts[0]}.${timeParts[1]}`;
-                document.getElementById('reportTime').value = 'custom';
-                document.getElementById('reportTime').dataset.custom = formattedTime;
-                autoGenerateReport();
-            }
-        }
-        
+        // CALCULATIONS
         function calculateSiapOps() {
-            const topDspp = parseInt(document.getElementById('topDspp').value) || 0;
             const nyata = parseInt(document.getElementById('nyata').value) || 0;
             const kurang = parseInt(document.getElementById('kurang').value) || 0;
-            const siapOps = nyata - kurang;
-            document.getElementById('siapOps').value = siapOps > 0 ? siapOps : 0;
+            document.getElementById('siapOps').value = nyata - kurang;
+            generateReport();
         }
         
-        function updateKurangFromKeterangan() {
+        function updateKurang() {
             const keterangan = document.getElementById('keterangan').value;
             const lines = keterangan.split('\n');
             let total = 0;
             
             lines.forEach(line => {
                 if (line.includes(':')) {
-                    const parts = line.split(':');
-                    if (parts.length > 1) {
-                        const value = parseInt(parts[1].trim()) || 0;
-                        total += value;
-                    }
+                    const value = parseInt(line.split(':')[1]) || 0;
+                    total += value;
                 }
             });
             
@@ -1078,570 +220,205 @@
             calculateSiapOps();
         }
         
-        // ========== FORM HANDLING ==========
-        function handleKeteranganKeydown(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                const cursorPos = event.target.selectionStart;
-                const textBefore = event.target.value.substring(0, cursorPos);
-                const textAfter = event.target.value.substring(cursorPos);
-                
-                const lines = textBefore.split('\n');
-                const currentLine = lines[lines.length - 1];
-                
-                if (currentLine.trim().startsWith('-')) {
-                    event.target.value = textBefore + '\n-' + textAfter;
-                } else {
-                    event.target.value = textBefore + '\n-' + textAfter;
-                }
-                
-                const newPos = cursorPos + 2;
-                event.target.selectionStart = event.target.selectionEnd = newPos;
-                
-                event.target.dispatchEvent(new Event('input'));
-            }
-        }
-        
-        // ========== DATE & TIME FUNCTIONS ==========
-        function generateSituasiText() {
-            const dateInput = document.getElementById('reportDate').value;
-            const timeSelect = document.getElementById('reportTime');
-            const timeValue = timeSelect.value;
-            
-            if (!dateInput) return 'Pilih tanggal terlebih dahulu';
-            
-            const reportDate = new Date(dateInput);
-            const dateInfo = formatDateIndonesia(reportDate);
-            
-            if (timeValue === 'pagi') {
-                return `Pagi :\n-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita dalam keadaan Aman dan Kondusif`;
-            } else if (timeValue === 'sore') {
-                return `Sore :\n-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita s.d Pukul 16.00 Wita dalam keadaan Aman dan Kondusif`;
-            } else if (timeValue === 'custom') {
-                const customTime = timeSelect.dataset.custom || '00.00';
-                return `Custom ${customTime} WITA :\n-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${customTime} Wita dalam keadaan Aman dan Kondusif`;
-            }
-            return '';
-        }
-        
-        function updatePeriodeInfo() {
-            const timeSelect = document.getElementById('reportTime');
-            const customContainer = document.getElementById('customTimeContainer');
-            
-            if (timeSelect.value === 'custom') {
-                customContainer.style.display = 'block';
-            } else {
-                customContainer.style.display = 'none';
-            }
-            
-            const situasiPreview = document.getElementById('situasiPreview');
-            situasiPreview.textContent = generateSituasiText();
-        }
-        
-        function formatDateIndonesia(date) {
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            
-            return {
-                hari: days[date.getDay()],
-                tanggal: date.getDate(),
-                bulan: months[date.getMonth()],
-                tahun: date.getFullYear()
-            };
-        }
-        
-        // ========== KEGIATAN DATA COLLECTION ==========
-        function collectKegiatanData(type) {
+        // KEGIATAN FUNCTIONS
+        function addKegiatan(type) {
             const container = document.getElementById(`${type}-container`);
-            const textareas = container.querySelectorAll('textarea');
-            const items = [];
-            textareas.forEach(textarea => {
-                if (textarea.value.trim()) {
-                    items.push(textarea.value.trim());
-                }
-            });
-            return items;
+            const textarea = document.createElement('textarea');
+            textarea.placeholder = `Kegiatan ${type} tambahan...`;
+            textarea.oninput = generateReport;
+            
+            const div = document.createElement('div');
+            div.style.position = 'relative';
+            div.style.marginTop = '5px';
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-btn';
+            removeBtn.innerHTML = '-';
+            removeBtn.style.position = 'absolute';
+            removeBtn.style.right = '5px';
+            removeBtn.style.top = '5px';
+            removeBtn.onclick = function() {
+                div.remove();
+                generateReport();
+            };
+            
+            div.appendChild(textarea);
+            div.appendChild(removeBtn);
+            container.appendChild(div);
         }
         
-        // ========== REPORT GENERATION ==========
+        // GENERATE REPORT
         function generateReport() {
-            if (!autoGenerateEnabled) return;
             try {
-                const reportDate = new Date(document.getElementById('reportDate').value);
-                const timeSelect = document.getElementById('reportTime');
-                const timeValue = timeSelect.value;
-                const reportTime = timeValue === 'pagi' ? '04.00' : 
-                                  timeValue === 'sore' ? '16.00' : 
-                                  timeSelect.dataset.custom || '00.00';
+                const date = document.getElementById('reportDate').value;
+                if (!date) return;
                 
-                const haljol = document.getElementById('haljol').value || 'Nihil';
+                const dateObj = new Date(date);
+                const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][dateObj.getDay()];
+                const tanggal = dateObj.getDate();
+                const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][dateObj.getMonth()];
+                const tahun = dateObj.getFullYear();
+                
+                const time = document.getElementById('reportTime').value;
+                const haljol = document.getElementById('haljol').value;
                 const topDspp = document.getElementById('topDspp').value;
                 const nyata = document.getElementById('nyata').value;
                 const kurang = document.getElementById('kurang').value;
                 const siapOps = document.getElementById('siapOps').value;
                 const keterangan = document.getElementById('keterangan').value;
-                const dateInfo = formatDateIndonesia(reportDate);
-                const situasiText = generateSituasiText();
                 
-                let waktuSalam = timeValue === 'pagi' ? 'Pagi' : 'Sore';
-                
-                let report = `Perihal : Laporan perkembangan situasi Koramil 1609-05/Sukasada Hari ${dateInfo.hari} Tanggal, ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun}.\n\n`;
-                report += `Yth. Komandan Kodim 1609/Buleleng.\n`;
-                report += `Cc. Kasdim 1609/Buleleng.\n\n`;
-                report += `Selamat ${waktuSalam}, Mohon ijin melaporkan Situasi Satuan Koramil 1609-05/Sukasada Hari ${dateInfo.hari} Tanggal, ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${reportTime} Wita dalam rangka kegiatan Pembinaan Kekuatan Satuan Bulan ${dateInfo.bulan} tahun ${dateInfo.tahun} sebagai berikut :\n\n`;
-                report += `*I. Situasi dan Haljol :*\n\n`;
-                
-                if (timeValue === 'pagi') {
-                    report += `Pagi :\n`;
-                    report += `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita dalam keadaan Aman dan Kondusif\n\n`;
-                } else if (timeValue === 'sore') {
-                    report += `Sore :\n`;
-                    report += `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita s.d Pukul 16.00 Wita dalam keadaan Aman dan Kondusif\n\n`;
-                } else {
-                    const customTime = timeSelect.dataset.custom || '00.00';
-                    report += `Custom ${customTime} WITA :\n`;
-                    report += `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${customTime} Wita dalam keadaan Aman dan Kondusif\n\n`;
+                // Get kegiatan
+                function getKegiatan(type) {
+                    const container = document.getElementById(`${type}-container`);
+                    const textareas = container.querySelectorAll('textarea');
+                    const items = [];
+                    textareas.forEach(ta => {
+                        if (ta.value.trim()) items.push(ta.value.trim());
+                    });
+                    return items.length > 0 ? items : [`Melaksanakan kegiatan ${type}`];
                 }
                 
+                const waktuSalam = time === '04.00' ? 'Pagi' : 'Sore';
+                
+                let report = `Perihal : Laporan perkembangan situasi Koramil 1609-05/Sukasada Hari ${hari} Tanggal, ${tanggal} ${bulan} ${tahun}.\n\n`;
+                report += `Yth. Komandan Kodim 1609/Buleleng.\n`;
+                report += `Cc. Kasdim 1609/Buleleng.\n\n`;
+                report += `Selamat ${waktuSalam}, Mohon ijin melaporkan Situasi Satuan Koramil 1609-05/Sukasada Hari ${hari} Tanggal, ${tanggal} ${bulan} ${tahun} Pukul ${time} Wita dalam rangka kegiatan Pembinaan Kekuatan Satuan Bulan ${bulan} tahun ${tahun} sebagai berikut :\n\n`;
+                report += `*I. Situasi dan Haljol :*\n\n`;
+                report += `${waktuSalam} :\n`;
+                report += `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${hari} Tanggal ${tanggal} ${bulan} ${tahun} Pukul ${time} Wita dalam keadaan Aman dan Kondusif\n\n`;
                 report += `-Haljol : ${haljol}.\n\n`;
                 report += `*II. Data Siap Ops :*\n\n`;
                 report += `1. Top DSPP : ${topDspp}\n`;
                 report += `2. Nyata : ${nyata}\n`;
                 report += `3. Kurang : ${kurang}\n`;
                 report += `4. Siap Ops : ${siapOps}\n\n`;
-                report += `5. Keterangan :\n\n`;
-                
-                keterangan.split('\n').forEach(line => {
-                    report += `${line}\n`;
-                });
-                
-                report += `\n*III. Kegiatan :*\n\n`;
-                
-                // Kegiatan Danramil
+                report += `5. Keterangan :\n\n${keterangan}\n\n`;
+                report += `*III. Kegiatan :*\n\n`;
                 report += `*1. Kegiatan Danramil :*\n\n`;
-                const danramilItems = collectKegiatanData('danramil');
-                if (danramilItems.length > 0) {
-                    danramilItems.forEach(item => {
-                        report += `-${item}\n`;
-                    });
-                } else {
-                    report += `-Melaksanakan monitoring perkembangan situasi dan kondisi wilayah Kecamatan Sukasada Kabupaten Buleleng.\n`;
-                }
-                report += `\n`;
-                
-                // Kegiatan Koramil
-                report += `*2. Kegiatan Koramil :*\n\n`;
-                const koramilItems = collectKegiatanData('koramil');
-                if (koramilItems.length > 0) {
-                    koramilItems.forEach(item => {
-                        report += `-${item}\n`;
-                    });
-                } else {
-                    report += `2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.\n`;
-                }
-                report += `\n`;
-                
-                // Kegiatan Babinsa
-                report += `*3. Kegiatan Babinsa :*\n\n`;
-                const babinsaItems = collectKegiatanData('babinsa');
-                if (babinsaItems.length > 0) {
-                    babinsaItems.forEach(item => {
-                        report += `-${item}\n`;
-                    });
-                } else {
-                    report += `-Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.\n`;
-                }
-                report += `\n`;
-                
-                report += `*DEMIKIAN MMP.*\n`;
+                getKegiatan('danramil').forEach(item => report += `-${item}\n`);
+                report += `\n*2. Kegiatan Koramil :*\n\n`;
+                getKegiatan('koramil').forEach(item => report += `-${item}\n`);
+                report += `\n*3. Kegiatan Babinsa :*\n\n`;
+                getKegiatan('babinsa').forEach(item => report += `-${item}\n`);
+                report += `\n*DEMIKIAN MMP.*\n`;
                 report += `Dokumentasi terlampir.`;
                 
-                document.getElementById('output').value = report;
-                autoResize(document.getElementById('output'));
+                document.getElementById('output').textContent = report;
                 
             } catch (error) {
-                console.error('Error generating report:', error);
+                console.error('Generate error:', error);
             }
         }
         
-        let autoGenerateTimer;
-        function autoGenerateReport() {
-            clearTimeout(autoGenerateTimer);
-            autoGenerateTimer = setTimeout(generateReport, 500);
-        }
-        
-        // ========== MESSAGE SYSTEM ==========
-        function showMessage(type, text, duration = 5000) {
-            const messagesContainer = document.getElementById('messagesContainer');
-            const messageId = 'msg-' + Date.now();
-            
-            const icons = {
-                success: '✅',
-                error: '❌',
-                warning: '⚠️',
-                info: 'ℹ️'
-            };
-            
-            const message = document.createElement('div');
-            message.id = messageId;
-            message.className = `message message-${type}`;
-            message.innerHTML = `
-                <span class="message-icon">${icons[type] || 'ℹ️'}</span>
-                <span>${text}</span>
-            `;
-            
-            messagesContainer.insertBefore(message, messagesContainer.firstChild);
-            
-            if (duration > 0) {
-                setTimeout(() => {
-                    const msg = document.getElementById(messageId);
-                    if (msg) {
-                        msg.style.opacity = '0';
-                        msg.style.transition = 'opacity 0.3s';
-                        setTimeout(() => {
-                            if (msg.parentNode) msg.parentNode.removeChild(msg);
-                        }, 300);
-                    }
-                }, duration);
-            }
-            
-            return messageId;
-        }
-        
-        // ========== FORM VALIDATION ==========
-        function validateForm() {
-            const errors = [];
+        // SAVE TO CLOUD
+        async function saveToCloud() {
+            const reportText = document.getElementById('output').textContent;
             
             if (!document.getElementById('reportDate').value) {
-                errors.push('Tanggal laporan harus diisi');
-            }
-            
-            if (!document.getElementById('haljol').value.trim()) {
-                errors.push('Haljol harus diisi');
-            }
-            
-            const totalKegiatan = kegiatanTypes.reduce((total, type) => {
-                const items = collectKegiatanData(type);
-                return total + items.length;
-            }, 0);
-            
-            if (totalKegiatan === 0) {
-                errors.push('Minimal isi satu kegiatan');
-            }
-            
-            return errors;
-        }
-        
-        // ========== CLOUD FUNCTIONS ==========
-        async function saveToCloudOnly() {
-            const errors = validateForm();
-            if (errors.length > 0) {
-                showMessage('error', 'Perbaiki kesalahan sebelum menyimpan:<br>' + errors.join('<br>'));
-                return false;
+                showMessage('❌ Isi tanggal laporan terlebih dahulu', 'error');
+                return;
             }
             
             try {
-                showMessage('info', 'Menyimpan ke Google Sheets...');
-                
-                const reportText = document.getElementById('output').value;
-                const timeSelect = document.getElementById('reportTime');
-                const timeValue = timeSelect.value;
-                const reportTime = timeValue === 'pagi' ? '04.00' : 
-                                  timeValue === 'sore' ? '16.00' : 
-                                  timeSelect.dataset.custom || '00.00';
+                showMessage('⏳ Menyimpan ke cloud...', 'info');
                 
                 const formData = {
                     action: 'save',
                     apiKey: API_KEY,
-                    timestamp: new Date().toISOString(),
                     reportDate: document.getElementById('reportDate').value,
-                    reportTime: reportTime,
+                    reportTime: document.getElementById('reportTime').value,
                     haljol: document.getElementById('haljol').value,
                     topDspp: document.getElementById('topDspp').value,
                     nyata: document.getElementById('nyata').value,
                     kurang: document.getElementById('kurang').value,
                     siapOps: document.getElementById('siapOps').value,
                     keterangan: document.getElementById('keterangan').value,
-                    kegiatanDanramil: collectKegiatanData('danramil').join(' || '),
-                    kegiatanKoramil: collectKegiatanData('koramil').join(' || '),
-                    kegiatanBabinsa: collectKegiatanData('babinsa').join(' || '),
-                    fullReport: reportText,
-                    source: 'Koramil PWA Web App',
-                    username: 'Operator'
+                    kegiatanDanramil: getKegiatanText('danramil'),
+                    kegiatanKoramil: getKegiatanText('koramil'),
+                    kegiatanBabinsa: getKegiatanText('babinsa'),
+                    fullReport: reportText
                 };
                 
                 const response = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
                 
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.success) {
-                        showMessage('success', '✅ Data berhasil disimpan ke Google Sheets<br>ID: ' + result.reportId);
-                        return true;
-                    } else {
-                        throw new Error(result.error || 'Gagal menyimpan ke cloud');
-                    }
-                } else {
-                    throw new Error('Network error saat menyimpan ke cloud');
-                }
-            } catch (error) {
-                console.error('Cloud save error:', error);
-                showMessage('error', '❌ Gagal menyimpan ke cloud. Silakan coba lagi.');
-                return false;
-            }
-        }
-        
-        async function sendCombinedReport() {
-            const errors = validateForm();
-            if (errors.length > 0) {
-                showMessage('error', 'Perbaiki kesalahan sebelum mengirim:<br>' + errors.join('<br>'));
-                return;
-            }
-            
-            try {
-                const saved = await saveToCloudOnly();
+                const result = await response.json();
                 
-                if (saved) {
-                    sendToWhatsApp();
-                    showMessage('success', '✅ Laporan berhasil dikirim dan disimpan!');
-                } else {
-                    showMessage('warning', 'Gagal menyimpan ke cloud, lanjut ke WhatsApp...');
-                    sendToWhatsApp();
-                }
-                
-            } catch (error) {
-                showMessage('error', '❌ Terjadi kesalahan: ' + error.message);
-            }
-        }
-        
-        // ========== DRIVE FUNCTIONS ==========
-        async function uploadTxtToDrive() {
-            const reportText = document.getElementById('output').value;
-            if (!reportText.trim()) {
-                showMessage('error', 'Tidak ada laporan untuk disimpan ke Drive');
-                return false;
-            }
-            
-            try {
-                showMessage('info', 'Menyimpan file TXT ke Google Drive...');
-                
-                const date = new Date(document.getElementById('reportDate').value);
-                const timeSelect = document.getElementById('reportTime');
-                const timeValue = timeSelect.value;
-                const dateStr = date.toISOString().split('T')[0].replace(/-/g, '');
-                const timeStr = timeValue === 'pagi' ? '0400' : 
-                              timeValue === 'sore' ? '1600' : 
-                              'custom';
-                const filename = `LAPORAN_KORAMIL_${dateStr}_${timeStr}.txt`;
-                
-                const formData = {
-                    action: 'uploadTxtToDrive',
-                    apiKey: API_KEY,
-                    filename: filename,
-                    content: reportText,
-                    reportDate: document.getElementById('reportDate').value,
-                    reportTime: timeValue === 'pagi' ? '04.00' : 
-                               timeValue === 'sore' ? '16.00' : 
-                               timeSelect.dataset.custom || '00.00',
-                    timestamp: new Date().toISOString(),
-                    source: 'Koramil PWA Web App'
-                };
-                
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.success) {
-                        showMessage('success', `✅ File TXT berhasil disimpan ke Drive<br>File: ${filename}`);
-                        return true;
-                    } else {
-                        throw new Error(result.error || 'Gagal menyimpan ke Drive');
-                    }
-                } else {
-                    throw new Error('Network error saat menyimpan ke Drive');
-                }
-            } catch (error) {
-                console.error('Drive save error:', error);
-                showMessage('error', '❌ Gagal menyimpan ke Drive. Silakan coba lagi.');
-                return false;
-            }
-        }
-        
-        // ========== CLOUD DATA LOADING ==========
-        async function loadLastCloudData() {
-            try {
-                showMessage('info', 'Mengambil data terakhir dari cloud...');
-                
-                const url = `${GOOGLE_SCRIPT_URL}?action=last&apiKey=${encodeURIComponent(API_KEY)}`;
-                
-                const response = await fetch(url);
-                
-                if (response.ok) {
-                    const result = await response.json();
+                if (result.success) {
+                    showMessage('✅ Data berhasil disimpan ke Google Sheets', 'success');
                     
-                    if (result.success && result.data) {
-                        fillFormWithCloudData(result.data);
-                        showMessage('success', '✅ Data terakhir berhasil dimuat dari cloud!');
-                    } else {
-                        showMessage('warning', result.error || 'Tidak ada data terakhir di cloud');
+                    // Also save to Drive
+                    const date = document.getElementById('reportDate').value.replace(/-/g, '');
+                    const time = document.getElementById('reportTime').value.replace('.', '');
+                    const filename = `LAPORAN_KORAMIL_${date}_${time}.txt`;
+                    
+                    const driveData = {
+                        action: 'uploadtxttodrive',
+                        apiKey: API_KEY,
+                        filename: filename,
+                        content: reportText
+                    };
+                    
+                    const driveResponse = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(driveData)
+                    });
+                    
+                    const driveResult = await driveResponse.json();
+                    if (driveResult.success) {
+                        showMessage('✅ Juga disimpan ke Google Drive', 'success');
                     }
+                    
                 } else {
-                    showMessage('error', 'Gagal mengambil data: ' + response.status);
+                    showMessage('❌ Gagal: ' + result.error, 'error');
                 }
+                
             } catch (error) {
-                console.error('Error loading last cloud data:', error);
-                showMessage('error', '❌ Gagal memuat data terakhir dari cloud: ' + error.message);
+                showMessage('❌ Error: ' + error.message, 'error');
             }
         }
         
-        function fillFormWithCloudData(data) {
-            if (data.reportDate) document.getElementById('reportDate').value = data.reportDate;
-            
-            if (data.reportTime) {
-                if (data.reportTime === '04.00') {
-                    document.getElementById('reportTime').value = 'pagi';
-                } else if (data.reportTime === '16.00') {
-                    document.getElementById('reportTime').value = 'sore';
-                } else {
-                    document.getElementById('reportTime').value = 'custom';
-                    document.getElementById('reportTime').dataset.custom = data.reportTime;
-                    document.getElementById('customTimeContainer').style.display = 'block';
-                    document.getElementById('customTime').value = data.reportTime.replace('.', ':');
-                }
-            }
-            
-            if (data.haljol) document.getElementById('haljol').value = data.haljol;
-            if (data.topDspp) document.getElementById('topDspp').value = data.topDspp;
-            if (data.nyata) document.getElementById('nyata').value = data.nyata;
-            if (data.kurang) document.getElementById('kurang').value = data.kurang;
-            if (data.siapOps) document.getElementById('siapOps').value = data.siapOps;
-            if (data.keterangan) document.getElementById('keterangan').value = data.keterangan;
-            
-            // Load kegiatan
-            if (data.kegiatanDanramil) {
-                const danramilContainer = document.getElementById('danramil-container');
-                danramilContainer.innerHTML = '';
-                
-                const danramilItems = data.kegiatanDanramil.split(' || ').filter(item => item.trim());
-                danramilItems.forEach((item, i) => {
-                    if (i === 0) {
-                        addInitialKegiatanItem('danramil');
-                        const textarea = document.getElementById('danramil-0');
-                        if (textarea) {
-                            textarea.value = item.trim();
-                        }
-                    } else {
-                        addKegiatanItem('danramil');
-                        const textarea = document.getElementById(`danramil-${i}`);
-                        if (textarea) {
-                            textarea.value = item.trim();
-                        }
-                    }
-                });
-            } else {
-                addInitialKegiatanItem('danramil');
-            }
-            
-            if (data.kegiatanKoramil) {
-                const koramilContainer = document.getElementById('koramil-container');
-                koramilContainer.innerHTML = '';
-                
-                const koramilItems = data.kegiatanKoramil.split(' || ').filter(item => item.trim());
-                koramilItems.forEach((item, i) => {
-                    if (i === 0) {
-                        addInitialKegiatanItem('koramil');
-                        const textarea = document.getElementById('koramil-0');
-                        if (textarea) {
-                            textarea.value = item.trim();
-                        }
-                    } else {
-                        addKegiatanItem('koramil');
-                        const textarea = document.getElementById(`koramil-${i}`);
-                        if (textarea) {
-                            textarea.value = item.trim();
-                        }
-                    }
-                });
-            } else {
-                addInitialKegiatanItem('koramil');
-            }
-            
-            if (data.kegiatanBabinsa) {
-                const babinsaContainer = document.getElementById('babinsa-container');
-                babinsaContainer.innerHTML = '';
-                
-                const babinsaItems = data.kegiatanBabinsa.split(' || ').filter(item => item.trim());
-                babinsaItems.forEach((item, i) => {
-                    if (i === 0) {
-                        addInitialKegiatanItem('babinsa');
-                        const textarea = document.getElementById('babinsa-0');
-                        if (textarea) {
-                            textarea.value = item.trim();
-                        }
-                    } else {
-                        addKegiatanItem('babinsa');
-                        const textarea = document.getElementById(`babinsa-${i}`);
-                        if (textarea) {
-                            textarea.value = item.trim();
-                        }
-                    }
-                });
-            } else {
-                addInitialKegiatanItem('babinsa');
-            }
-            
-            setTimeout(() => {
-                document.querySelectorAll('.auto-resize').forEach(textarea => {
-                    autoResize(textarea);
-                });
-            }, 100);
-            
-            updateKurangFromKeterangan();
-            generateReport();
+        // GET KEGIATAN TEXT
+        function getKegiatanText(type) {
+            const container = document.getElementById(`${type}-container`);
+            const textareas = container.querySelectorAll('textarea');
+            const items = [];
+            textareas.forEach(ta => {
+                if (ta.value.trim()) items.push(ta.value.trim());
+            });
+            return items.join(' | ');
         }
         
-        // ========== OTHER FUNCTIONS ==========
+        // SEND TO WHATSAPP
         function sendToWhatsApp() {
-            const reportText = document.getElementById('output').value;
-            if (!reportText.trim()) {
-                showMessage('error', 'Tidak ada laporan untuk dikirim');
+            const reportText = document.getElementById('output').textContent;
+            if (!reportText || reportText === 'Laporan akan muncul di sini...') {
+                showMessage('❌ Buat laporan dulu', 'error');
                 return;
             }
             
             const encodedText = encodeURIComponent(reportText);
-            const whatsappUrl = `https://wa.me/?text=${encodedText}`;
-            
-            window.open(whatsappUrl, '_blank');
-            showMessage('info', 'Membuka WhatsApp...');
+            window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+            showMessage('📱 Membuka WhatsApp...', 'info');
         }
         
+        // EXPORT TO TXT
         function exportToTxt() {
-            const reportText = document.getElementById('output').value;
-            if (!reportText.trim()) {
-                showMessage('error', 'Tidak ada laporan untuk diunduh');
+            const reportText = document.getElementById('output').textContent;
+            if (!reportText || reportText === 'Laporan akan muncul di sini...') {
+                showMessage('❌ Buat laporan dulu', 'error');
                 return;
             }
             
-            const date = new Date(document.getElementById('reportDate').value);
-            const timeSelect = document.getElementById('reportTime');
-            const timeValue = timeSelect.value;
-            const dateStr = date.toISOString().split('T')[0].replace(/-/g, '');
-            const timeStr = timeValue === 'pagi' ? '0400' : 
-                          timeValue === 'sore' ? '1600' : 
-                          'custom';
+            const date = document.getElementById('reportDate').value.replace(/-/g, '');
+            const time = document.getElementById('reportTime').value.replace('.', '');
+            const filename = `LAPORAN_KORAMIL_${date}_${time}.txt`;
             
-            const filename = `LAPORAN_KORAMIL_${dateStr}_${timeStr}.txt`;
             const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1652,46 +429,55 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            showMessage('success', 'File TXT berhasil diunduh');
+            showMessage('✅ File TXT berhasil diunduh', 'success');
         }
         
+        // RESET FORM
         function resetForm() {
-            if (confirm('Reset form? Semua data akan hilang.')) {
+            if (confirm('Reset form? Data akan hilang.')) {
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('reportDate').value = today;
-                document.getElementById('reportTime').value = 'pagi';
+                document.getElementById('reportTime').value = '04.00';
                 document.getElementById('haljol').value = 'Nihil';
                 document.getElementById('topDspp').value = '25';
                 document.getElementById('nyata').value = '19';
                 document.getElementById('kurang').value = '0';
                 document.getElementById('keterangan').value = '-DD : 0\n-BP : 0\n-Sakit : 0\n-Ijin : 0\n-Cuti : 0\n-Dinas Luar : 0';
                 
-                kegiatanTypes.forEach(type => {
+                // Reset kegiatan
+                ['danramil', 'koramil', 'babinsa'].forEach(type => {
                     const container = document.getElementById(`${type}-container`);
+                    const firstTextarea = container.querySelector('textarea');
                     container.innerHTML = '';
-                    addInitialKegiatanItem(type);
+                    const newTextarea = document.createElement('textarea');
+                    newTextarea.placeholder = `Kegiatan ${type}...`;
+                    newTextarea.oninput = generateReport;
+                    
+                    if (type === 'koramil') {
+                        newTextarea.value = '2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.';
+                    } else if (type === 'danramil') {
+                        newTextarea.value = 'Melaksanakan monitoring perkembangan situasi dan kondisi wilayah Kecamatan Sukasada Kabupaten Buleleng.';
+                    } else if (type === 'babinsa') {
+                        newTextarea.value = 'Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.';
+                    }
+                    
+                    container.appendChild(newTextarea);
                 });
                 
-                setTimeout(() => {
-                    document.getElementById('koramil-0').value = '2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.';
-                    document.getElementById('danramil-0').value = 'Melaksanakan monitoring perkembangan situasi dan kondisi wilayah Kecamatan Sukasada Kabupaten Buleleng.';
-                    document.getElementById('babinsa-0').value = 'Melaksanakan pemantauan situasi wilayah desa binaan masing-masing.';
-                    
-                    document.querySelectorAll('.auto-resize').forEach(textarea => {
-                        autoResize(textarea);
-                    });
-                }, 100);
-                
-                calculateSiapOps();
-                updatePeriodeInfo();
                 generateReport();
-                showMessage('info', 'Form telah direset');
+                showMessage('🔄 Form telah direset', 'info');
             }
         }
         
-        // ========== INITIALIZATION ==========
-        window.addEventListener('DOMContentLoaded', initForm);
-        
+        // SHOW MESSAGE
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = 'message ' + type;
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 5000);
+        }
     </script>
 </body>
 </html>
