@@ -951,8 +951,8 @@
                     </div>
                     <div>
                         <select id="reportTime" onchange="autoGenerateReport(); updatePeriodeInfo()">
-                            <option value="04.00">04.00 WITA</option>
-                            <option value="16.00">16.00 WITA</option>
+                            <option value="pagi">Pagi (04.00 WITA)</option>
+                            <option value="sore">Sore (16.00 WITA)</option>
                             <option value="custom">Custom</option>
                         </select>
                     </div>
@@ -962,8 +962,8 @@
                 </div>
                 <div class="periode-info" id="periodeInfo" style="display: none;">
                     <strong>Periode Laporan:</strong><br>
-                    • 04.00 WITA: Periode Pagi<br>
-                    • 16.00 WITA: Periode Sore
+                    • Pagi 04.00 WITA: Laporan situasi pagi<br>
+                    • Sore 16.00 WITA: Laporan situasi sore (04.00-16.00 WITA)
                 </div>
                 <button class="toggle-section" onclick="toggleElement('periodeInfo')">📌 Info Periode</button>
             </div>
@@ -1233,6 +1233,7 @@
         function initForm() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('reportDate').value = today;
+            document.getElementById('reportTime').value = 'pagi';
             
             // Initialize kegiatan containers
             kegiatanTypes.forEach(type => {
@@ -1490,19 +1491,15 @@
             const reportDate = new Date(dateInput);
             const dateInfo = formatDateIndonesia(reportDate);
             
-            if (timeValue === '04.00') {
-                const startDate = new Date(reportDate);
-                startDate.setDate(startDate.getDate() - 1);
-                startDate.setHours(16, 0, 0);
-                
-                const startInfo = formatDateIndonesia(startDate);
-                
-                return `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${startInfo.hari} Tanggal ${startInfo.tanggal} ${startInfo.bulan} ${startInfo.tahun} Pukul 16.00 Wita s.d Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita dalam keadaan Aman dan Kondusif`;
-            } else if (timeValue === '16.00') {
-                return `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita s.d Pukul 16.00 Wita dalam keadaan Aman dan Kondusif`;
+            if (timeValue === 'pagi') {
+                // Format Pagi: Hari ini Pukul 04.00 WITA
+                return `Pagi :\n-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita dalam keadaan Aman dan Kondusif`;
+            } else if (timeValue === 'sore') {
+                // Format Sore: Hari ini Pukul 04.00 s.d 16.00 WITA
+                return `Sore :\n-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita s.d Pukul 16.00 Wita dalam keadaan Aman dan Kondusif`;
             } else if (timeValue === 'custom') {
                 const customTime = timeSelect.dataset.custom || '00.00';
-                return `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${customTime} Wita dalam keadaan Aman dan Kondusif`;
+                return `Custom ${customTime} WITA :\n-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${customTime} Wita dalam keadaan Aman dan Kondusif`;
             }
             return '';
         }
@@ -1546,13 +1543,16 @@
             return items;
         }
         
-        // ========== REPORT GENERATION ==========
+        // ========== REPORT GENERATION (FIXED FORMAT) ==========
         function generateReport() {
             if (!autoGenerateEnabled) return;
             try {
                 const reportDate = new Date(document.getElementById('reportDate').value);
                 const timeSelect = document.getElementById('reportTime');
-                const reportTime = timeSelect.value === 'custom' ? timeSelect.dataset.custom : timeSelect.value;
+                const timeValue = timeSelect.value;
+                const reportTime = timeValue === 'pagi' ? '04.00' : 
+                                  timeValue === 'sore' ? '16.00' : 
+                                  timeSelect.dataset.custom || '00.00';
                 
                 const haljol = document.getElementById('haljol').value || 'Nihil';
                 const topDspp = document.getElementById('topDspp').value;
@@ -1563,17 +1563,28 @@
                 const dateInfo = formatDateIndonesia(reportDate);
                 const situasiText = generateSituasiText();
                 
-                let waktuSalam = 'Pagi';
-                if (reportTime === '04.00' || (reportTime && parseInt(reportTime.split('.')[0]) >= 12)) {
-                    waktuSalam = 'Pagi';
-                }
+                // Tentukan salam berdasarkan waktu
+                let waktuSalam = timeValue === 'pagi' ? 'Pagi' : 'Sore';
                 
                 let report = `Perihal : Laporan perkembangan situasi Koramil 1609-05/Sukasada Hari ${dateInfo.hari} Tanggal, ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun}.\n\n`;
                 report += `Yth. Komandan Kodim 1609/Buleleng.\n`;
                 report += `Cc. Kasdim 1609/Buleleng.\n\n`;
                 report += `Selamat ${waktuSalam}, Mohon ijin melaporkan Situasi Satuan Koramil 1609-05/Sukasada Hari ${dateInfo.hari} Tanggal, ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${reportTime} Wita dalam rangka kegiatan Pembinaan Kekuatan Satuan Bulan ${dateInfo.bulan} tahun ${dateInfo.tahun} sebagai berikut :\n\n`;
                 report += `*I. Situasi dan Haljol :*\n\n`;
-                report += `${situasiText}\n\n`;
+                
+                // Format situasi sesuai permintaan
+                if (timeValue === 'pagi') {
+                    report += `Pagi :\n`;
+                    report += `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita dalam keadaan Aman dan Kondusif\n\n`;
+                } else if (timeValue === 'sore') {
+                    report += `Sore :\n`;
+                    report += `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita s.d Pukul 16.00 Wita dalam keadaan Aman dan Kondusif\n\n`;
+                } else {
+                    const customTime = timeSelect.dataset.custom || '00.00';
+                    report += `Custom ${customTime} WITA :\n`;
+                    report += `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${customTime} Wita dalam keadaan Aman dan Kondusif\n\n`;
+                }
+                
                 report += `-Haljol : ${haljol}.\n\n`;
                 report += `*II. Data Siap Ops :*\n\n`;
                 report += `1. Top DSPP : ${topDspp}\n`;
@@ -1720,12 +1731,18 @@
                 showMessage('info', 'Menyimpan ke Google Sheets...');
                 
                 const reportText = document.getElementById('output').value;
+                const timeSelect = document.getElementById('reportTime');
+                const timeValue = timeSelect.value;
+                const reportTime = timeValue === 'pagi' ? '04.00' : 
+                                  timeValue === 'sore' ? '16.00' : 
+                                  timeSelect.dataset.custom || '00.00';
+                
                 const formData = {
                     action: 'save',
                     apiKey: API_KEY,
                     timestamp: new Date().toISOString(),
                     reportDate: document.getElementById('reportDate').value,
-                    reportTime: document.getElementById('reportTime').value,
+                    reportTime: reportTime, // Kirim waktu dalam format 04.00/16.00
                     haljol: document.getElementById('haljol').value,
                     topDspp: document.getElementById('topDspp').value,
                     nyata: document.getElementById('nyata').value,
@@ -1873,13 +1890,10 @@
             showMessage('info', 'Memuat daftar file TXT dari Google Drive...');
             
             try {
-                // PERBAIKAN: Kirim data dengan format yang benar
                 const formData = {
                     action: 'listTxtFiles',
                     apiKey: API_KEY
                 };
-                
-                console.log('List files data:', formData);
                 
                 const response = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
@@ -1964,19 +1978,23 @@
                 
                 // Generate filename
                 const date = new Date(document.getElementById('reportDate').value);
-                const time = document.getElementById('reportTime').value;
+                const timeSelect = document.getElementById('reportTime');
+                const timeValue = timeSelect.value;
                 const dateStr = date.toISOString().split('T')[0].replace(/-/g, '');
-                const timeStr = time.replace(/\./g, '').replace(' ', '');
+                const timeStr = timeValue === 'pagi' ? '0400' : 
+                              timeValue === 'sore' ? '1600' : 
+                              'custom';
                 const filename = `LAPORAN_KORAMIL_${dateStr}_${timeStr}.txt`;
                 
-                // PERBAIKAN: Pastikan semua data dikirim dengan benar
                 const formData = {
                     action: 'uploadTxtToDrive',
                     apiKey: API_KEY,
                     filename: filename,
                     content: reportText,
                     reportDate: document.getElementById('reportDate').value,
-                    reportTime: document.getElementById('reportTime').value,
+                    reportTime: timeValue === 'pagi' ? '04.00' : 
+                               timeValue === 'sore' ? '16.00' : 
+                               timeSelect.dataset.custom || '00.00',
                     timestamp: new Date().toISOString(),
                     source: 'Koramil PWA Web App'
                 };
@@ -2200,44 +2218,120 @@
                     }
                 }
                 
-                // Extract report time
-                const timeMatch = reportText.match(/Pukul (\d+\.\d+) Wita/);
-                if (timeMatch) {
-                    const time = timeMatch[1];
-                    if (time === '04.00' || time === '16.00') {
-                        document.getElementById('reportTime').value = time;
-                    } else {
-                        document.getElementById('reportTime').value = 'custom';
-                        document.getElementById('reportTime').dataset.custom = time;
-                        document.getElementById('customTimeContainer').style.display = 'block';
-                        document.getElementById('customTime').value = time.replace('.', ':');
+                // Cek format situasi
+                let timeValue = 'pagi'; // default
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].includes('Pagi :')) {
+                        timeValue = 'pagi';
+                        break;
+                    } else if (lines[i].includes('Sore :')) {
+                        timeValue = 'sore';
+                        break;
+                    } else if (lines[i].includes('Custom')) {
+                        timeValue = 'custom';
+                        // Extract custom time
+                        const timeMatch = lines[i].match(/Custom (\d+\.\d+)/);
+                        if (timeMatch) {
+                            document.getElementById('reportTime').value = 'custom';
+                            document.getElementById('reportTime').dataset.custom = timeMatch[1];
+                            document.getElementById('customTimeContainer').style.display = 'block';
+                            document.getElementById('customTime').value = timeMatch[1].replace('.', ':');
+                        }
+                        break;
                     }
                 }
                 
+                if (timeValue !== 'custom') {
+                    document.getElementById('reportTime').value = timeValue;
+                }
+                
                 // Extract haljol
-                const haljolMatch = reportText.match(/-Haljol : (.+)\./);
-                if (haljolMatch) {
-                    document.getElementById('haljol').value = haljolMatch[1];
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].includes('-Haljol :')) {
+                        const haljolMatch = lines[i].match(/-Haljol : (.+)\./);
+                        if (haljolMatch) {
+                            document.getElementById('haljol').value = haljolMatch[1];
+                        }
+                        break;
+                    }
                 }
                 
                 // Extract data siap ops
-                const topDsppMatch = reportText.match(/1\. Top DSPP : (\d+)/);
-                const nyataMatch = reportText.match(/2\. Nyata : (\d+)/);
-                const kurangMatch = reportText.match(/3\. Kurang : (\d+)/);
-                const siapOpsMatch = reportText.match(/4\. Siap Ops : (\d+)/);
-                
-                if (topDsppMatch) document.getElementById('topDspp').value = topDsppMatch[1];
-                if (nyataMatch) document.getElementById('nyata').value = nyataMatch[1];
-                if (kurangMatch) document.getElementById('kurang').value = kurangMatch[1];
-                if (siapOpsMatch) document.getElementById('siapOps').value = siapOpsMatch[1];
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].includes('1. Top DSPP :')) {
+                        const topDsppMatch = lines[i].match(/1\. Top DSPP : (\d+)/);
+                        if (topDsppMatch) document.getElementById('topDspp').value = topDsppMatch[1];
+                    }
+                    if (lines[i].includes('2. Nyata :')) {
+                        const nyataMatch = lines[i].match(/2\. Nyata : (\d+)/);
+                        if (nyataMatch) document.getElementById('nyata').value = nyataMatch[1];
+                    }
+                    if (lines[i].includes('3. Kurang :')) {
+                        const kurangMatch = lines[i].match(/3\. Kurang : (\d+)/);
+                        if (kurangMatch) document.getElementById('kurang').value = kurangMatch[1];
+                    }
+                    if (lines[i].includes('4. Siap Ops :')) {
+                        const siapOpsMatch = lines[i].match(/4\. Siap Ops : (\d+)/);
+                        if (siapOpsMatch) document.getElementById('siapOps').value = siapOpsMatch[1];
+                    }
+                }
                 
                 // Extract keterangan
-                const keteranganIndex = reportText.indexOf('5. Keterangan :');
-                const kegiatanIndex = reportText.indexOf('III. Kegiatan :');
+                let keteranganStart = -1;
+                let keteranganEnd = -1;
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].includes('5. Keterangan :')) {
+                        keteranganStart = i + 1;
+                    }
+                    if (keteranganStart !== -1 && lines[i].includes('*III. Kegiatan :')) {
+                        keteranganEnd = i;
+                        break;
+                    }
+                }
                 
-                if (keteranganIndex !== -1 && kegiatanIndex !== -1) {
-                    const keteranganText = reportText.substring(keteranganIndex + 15, kegiatanIndex).trim();
-                    document.getElementById('keterangan').value = keteranganText;
+                if (keteranganStart !== -1 && keteranganEnd !== -1) {
+                    const keteranganLines = lines.slice(keteranganStart, keteranganEnd);
+                    document.getElementById('keterangan').value = keteranganLines.join('\n').trim();
+                }
+                
+                // Extract kegiatan
+                let currentKegiatanType = '';
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].includes('*1. Kegiatan Danramil :')) {
+                        currentKegiatanType = 'danramil';
+                        // Kosongkan container
+                        document.getElementById('danramil-container').innerHTML = '';
+                    } else if (lines[i].includes('*2. Kegiatan Koramil :')) {
+                        currentKegiatanType = 'koramil';
+                        document.getElementById('koramil-container').innerHTML = '';
+                    } else if (lines[i].includes('*3. Kegiatan Babinsa :')) {
+                        currentKegiatanType = 'babinsa';
+                        document.getElementById('babinsa-container').innerHTML = '';
+                    } else if (currentKegiatanType && lines[i].trim().startsWith('-')) {
+                        const kegiatanText = lines[i].trim().substring(1).trim();
+                        if (kegiatanText) {
+                            // Tambahkan kegiatan item
+                            const container = document.getElementById(`${currentKegiatanType}-container`);
+                            const itemCount = container.querySelectorAll('.kegiatan-item').length;
+                            const itemId = `${currentKegiatanType}-${itemCount}`;
+                            
+                            if (itemCount === 0) {
+                                // Tambahkan item awal
+                                addInitialKegiatanItem(currentKegiatanType);
+                                const textarea = document.getElementById(`${currentKegiatanType}-0`);
+                                if (textarea) {
+                                    textarea.value = kegiatanText;
+                                }
+                            } else {
+                                // Tambahkan item baru
+                                addKegiatanItem(currentKegiatanType);
+                                const textarea = document.getElementById(itemId);
+                                if (textarea) {
+                                    textarea.value = kegiatanText;
+                                }
+                            }
+                        }
+                    }
                 }
                 
                 showMessage('success', '✅ Data berhasil diekstrak dari laporan');
@@ -2379,11 +2473,16 @@
             if (data.reportDate) document.getElementById('reportDate').value = data.reportDate;
             
             if (data.reportTime) {
-                document.getElementById('reportTime').value = data.reportTime;
-                if (data.reportTime === 'custom' && data.customTime) {
-                    document.getElementById('reportTime').dataset.custom = data.customTime;
+                // Konversi format waktu dari cloud ke pilihan dropdown
+                if (data.reportTime === '04.00') {
+                    document.getElementById('reportTime').value = 'pagi';
+                } else if (data.reportTime === '16.00') {
+                    document.getElementById('reportTime').value = 'sore';
+                } else {
+                    document.getElementById('reportTime').value = 'custom';
+                    document.getElementById('reportTime').dataset.custom = data.reportTime;
                     document.getElementById('customTimeContainer').style.display = 'block';
-                    document.getElementById('customTime').value = data.customTime.replace('.', ':');
+                    document.getElementById('customTime').value = data.reportTime.replace('.', ':');
                 }
             }
             
@@ -2401,24 +2500,22 @@
                 
                 const danramilItems = data.kegiatanDanramil.split(' || ').filter(item => item.trim());
                 danramilItems.forEach((item, i) => {
-                    const itemId = `danramil-${i}`;
-                    const itemHTML = `
-                        <div class="kegiatan-item" id="${itemId}-container">
-                            <div class="item-controls">
-                                <button type="button" class="item-control-btn item-add-btn" onclick="addKegiatanItem('danramil')">+</button>
-                                <button type="button" class="item-control-btn item-remove-btn" onclick="removeKegiatanItem('${itemId}')">-</button>
-                            </div>
-                            <textarea class="kegiatan-textarea-rounded auto-resize" 
-                                      id="${itemId}"
-                                      oninput="autoResize(this); autoGenerateReport()">${item.trim()}</textarea>
-                        </div>
-                    `;
-                    danramilContainer.innerHTML += itemHTML;
+                    if (i === 0) {
+                        addInitialKegiatanItem('danramil');
+                        const textarea = document.getElementById('danramil-0');
+                        if (textarea) {
+                            textarea.value = item.trim();
+                        }
+                    } else {
+                        addKegiatanItem('danramil');
+                        const textarea = document.getElementById(`danramil-${i}`);
+                        if (textarea) {
+                            textarea.value = item.trim();
+                        }
+                    }
                 });
-                
-                if (danramilItems.length === 0) {
-                    addInitialKegiatanItem('danramil');
-                }
+            } else {
+                addInitialKegiatanItem('danramil');
             }
             
             if (data.kegiatanKoramil) {
@@ -2427,24 +2524,22 @@
                 
                 const koramilItems = data.kegiatanKoramil.split(' || ').filter(item => item.trim());
                 koramilItems.forEach((item, i) => {
-                    const itemId = `koramil-${i}`;
-                    const itemHTML = `
-                        <div class="kegiatan-item" id="${itemId}-container">
-                            <div class="item-controls">
-                                <button type="button" class="item-control-btn item-add-btn" onclick="addKegiatanItem('koramil')">+</button>
-                                <button type="button" class="item-control-btn item-remove-btn" onclick="removeKegiatanItem('${itemId}')">-</button>
-                            </div>
-                            <textarea class="kegiatan-textarea-rounded auto-resize" 
-                                      id="${itemId}"
-                                      oninput="autoResize(this); autoGenerateReport()">${item.trim()}</textarea>
-                        </div>
-                    `;
-                    koramilContainer.innerHTML += itemHTML;
+                    if (i === 0) {
+                        addInitialKegiatanItem('koramil');
+                        const textarea = document.getElementById('koramil-0');
+                        if (textarea) {
+                            textarea.value = item.trim();
+                        }
+                    } else {
+                        addKegiatanItem('koramil');
+                        const textarea = document.getElementById(`koramil-${i}`);
+                        if (textarea) {
+                            textarea.value = item.trim();
+                        }
+                    }
                 });
-                
-                if (koramilItems.length === 0) {
-                    addInitialKegiatanItem('koramil');
-                }
+            } else {
+                addInitialKegiatanItem('koramil');
             }
             
             if (data.kegiatanBabinsa) {
@@ -2453,24 +2548,22 @@
                 
                 const babinsaItems = data.kegiatanBabinsa.split(' || ').filter(item => item.trim());
                 babinsaItems.forEach((item, i) => {
-                    const itemId = `babinsa-${i}`;
-                    const itemHTML = `
-                        <div class="kegiatan-item" id="${itemId}-container">
-                            <div class="item-controls">
-                                <button type="button" class="item-control-btn item-add-btn" onclick="addKegiatanItem('babinsa')">+</button>
-                                <button type="button" class="item-control-btn item-remove-btn" onclick="removeKegiatanItem('${itemId}')">-</button>
-                            </div>
-                            <textarea class="kegiatan-textarea-rounded auto-resize" 
-                                      id="${itemId}"
-                                      oninput="autoResize(this); autoGenerateReport()">${item.trim()}</textarea>
-                        </div>
-                    `;
-                    babinsaContainer.innerHTML += itemHTML;
+                    if (i === 0) {
+                        addInitialKegiatanItem('babinsa');
+                        const textarea = document.getElementById('babinsa-0');
+                        if (textarea) {
+                            textarea.value = item.trim();
+                        }
+                    } else {
+                        addKegiatanItem('babinsa');
+                        const textarea = document.getElementById(`babinsa-${i}`);
+                        if (textarea) {
+                            textarea.value = item.trim();
+                        }
+                    }
                 });
-                
-                if (babinsaItems.length === 0) {
-                    addInitialKegiatanItem('babinsa');
-                }
+            } else {
+                addInitialKegiatanItem('babinsa');
             }
             
             setTimeout(() => {
@@ -2506,9 +2599,12 @@
             }
             
             const date = new Date(document.getElementById('reportDate').value);
-            const time = document.getElementById('reportTime').value;
+            const timeSelect = document.getElementById('reportTime');
+            const timeValue = timeSelect.value;
             const dateStr = date.toISOString().split('T')[0].replace(/-/g, '');
-            const timeStr = time.replace('.', '');
+            const timeStr = timeValue === 'pagi' ? '0400' : 
+                          timeValue === 'sore' ? '1600' : 
+                          'custom';
             
             const filename = `LAPORAN_KORAMIL_${dateStr}_${timeStr}.txt`;
             const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
@@ -2528,7 +2624,7 @@
             if (confirm('Reset form? Semua data akan hilang.')) {
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('reportDate').value = today;
-                document.getElementById('reportTime').value = '04.00';
+                document.getElementById('reportTime').value = 'pagi';
                 document.getElementById('haljol').value = 'Nihil';
                 document.getElementById('topDspp').value = '25';
                 document.getElementById('nyata').value = '19';
