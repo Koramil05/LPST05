@@ -72,28 +72,6 @@
             border: 1px solid #f5c6cb;
         }
         
-        .sync-status {
-            position: fixed;
-            top: 50px;
-            right: 15px;
-            padding: 6px 10px;
-            border-radius: 15px;
-            font-size: 11px;
-            z-index: 998;
-            background: white;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        
-        .synced {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-        
-        .unsynced {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
         /* ========== HEADER ========== */
         .header {
             text-align: center;
@@ -159,11 +137,6 @@
             justify-content: space-between;
         }
         
-        .section-controls {
-            display: flex;
-            gap: 8px;
-        }
-        
         /* ========== FORM INPUTS ========== */
         .input-group {
             margin-bottom: 20px;
@@ -191,7 +164,8 @@
         input[type="number"],
         input[type="date"],
         input[type="time"],
-        select {
+        select,
+        textarea {
             width: 100%;
             padding: 12px;
             border: 2px solid #e1e8ed;
@@ -211,13 +185,6 @@
         
         /* ========== TEXTAREA STYLES ========== */
         textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e8ed;
-            font-size: 13px;
-            background: white;
-            border-radius: 8px;
-            transition: all 0.3s;
             font-family: Arial, Helvetica, sans-serif;
             resize: vertical;
         }
@@ -290,7 +257,6 @@
         
         .data-item:focus-within {
             border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
         
         .data-label {
@@ -363,7 +329,6 @@
         .add-kegiatan-btn:hover {
             background: #219653;
             transform: scale(1.1);
-            box-shadow: 0 6px 12px rgba(39, 174, 96, 0.3);
         }
         
         .kegiatan-content {
@@ -485,16 +450,6 @@
             box-shadow: 0 12px 35px rgba(37, 211, 102, 0.4);
         }
         
-        .progress-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-        
         /* ========== ACTION BUTTONS GRID ========== */
         .action-buttons {
             display: grid;
@@ -525,8 +480,6 @@
         .whatsapp-btn { background: var(--whatsapp); color: white; }
         .export-btn { background: #6c757d; color: white; }
         .reset-btn { background: var(--danger); color: white; }
-        .print-btn { background: #17a2b8; color: white; }
-        .history-btn { background: #9b59b6; color: white; }
         .cloud-btn { background: var(--cloud); color: white; }
         .drive-btn { background: var(--drive); color: white; }
         
@@ -578,67 +531,6 @@
         
         .message-icon {
             font-size: 20px;
-        }
-        
-        /* ========== PROGRESS STEPS ========== */
-        .progress-steps {
-            display: none;
-            margin: 20px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border: 2px solid #e1e8ed;
-        }
-        
-        .step {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 12px;
-            border-radius: 8px;
-            background: white;
-        }
-        
-        .step-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 15px;
-            background: #eee;
-            color: #666;
-        }
-        
-        .step.active .step-icon {
-            background: var(--secondary);
-            color: white;
-        }
-        
-        .step.completed .step-icon {
-            background: var(--success);
-            color: white;
-        }
-        
-        .step.failed .step-icon {
-            background: var(--danger);
-            color: white;
-        }
-        
-        .step-info {
-            flex-grow: 1;
-        }
-        
-        .step-title {
-            font-weight: 600;
-            margin-bottom: 3px;
-        }
-        
-        .step-desc {
-            font-size: 12px;
-            color: #666;
         }
         
         /* ========== MODALS ========== */
@@ -694,86 +586,6 @@
             justify-content: flex-end;
         }
         
-        /* ========== TXT FILE ITEM ========== */
-        .txt-file-item {
-            border: 1px solid #e1e8ed;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            background: #f8f9fa;
-            transition: all 0.3s;
-        }
-        
-        .txt-file-item:hover {
-            border-color: var(--drive);
-            background: #e8f0fe;
-        }
-        
-        .txt-file-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        
-        .txt-file-name {
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 14px;
-        }
-        
-        .txt-file-date {
-            font-size: 12px;
-            color: #666;
-        }
-        
-        .txt-file-content {
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 10px;
-            max-height: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            background: white;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #eee;
-        }
-        
-        .txt-file-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .txt-action-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .load-btn {
-            background: var(--success);
-            color: white;
-        }
-        
-        .download-btn {
-            background: var(--drive);
-            color: white;
-        }
-        
-        .delete-btn {
-            background: var(--danger);
-            color: white;
-        }
-        
         /* ========== RESPONSIVE DESIGN ========== */
         @media (max-width: 768px) {
             body {
@@ -807,16 +619,6 @@
                 right: 5px;
                 top: 5px;
             }
-            
-            .txt-file-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-            
-            .txt-file-actions {
-                width: 100%;
-            }
         }
         
         @media (max-width: 480px) {
@@ -845,10 +647,6 @@
             .data-input {
                 padding: 5px 6px;
                 font-size: 12px;
-            }
-            
-            .action-buttons {
-                grid-template-columns: 1fr 1fr !important;
             }
         }
         
@@ -881,21 +679,6 @@
                 grid-template-columns: 1fr;
             }
         }
-        
-        /* ========== LOADING SPINNER ========== */
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
@@ -903,12 +686,6 @@
     <div id="connectionStatus" class="connection-status online">
         <span id="statusIcon">🌐</span>
         <span id="statusText">Online</span>
-    </div>
-    
-    <!-- ========== SYNC STATUS ========== -->
-    <div id="syncStatus" class="sync-status synced" style="display: none;">
-        <span id="syncIcon">🔄</span>
-        <span id="syncText">Data tersimpan</span>
     </div>
     
     <!-- ========== HEADER ========== -->
@@ -920,8 +697,7 @@
         <div style="margin-top: 10px; font-size: 12px; color: #7f8c8d;">
             <span>📱 PWA Web App</span> • 
             <span>☁️ Cloud Sync</span> • 
-            <span>📁 Drive TXT</span> • 
-            <span>🔄 Real-time Update</span>
+            <span>📁 Drive TXT</span>
         </div>
         <div id="cloudStatus" style="margin-top: 5px; font-size: 11px; color: var(--success);"></div>
     </div>
@@ -932,14 +708,6 @@
         <div class="form-container">
             <h3 class="section-title">
                 <span>📝 INPUT DATA LAPORAN</span>
-                <div class="section-controls">
-                    <button onclick="showLoadFromCloudDialog()" title="Panggil data dari Cloud" class="cloud-btn" style="border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer;">
-                        ☁️ Panggil Data
-                    </button>
-                    <button onclick="showTxtFilesModal()" title="File TXT di Drive" class="drive-btn" style="border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer;">
-                        📁 File TXT
-                    </button>
-                </div>
             </h3>
             
             <!-- Waktu Laporan -->
@@ -978,7 +746,7 @@
                 </div>
                 <div>
                     <input type="text" id="haljol" value="Nihil" 
-                           oninput="checkExcessSpaces('haljol'); autoGenerateReport()" placeholder="Haljol (contoh: Nihil)">
+                           oninput="autoGenerateReport()" placeholder="Haljol (contoh: Nihil)">
                 </div>
             </div>
             
@@ -1063,9 +831,6 @@
         <div class="preview-container">
             <h3 class="section-title">
                 <span>👁️ PREVIEW LAPORAN</span>
-                <div class="section-controls">
-                    <button onclick="toggleAutoGenerate()" id="autoToggle" title="Auto-generate" style="background: #27ae60; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;">⟳ ON</button>
-                </div>
             </h3>
             
             <!-- Messages -->
@@ -1075,59 +840,24 @@
             <textarea id="output" class="preview-textarea" placeholder="Laporan akan muncul di sini..."
                       oninput="autoResize(this)"></textarea>
             
-            <!-- Progress Steps -->
-            <div id="progressSteps" class="progress-steps" style="display: none;">
-                <div class="step" id="step1">
-                    <div class="step-icon">1</div>
-                    <div class="step-info">
-                        <div class="step-title">Validasi Data</div>
-                        <div class="step-desc">Memeriksa kelengkapan form</div>
-                    </div>
-                </div>
-                <div class="step" id="step2">
-                    <div class="step-icon">2</div>
-                    <div class="step-info">
-                        <div class="step-title">Menyimpan ke Cloud</div>
-                        <div class="step-desc">Mengirim ke Google Sheets</div>
-                    </div>
-                </div>
-                <div class="step" id="step3">
-                    <div class="step-icon">3</div>
-                    <div class="step-info">
-                        <div class="step-title">Menyiapkan WhatsApp</div>
-                        <div class="step-desc">Membuka aplikasi WhatsApp</div>
-                    </div>
-                </div>
-                <div class="step" id="step4">
-                    <div class="step-icon">4</div>
-                    <div class="step-info">
-                        <div class="step-title">Download File</div>
-                        <div class="step-desc">Menyimpan ke file TXT</div>
-                    </div>
-                </div>
-            </div>
-            <button class="toggle-section" onclick="toggleElement('progressSteps')">📊 Tampilkan Progress</button>
-            
             <!-- ========== DUAL BUTTON CONTAINER ========== -->
             <div class="dual-button-container">
-                <!-- Tombol Simpan (CLOUD ONLY) -->
+                <!-- Tombol Simpan ke Cloud -->
                 <button class="save-cloud-btn" onclick="saveToCloudOnly()">
                     <div class="btn-icons">
                         <span>💾</span>
                         <span>☁️</span>
                     </div>
                     SIMPAN KE CLOUD
-                    <div class="progress-bar" id="saveCloudProgress"></div>
                 </button>
                 
-                <!-- Tombol Kirim (CLOUD + WhatsApp) -->
+                <!-- Tombol Kirim Laporan -->
                 <button class="send-report-btn" onclick="sendCombinedReport()">
                     <div class="btn-icons">
                         <span>📱</span>
                         <span>📤</span>
                     </div>
                     KIRIM LAPORAN
-                    <div class="progress-bar" id="sendReportProgress"></div>
                 </button>
             </div>
             
@@ -1136,8 +866,8 @@
                 <button class="action-btn save-btn" onclick="saveToCloudOnly()">
                     <span>💾</span> Simpan
                 </button>
-                <button class="action-btn whatsapp-btn" onclick="sendCombinedReport()">
-                    <span>📱</span> Kirim
+                <button class="action-btn whatsapp-btn" onclick="sendToWhatsApp()">
+                    <span>📱</span> WhatsApp
                 </button>
                 <button class="action-btn export-btn" onclick="exportToTxt()">
                     <span>📥</span> Export
@@ -1145,81 +875,16 @@
                 <button class="action-btn reset-btn" onclick="resetForm()">
                     <span>🔄</span> Reset
                 </button>
-                <button class="action-btn print-btn" onclick="printReport()">
-                    <span>🖨️</span> Print
-                </button>
-                <button class="action-btn cloud-btn" onclick="showLoadFromCloudDialog()">
+                <button class="action-btn cloud-btn" onclick="loadLastCloudData()">
                     <span>☁️</span> Panggil
                 </button>
-                <button class="action-btn drive-btn" onclick="showTxtFilesModal()">
-                    <span>📁</span> File TXT
+                <button class="action-btn drive-btn" onclick="uploadTxtToDrive()">
+                    <span>📁</span> Drive
                 </button>
             </div>
         </div>
     </div>
     
-    <!-- ========== MODAL CLOUD LOAD ========== -->
-    <div id="cloudLoadModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 style="margin: 0;">☁️ Panggil Data dari Cloud</h3>
-                <button onclick="closeModal('cloudLoadModal')" style="background: none; border: none; font-size: 20px; cursor: pointer;">×</button>
-            </div>
-            <div class="modal-body">
-                <div id="cloudDataList">
-                    <p style="text-align: center; color: #666; padding: 20px;">Memuat data dari cloud...</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button onclick="loadLastCloudData()" style="background: var(--cloud); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
-                    📂 Panggil Data Terakhir
-                </button>
-                <button onclick="closeModal('cloudLoadModal')" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Tutup</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- ========== MODAL TXT FILES ========== -->
-    <div id="txtFilesModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 style="margin: 0;">📁 File TXT di Google Drive</h3>
-                <button onclick="closeModal('txtFilesModal')" style="background: none; border: none; font-size: 20px; cursor: pointer;">×</button>
-            </div>
-            <div class="modal-body">
-                <div id="txtFilesList">
-                    <p style="text-align: center; color: #666; padding: 20px;">Memuat file dari Google Drive...</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button onclick="uploadTxtToDrive()" style="background: var(--drive); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                    <span>📤</span> Unggah File Baru
-                </button>
-                <button onclick="closeModal('txtFilesModal')" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Tutup</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- ========== MODAL VIEW TXT CONTENT ========== -->
-    <div id="viewTxtModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 style="margin: 0;" id="viewTxtTitle">📄 Isi File TXT</h3>
-                <button onclick="closeModal('viewTxtModal')" style="background: none; border: none; font-size: 20px; cursor: pointer;">×</button>
-            </div>
-            <div class="modal-body">
-                <textarea id="txtContentPreview" style="width: 100%; height: 400px; font-family: monospace; font-size: 13px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; resize: none;"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button onclick="loadToPreview()" style="background: var(--success); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
-                    📋 Muat ke Preview
-                </button>
-                <button onclick="closeModal('viewTxtModal')" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Tutup</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- ========== JAVASCRIPT ========== -->
     <script>
         // ========== GLOBAL VARIABLES ==========
         const kegiatanTypes = ['danramil', 'koramil', 'babinsa'];
@@ -1311,33 +976,9 @@
             }
         }
         
-        function updateSyncStatus(synced = true) {
-            const syncStatus = document.getElementById('syncStatus');
-            const syncIcon = document.getElementById('syncIcon');
-            const syncText = document.getElementById('syncText');
-            
-            if (synced) {
-                syncStatus.className = 'sync-status synced';
-                syncIcon.textContent = '✅';
-                syncText.textContent = 'Data tersimpan';
-            } else {
-                syncStatus.className = 'sync-status unsynced';
-                syncIcon.textContent = '🔄';
-                syncText.textContent = 'Menunggu sync';
-            }
-            
-            syncStatus.style.display = 'block';
-            setTimeout(() => {
-                syncStatus.style.display = 'none';
-            }, 3000);
-        }
-        
-        function showModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-        }
-        
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
         }
         
         // ========== KEGIATAN FUNCTIONS ==========
@@ -1410,18 +1051,6 @@
             }
         }
         
-        function toggleAutoGenerate() {
-            autoGenerateEnabled = !autoGenerateEnabled;
-            const button = document.getElementById('autoToggle');
-            button.textContent = autoGenerateEnabled ? '⟳ ON' : '⟳ OFF';
-            button.style.background = autoGenerateEnabled ? '#27ae60' : '#e74c3c';
-        }
-        
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = (textarea.scrollHeight) + 'px';
-        }
-        
         function calculateSiapOps() {
             const topDspp = parseInt(document.getElementById('topDspp').value) || 0;
             const nyata = parseInt(document.getElementById('nyata').value) || 0;
@@ -1473,13 +1102,6 @@
             }
         }
         
-        function checkExcessSpaces(fieldId) {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.value = field.value.replace(/\s+/g, ' ').trim();
-            }
-        }
-        
         // ========== DATE & TIME FUNCTIONS ==========
         function generateSituasiText() {
             const dateInput = document.getElementById('reportDate').value;
@@ -1492,10 +1114,8 @@
             const dateInfo = formatDateIndonesia(reportDate);
             
             if (timeValue === 'pagi') {
-                // Format Pagi: Hari ini Pukul 04.00 WITA
                 return `Pagi :\n-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita dalam keadaan Aman dan Kondusif`;
             } else if (timeValue === 'sore') {
-                // Format Sore: Hari ini Pukul 04.00 s.d 16.00 WITA
                 return `Sore :\n-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita s.d Pukul 16.00 Wita dalam keadaan Aman dan Kondusif`;
             } else if (timeValue === 'custom') {
                 const customTime = timeSelect.dataset.custom || '00.00';
@@ -1543,7 +1163,7 @@
             return items;
         }
         
-        // ========== REPORT GENERATION (FIXED FORMAT) ==========
+        // ========== REPORT GENERATION ==========
         function generateReport() {
             if (!autoGenerateEnabled) return;
             try {
@@ -1563,7 +1183,6 @@
                 const dateInfo = formatDateIndonesia(reportDate);
                 const situasiText = generateSituasiText();
                 
-                // Tentukan salam berdasarkan waktu
                 let waktuSalam = timeValue === 'pagi' ? 'Pagi' : 'Sore';
                 
                 let report = `Perihal : Laporan perkembangan situasi Koramil 1609-05/Sukasada Hari ${dateInfo.hari} Tanggal, ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun}.\n\n`;
@@ -1572,7 +1191,6 @@
                 report += `Selamat ${waktuSalam}, Mohon ijin melaporkan Situasi Satuan Koramil 1609-05/Sukasada Hari ${dateInfo.hari} Tanggal, ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul ${reportTime} Wita dalam rangka kegiatan Pembinaan Kekuatan Satuan Bulan ${dateInfo.bulan} tahun ${dateInfo.tahun} sebagai berikut :\n\n`;
                 report += `*I. Situasi dan Haljol :*\n\n`;
                 
-                // Format situasi sesuai permintaan
                 if (timeValue === 'pagi') {
                     report += `Pagi :\n`;
                     report += `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${dateInfo.hari} Tanggal ${dateInfo.tanggal} ${dateInfo.bulan} ${dateInfo.tahun} Pukul 04.00 Wita dalam keadaan Aman dan Kondusif\n\n`;
@@ -1722,11 +1340,6 @@
                 return false;
             }
             
-            const saveProgress = document.getElementById('saveCloudProgress');
-            if (saveProgress) {
-                saveProgress.style.width = '30%';
-            }
-            
             try {
                 showMessage('info', 'Menyimpan ke Google Sheets...');
                 
@@ -1742,7 +1355,7 @@
                     apiKey: API_KEY,
                     timestamp: new Date().toISOString(),
                     reportDate: document.getElementById('reportDate').value,
-                    reportTime: reportTime, // Kirim waktu dalam format 04.00/16.00
+                    reportTime: reportTime,
                     haljol: document.getElementById('haljol').value,
                     topDspp: document.getElementById('topDspp').value,
                     nyata: document.getElementById('nyata').value,
@@ -1757,8 +1370,6 @@
                     username: 'Operator'
                 };
                 
-                if (saveProgress) saveProgress.style.width = '60%';
-                
                 const response = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     headers: {
@@ -1767,38 +1378,9 @@
                     body: JSON.stringify(formData)
                 });
                 
-                if (saveProgress) saveProgress.style.width = '90%';
-                
                 if (response.ok) {
                     const result = await response.json();
                     if (result.success) {
-                        if (saveProgress) {
-                            saveProgress.style.width = '100%';
-                            setTimeout(() => {
-                                saveProgress.style.width = '0%';
-                            }, 1000);
-                        }
-                        
-                        const saveId = 'save-' + Date.now();
-                        const cloudSaveData = {
-                            id: saveId,
-                            timestamp: new Date().toISOString(),
-                            reportDate: formData.reportDate,
-                            reportTime: formData.reportTime,
-                            status: 'cloud_saved'
-                        };
-                        
-                        const cloudSaves = JSON.parse(localStorage.getItem('koramil_cloud_saves') || '[]');
-                        cloudSaves.unshift(cloudSaveData);
-                        
-                        if (cloudSaves.length > 20) {
-                            cloudSaves.pop();
-                        }
-                        
-                        localStorage.setItem('koramil_cloud_saves', JSON.stringify(cloudSaves));
-                        localStorage.setItem('koramil_last_cloud_save', JSON.stringify(cloudSaveData));
-                        
-                        updateSyncStatus(true);
                         showMessage('success', '✅ Data berhasil disimpan ke Google Sheets<br>ID: ' + result.reportId);
                         return true;
                     } else {
@@ -1809,13 +1391,7 @@
                 }
             } catch (error) {
                 console.error('Cloud save error:', error);
-                
-                if (saveProgress) {
-                    saveProgress.style.width = '0%';
-                }
-                
                 showMessage('error', '❌ Gagal menyimpan ke cloud. Silakan coba lagi.');
-                updateSyncStatus(false);
                 return false;
             }
         }
@@ -1827,145 +1403,23 @@
                 return;
             }
             
-            const progressSteps = document.getElementById('progressSteps');
-            const sendProgress = document.getElementById('sendReportProgress');
-            
-            progressSteps.style.display = 'block';
-            if (sendProgress) sendProgress.style.width = '25%';
-            
             try {
-                document.getElementById('step1').className = 'step active';
-                
-                document.getElementById('step2').className = 'step active';
-                if (sendProgress) sendProgress.style.width = '50%';
-                
                 const saved = await saveToCloudOnly();
                 
                 if (saved) {
-                    document.getElementById('step2').className = 'step completed';
-                    if (sendProgress) sendProgress.style.width = '75%';
-                } else {
-                    document.getElementById('step2').className = 'step failed';
-                    showMessage('warning', 'Gagal menyimpan ke cloud, lanjut ke WhatsApp...');
-                }
-                
-                document.getElementById('step3').className = 'step active';
-                setTimeout(() => {
                     sendToWhatsApp();
-                    document.getElementById('step3').className = 'step completed';
-                    if (sendProgress) sendProgress.style.width = '100%';
-                }, 1000);
-                
-                document.getElementById('step4').className = 'step active';
-                setTimeout(() => {
-                    exportToTxt();
-                    document.getElementById('step4').className = 'step completed';
-                    
-                    if (sendProgress) {
-                        setTimeout(() => {
-                            sendProgress.style.width = '0%';
-                        }, 1000);
-                    }
-                    
-                    showMessage('success', '✅ Laporan berhasil dikirim dan diunduh!');
-                    
-                    setTimeout(() => {
-                        progressSteps.style.display = 'none';
-                    }, 3000);
-                }, 2000);
+                    showMessage('success', '✅ Laporan berhasil dikirim dan disimpan!');
+                } else {
+                    showMessage('warning', 'Gagal menyimpan ke cloud, lanjut ke WhatsApp...');
+                    sendToWhatsApp();
+                }
                 
             } catch (error) {
                 showMessage('error', '❌ Terjadi kesalahan: ' + error.message);
-                
-                if (sendProgress) {
-                    sendProgress.style.width = '0%';
-                }
             }
         }
         
-        // ========== TXT FILE FUNCTIONS FOR GOOGLE DRIVE ==========
-        
-        async function showTxtFilesModal() {
-            showModal('txtFilesModal');
-            showMessage('info', 'Memuat daftar file TXT dari Google Drive...');
-            
-            try {
-                const formData = {
-                    action: 'listTxtFiles',
-                    apiKey: API_KEY
-                };
-                
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    const txtFilesList = document.getElementById('txtFilesList');
-                    
-                    if (result.success && result.files && result.files.length > 0) {
-                        let html = '<div style="display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto;">';
-                        
-                        result.files.forEach((file, index) => {
-                            const fileDate = new Date(file.createdTime).toLocaleDateString('id-ID');
-                            const fileTime = new Date(file.createdTime).toLocaleTimeString('id-ID', {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            });
-                            const previewContent = file.content ? 
-                                (file.content.substring(0, 200) + (file.content.length > 200 ? '...' : '')) : 
-                                'Tidak ada preview';
-                            
-                            html += `
-                                <div class="txt-file-item" id="txt-file-${file.id}">
-                                    <div class="txt-file-header">
-                                        <div class="txt-file-name">${file.name}</div>
-                                        <div class="txt-file-date">${fileDate} ${fileTime}</div>
-                                    </div>
-                                    <div class="txt-file-content">
-                                        ${previewContent}
-                                    </div>
-                                    <div class="txt-file-actions">
-                                        <button class="txt-action-btn load-btn" onclick="viewTxtFile('${file.id}', '${file.name.replace(/'/g, "\\'")}')">
-                                            <span>👁️</span> Lihat
-                                        </button>
-                                        <button class="txt-action-btn download-btn" onclick="downloadTxtFile('${file.id}', '${file.name.replace(/'/g, "\\'")}')">
-                                            <span>📥</span> Download
-                                        </button>
-                                        <button class="txt-action-btn load-btn" onclick="loadTxtToPreview('${file.id}')">
-                                            <span>📋</span> Muat
-                                        </button>
-                                    </div>
-                                </div>
-                            `;
-                        });
-                        
-                        html += '</div>';
-                        txtFilesList.innerHTML = html;
-                        
-                        showMessage('success', `✅ ${result.files.length} file TXT ditemukan`);
-                        
-                    } else {
-                        txtFilesList.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Tidak ada file TXT di Google Drive</p>';
-                        showMessage('info', 'Tidak ada file TXT tersimpan di Google Drive');
-                    }
-                } else {
-                    txtFilesList.innerHTML = 
-                        '<p style="text-align: center; color: #e74c3c; padding: 20px;">Gagal mengambil file dari Drive</p>';
-                    showMessage('error', 'Gagal menghubungi Google Drive');
-                }
-            } catch (error) {
-                console.error('Error loading txt files:', error);
-                document.getElementById('txtFilesList').innerHTML = 
-                    '<p style="text-align: center; color: #e74c3c; padding: 20px;">Error: ' + error.message + '</p>';
-                showMessage('error', 'Koneksi ke Google Drive gagal: ' + error.message);
-            }
-        }
-        
+        // ========== DRIVE FUNCTIONS ==========
         async function uploadTxtToDrive() {
             const reportText = document.getElementById('output').value;
             if (!reportText.trim()) {
@@ -1976,7 +1430,6 @@
             try {
                 showMessage('info', 'Menyimpan file TXT ke Google Drive...');
                 
-                // Generate filename
                 const date = new Date(document.getElementById('reportDate').value);
                 const timeSelect = document.getElementById('reportTime');
                 const timeValue = timeSelect.value;
@@ -1999,8 +1452,6 @@
                     source: 'Koramil PWA Web App'
                 };
                 
-                console.log('Upload data:', formData);
-                
                 const response = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     headers: {
@@ -2012,26 +1463,7 @@
                 if (response.ok) {
                     const result = await response.json();
                     if (result.success) {
-                        showMessage('success', `✅ File TXT berhasil disimpan ke Drive<br>File: ${filename}<br>ID: ${result.fileId}`);
-                        
-                        // Simpan metadata di localStorage
-                        const driveSaves = JSON.parse(localStorage.getItem('koramil_drive_saves') || '[]');
-                        driveSaves.unshift({
-                            id: result.fileId,
-                            filename: filename,
-                            timestamp: new Date().toISOString(),
-                            reportDate: formData.reportDate,
-                            reportTime: formData.reportTime
-                        });
-                        
-                        if (driveSaves.length > 20) {
-                            driveSaves.pop();
-                        }
-                        
-                        localStorage.setItem('koramil_drive_saves', JSON.stringify(driveSaves));
-                        
-                        // Refresh file list
-                        showTxtFilesModal();
+                        showMessage('success', `✅ File TXT berhasil disimpan ke Drive<br>File: ${filename}`);
                         return true;
                     } else {
                         throw new Error(result.error || 'Gagal menyimpan ke Drive');
@@ -2046,364 +1478,7 @@
             }
         }
         
-        async function viewTxtFile(fileId, fileName) {
-            try {
-                showMessage('info', 'Memuat isi file...');
-                
-                const formData = {
-                    action: 'getTxtFile',
-                    apiKey: API_KEY,
-                    fileId: fileId
-                };
-                
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    
-                    if (result.success && result.content) {
-                        document.getElementById('viewTxtTitle').textContent = `📄 ${fileName}`;
-                        document.getElementById('txtContentPreview').value = result.content;
-                        document.getElementById('txtContentPreview').dataset.fileId = fileId;
-                        document.getElementById('txtContentPreview').dataset.fileName = fileName;
-                        
-                        closeModal('txtFilesModal');
-                        showModal('viewTxtModal');
-                        
-                        showMessage('success', '✅ File berhasil dimuat');
-                    } else {
-                        showMessage('error', result.error || 'Gagal memuat isi file');
-                    }
-                } else {
-                    showMessage('error', 'Gagal mengambil isi file');
-                }
-            } catch (error) {
-                console.error('Error viewing txt file:', error);
-                showMessage('error', '❌ Gagal memuat file: ' + error.message);
-            }
-        }
-        
-        async function loadTxtToPreview(fileId) {
-            try {
-                showMessage('info', 'Memuat file ke preview...');
-                
-                const formData = {
-                    action: 'getTxtFile',
-                    apiKey: API_KEY,
-                    fileId: fileId
-                };
-                
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    
-                    if (result.success && result.content) {
-                        // Muat langsung ke preview
-                        document.getElementById('output').value = result.content;
-                        autoResize(document.getElementById('output'));
-                        
-                        // Tutup modal
-                        closeModal('txtFilesModal');
-                        
-                        showMessage('success', '✅ File TXT berhasil dimuat ke preview');
-                        
-                        // Coba parse data dari laporan untuk mengisi form
-                        parseReportToForm(result.content);
-                    } else {
-                        showMessage('error', result.error || 'Gagal memuat file');
-                    }
-                } else {
-                    showMessage('error', 'Gagal mengambil file');
-                }
-            } catch (error) {
-                console.error('Error loading txt to preview:', error);
-                showMessage('error', '❌ Gagal memuat file: ' + error.message);
-            }
-        }
-        
-        function loadToPreview() {
-            const content = document.getElementById('txtContentPreview').value;
-            if (content.trim()) {
-                document.getElementById('output').value = content;
-                autoResize(document.getElementById('output'));
-                closeModal('viewTxtModal');
-                showMessage('success', '✅ Konten berhasil dimuat ke preview');
-                
-                // Coba parse data dari laporan
-                parseReportToForm(content);
-            }
-        }
-        
-        async function downloadTxtFile(fileId, fileName) {
-            try {
-                showMessage('info', 'Mengunduh file...');
-                
-                const formData = {
-                    action: 'getTxtFile',
-                    apiKey: API_KEY,
-                    fileId: fileId
-                };
-                
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    
-                    if (result.success && result.content) {
-                        // Download file
-                        const blob = new Blob([result.content], { type: 'text/plain;charset=utf-8' });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = fileName;
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                        
-                        showMessage('success', '✅ File berhasil diunduh');
-                    } else {
-                        showMessage('error', result.error || 'Gagal mengunduh file');
-                    }
-                } else {
-                    showMessage('error', 'Gagal mengunduh file');
-                }
-            } catch (error) {
-                console.error('Error downloading txt file:', error);
-                showMessage('error', '❌ Gagal mengunduh file: ' + error.message);
-            }
-        }
-        
-        // ========== REPORT PARSING FUNCTION ==========
-        function parseReportToForm(reportText) {
-            try {
-                const lines = reportText.split('\n');
-                
-                // Extract report date from first line
-                const firstLine = lines[0];
-                const dateMatch = firstLine.match(/Tanggal, (\d+) (\w+) (\d{4})/);
-                if (dateMatch) {
-                    const day = dateMatch[1];
-                    const month = dateMatch[2];
-                    const year = dateMatch[3];
-                    
-                    const months = {
-                        'Januari': '01', 'Februari': '02', 'Maret': '03', 'April': '04',
-                        'Mei': '05', 'Juni': '06', 'Juli': '07', 'Agustus': '08',
-                        'September': '09', 'Oktober': '10', 'November': '11', 'Desember': '12'
-                    };
-                    
-                    if (months[month]) {
-                        const formattedDate = `${year}-${months[month]}-${day.padStart(2, '0')}`;
-                        document.getElementById('reportDate').value = formattedDate;
-                    }
-                }
-                
-                // Cek format situasi
-                let timeValue = 'pagi'; // default
-                for (let i = 0; i < lines.length; i++) {
-                    if (lines[i].includes('Pagi :')) {
-                        timeValue = 'pagi';
-                        break;
-                    } else if (lines[i].includes('Sore :')) {
-                        timeValue = 'sore';
-                        break;
-                    } else if (lines[i].includes('Custom')) {
-                        timeValue = 'custom';
-                        // Extract custom time
-                        const timeMatch = lines[i].match(/Custom (\d+\.\d+)/);
-                        if (timeMatch) {
-                            document.getElementById('reportTime').value = 'custom';
-                            document.getElementById('reportTime').dataset.custom = timeMatch[1];
-                            document.getElementById('customTimeContainer').style.display = 'block';
-                            document.getElementById('customTime').value = timeMatch[1].replace('.', ':');
-                        }
-                        break;
-                    }
-                }
-                
-                if (timeValue !== 'custom') {
-                    document.getElementById('reportTime').value = timeValue;
-                }
-                
-                // Extract haljol
-                for (let i = 0; i < lines.length; i++) {
-                    if (lines[i].includes('-Haljol :')) {
-                        const haljolMatch = lines[i].match(/-Haljol : (.+)\./);
-                        if (haljolMatch) {
-                            document.getElementById('haljol').value = haljolMatch[1];
-                        }
-                        break;
-                    }
-                }
-                
-                // Extract data siap ops
-                for (let i = 0; i < lines.length; i++) {
-                    if (lines[i].includes('1. Top DSPP :')) {
-                        const topDsppMatch = lines[i].match(/1\. Top DSPP : (\d+)/);
-                        if (topDsppMatch) document.getElementById('topDspp').value = topDsppMatch[1];
-                    }
-                    if (lines[i].includes('2. Nyata :')) {
-                        const nyataMatch = lines[i].match(/2\. Nyata : (\d+)/);
-                        if (nyataMatch) document.getElementById('nyata').value = nyataMatch[1];
-                    }
-                    if (lines[i].includes('3. Kurang :')) {
-                        const kurangMatch = lines[i].match(/3\. Kurang : (\d+)/);
-                        if (kurangMatch) document.getElementById('kurang').value = kurangMatch[1];
-                    }
-                    if (lines[i].includes('4. Siap Ops :')) {
-                        const siapOpsMatch = lines[i].match(/4\. Siap Ops : (\d+)/);
-                        if (siapOpsMatch) document.getElementById('siapOps').value = siapOpsMatch[1];
-                    }
-                }
-                
-                // Extract keterangan
-                let keteranganStart = -1;
-                let keteranganEnd = -1;
-                for (let i = 0; i < lines.length; i++) {
-                    if (lines[i].includes('5. Keterangan :')) {
-                        keteranganStart = i + 1;
-                    }
-                    if (keteranganStart !== -1 && lines[i].includes('*III. Kegiatan :')) {
-                        keteranganEnd = i;
-                        break;
-                    }
-                }
-                
-                if (keteranganStart !== -1 && keteranganEnd !== -1) {
-                    const keteranganLines = lines.slice(keteranganStart, keteranganEnd);
-                    document.getElementById('keterangan').value = keteranganLines.join('\n').trim();
-                }
-                
-                // Extract kegiatan
-                let currentKegiatanType = '';
-                for (let i = 0; i < lines.length; i++) {
-                    if (lines[i].includes('*1. Kegiatan Danramil :')) {
-                        currentKegiatanType = 'danramil';
-                        // Kosongkan container
-                        document.getElementById('danramil-container').innerHTML = '';
-                    } else if (lines[i].includes('*2. Kegiatan Koramil :')) {
-                        currentKegiatanType = 'koramil';
-                        document.getElementById('koramil-container').innerHTML = '';
-                    } else if (lines[i].includes('*3. Kegiatan Babinsa :')) {
-                        currentKegiatanType = 'babinsa';
-                        document.getElementById('babinsa-container').innerHTML = '';
-                    } else if (currentKegiatanType && lines[i].trim().startsWith('-')) {
-                        const kegiatanText = lines[i].trim().substring(1).trim();
-                        if (kegiatanText) {
-                            // Tambahkan kegiatan item
-                            const container = document.getElementById(`${currentKegiatanType}-container`);
-                            const itemCount = container.querySelectorAll('.kegiatan-item').length;
-                            const itemId = `${currentKegiatanType}-${itemCount}`;
-                            
-                            if (itemCount === 0) {
-                                // Tambahkan item awal
-                                addInitialKegiatanItem(currentKegiatanType);
-                                const textarea = document.getElementById(`${currentKegiatanType}-0`);
-                                if (textarea) {
-                                    textarea.value = kegiatanText;
-                                }
-                            } else {
-                                // Tambahkan item baru
-                                addKegiatanItem(currentKegiatanType);
-                                const textarea = document.getElementById(itemId);
-                                if (textarea) {
-                                    textarea.value = kegiatanText;
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                showMessage('success', '✅ Data berhasil diekstrak dari laporan');
-                
-            } catch (error) {
-                console.error('Error parsing report:', error);
-                showMessage('warning', '⚠️ Tidak dapat mengekstrak semua data dari laporan');
-            }
-        }
-        
         // ========== CLOUD DATA LOADING ==========
-        async function showLoadFromCloudDialog() {
-            showModal('cloudLoadModal');
-            showMessage('info', 'Mengambil daftar laporan dari cloud...');
-            
-            try {
-                const url = `${GOOGLE_SCRIPT_URL}?action=list&apiKey=${encodeURIComponent(API_KEY)}`;
-                
-                const response = await fetch(url);
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    const cloudDataList = document.getElementById('cloudDataList');
-                    
-                    if (result.success && result.reports && result.reports.length > 0) {
-                        let html = '<div style="display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto;">';
-                        
-                        result.reports.forEach((item, index) => {
-                            const date = item.reportDate || '-';
-                            const time = item.reportTime || '-';
-                            
-                            html += `
-                                <div class="cloud-list-item" style="border: 1px solid #ddd; border-radius: 8px; padding: 12px; background: #f8f9fa;">
-                                    <div style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">
-                                        ${date} - ${time}
-                                    </div>
-                                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
-                                        Haljol: ${item.haljol || 'Nihil'} | Siap Ops: ${item.siapOps || '0'}
-                                    </div>
-                                    <div style="font-size: 11px; color: #888; margin-bottom: 8px;">
-                                        ${item.timestamp ? new Date(item.timestamp).toLocaleDateString('id-ID') : ''}
-                                    </div>
-                                    <button onclick="loadSpecificCloudData('${date}', '${time}')" 
-                                            style="background: var(--cloud); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; width: 100%;">
-                                        📂 Muat Data Ini
-                                    </button>
-                                </div>
-                            `;
-                        });
-                        
-                        html += '</div>';
-                        cloudDataList.innerHTML = html;
-                        
-                        showMessage('success', `✅ ${result.reports.length} data ditemukan`);
-                        
-                    } else {
-                        cloudDataList.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Tidak ada data di cloud</p>';
-                        showMessage('info', 'Tidak ada data tersimpan di cloud');
-                    }
-                } else {
-                    document.getElementById('cloudDataList').innerHTML = 
-                        '<p style="text-align: center; color: #e74c3c; padding: 20px;">Gagal mengambil data dari cloud</p>';
-                    showMessage('error', 'Gagal menghubungi server cloud');
-                }
-            } catch (error) {
-                console.error('Error loading cloud list:', error);
-                document.getElementById('cloudDataList').innerHTML = 
-                    '<p style="text-align: center; color: #e74c3c; padding: 20px;">Error: ' + error.message + '</p>';
-                showMessage('error', 'Koneksi ke cloud gagal: ' + error.message);
-            }
-        }
-        
         async function loadLastCloudData() {
             try {
                 showMessage('info', 'Mengambil data terakhir dari cloud...');
@@ -2416,8 +1491,7 @@
                     const result = await response.json();
                     
                     if (result.success && result.data) {
-                        await fillFormWithCloudData(result.data);
-                        closeModal('cloudLoadModal');
+                        fillFormWithCloudData(result.data);
                         showMessage('success', '✅ Data terakhir berhasil dimuat dari cloud!');
                     } else {
                         showMessage('warning', result.error || 'Tidak ada data terakhir di cloud');
@@ -2431,49 +1505,10 @@
             }
         }
         
-        async function loadSpecificCloudData(date, time) {
-            try {
-                showMessage('info', 'Memuat data dari cloud...');
-                
-                const formData = {
-                    action: 'getByDate',
-                    apiKey: API_KEY,
-                    date: date,
-                    time: time
-                };
-                
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    
-                    if (result.success && result.data) {
-                        await fillFormWithCloudData(result.data);
-                        closeModal('cloudLoadModal');
-                        showMessage('success', '✅ Data berhasil dimuat dari cloud!');
-                    } else {
-                        showMessage('warning', result.error || 'Data tidak ditemukan di cloud');
-                    }
-                } else {
-                    showMessage('error', 'Gagal mengambil data spesifik');
-                }
-            } catch (error) {
-                console.error('Error loading specific cloud data:', error);
-                showMessage('error', '❌ Gagal memuat data dari cloud');
-            }
-        }
-        
-        async function fillFormWithCloudData(data) {
+        function fillFormWithCloudData(data) {
             if (data.reportDate) document.getElementById('reportDate').value = data.reportDate;
             
             if (data.reportTime) {
-                // Konversi format waktu dari cloud ke pilihan dropdown
                 if (data.reportTime === '04.00') {
                     document.getElementById('reportTime').value = 'pagi';
                 } else if (data.reportTime === '16.00') {
@@ -2652,55 +1687,6 @@
                 generateReport();
                 showMessage('info', 'Form telah direset');
             }
-        }
-        
-        function printReport() {
-            const reportText = document.getElementById('output').value;
-            if (!reportText.trim()) {
-                showMessage('error', 'Tidak ada laporan untuk dicetak');
-                return;
-            }
-            
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Cetak Laporan Koramil</title>
-                    <style>
-                        body { 
-                            font-family: 'Courier New', monospace; 
-                            font-size: 12px; 
-                            line-height: 1.5; 
-                            margin: 20px; 
-                            white-space: pre-wrap; 
-                        }
-                        @media print {
-                            body { margin: 10mm; }
-                            @page { margin: 10mm; }
-                        }
-                        .header { text-align: center; margin-bottom: 20px; }
-                        .footer { margin-top: 30px; text-align: center; font-size: 10px; color: #666; }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <h2>LAPORAN HARIAN KORAMIL 1609-05/SUKASADA</h2>
-                        <p>${new Date().toLocaleDateString('id-ID')}</p>
-                    </div>
-                    <pre>${reportText}</pre>
-                    <div class="footer">
-                        <p>Dicetak dari Sistem PWA Koramil • ${new Date().toLocaleString('id-ID')}</p>
-                    </div>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.focus();
-            
-            setTimeout(() => {
-                printWindow.print();
-            }, 500);
         }
         
         // ========== INITIALIZATION ==========
