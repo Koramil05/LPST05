@@ -1,1 +1,65 @@
-hdhfhh
+# Backup files - prevent duplicates
+*-backup.html
+*-backup.js
+*-backup.css
+*.bak
+*.tmp
+index-*.html
+
+# Root-level duplicates (use /css/ and /assets/audio/ instead)
+/styles.css
+/audio-base64.js
+/audio-pro-system.js
+/app-old.js
+
+# One-time migration/utility scripts (use GitHub Actions instead)
+*.ps1
+*.py
+convert-*
+fix-*
+manage-*
+banner-function-local.js
+
+# Deprecated/Empty directories
+/api/
+/config/
+/public/
+/Profile/
+/scripts/
+/src/
+/support/
+/build/
+/tests/
+
+# Local testing files
+test-*.html
+test-integration.html
+
+# Local banner files - not needed in repo
+/banners/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# OS
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Build output
+node_modules/
+dist/
+build/
+*.log
+
+# Dependencies
+package-lock.json
+yarn.lock
