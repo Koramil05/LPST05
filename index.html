@@ -3,83 +3,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Koramil 1609-05/Sukasada</title>
+    <title>Laporan Harian Koramil 1609-05/Sukasada</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background: #f5f5f5; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .header { background: #2c3e50; color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px; }
-        .main { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 768px) { .main { grid-template-columns: 1fr; } }
-        .panel { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2 { color: #2c3e50; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: #2c3e50; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
-        textarea { min-height: 100px; resize: vertical; }
-        .data-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
-        .data-item { text-align: center; }
-        .data-item input { text-align: center; font-weight: bold; }
-        .kegiatan-box { background: #f8f9fa; border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-bottom: 15px; }
-        .kegiatan-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .kegiatan-title { font-weight: bold; color: #2c3e50; }
-        .add-btn { background: #27ae60; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
-        .remove-btn { background: #e74c3c; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
-        .preview-box { background: #000; color: #fff; font-family: monospace; padding: 15px; border-radius: 5px; min-height: 400px; white-space: pre-wrap; }
-        .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .btn { padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        /* RESET & BASE */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+        }
+        
+        body { 
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        
+        .container { 
+            max-width: 1300px; 
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* HEADER */
+        .header { 
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white; 
+            padding: 20px; 
+            text-align: center;
+            position: relative;
+        }
+        
+        .header h1 { 
+            font-size: 24px; 
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .header p { 
+            font-size: 14px; 
+            opacity: 0.9;
+        }
+        
+        .header-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* MAIN LAYOUT */
+        .main { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        @media (max-width: 900px) { 
+            .main { grid-template-columns: 1fr; } 
+        }
+        
+        /* PANEL */
+        .panel { 
+            background: white;
+            padding: 20px; 
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e1e5e9;
+        }
+        
+        .panel-title {
+            color: #1a2980;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #26d0ce;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+        }
+        
+        /* FORM ELEMENTS */
+        .form-group { 
+            margin-bottom: 15px; 
+        }
+        
+        .form-label { 
+            display: block; 
+            font-weight: 600; 
+            margin-bottom: 6px; 
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .form-control { 
+            width: 100%; 
+            padding: 10px 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 6px; 
+            font-size: 14px;
+        }
+        
+        .form-control:focus { 
+            border-color: #26d0ce; 
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(38, 208, 206, 0.1);
+        }
+        
+        /* DATA GRID */
+        .data-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 10px; 
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .data-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        .data-item { 
+            text-align: center;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .data-item label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .data-item input { 
+            text-align: center; 
+            font-weight: bold;
+            font-size: 16px;
+            background: transparent;
+            border: none;
+            width: 100%;
+            color: #1a2980;
+        }
+        
+        .data-item input:read-only {
+            color: #28a745;
+            background: #f0fff4;
+        }
+        
+        /* KEGIATAN */
+        .kegiatan-box { 
+            background: #f8f9fa; 
+            border: 1px solid #dee2e6; 
+            border-radius: 6px; 
+            padding: 15px; 
+            margin-bottom: 15px;
+        }
+        
+        .kegiatan-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 10px; 
+        }
+        
+        .kegiatan-title { 
+            font-weight: bold; 
+            color: #1a2980; 
+            font-size: 16px;
+        }
+        
+        .btn-action { 
+            background: #26d0ce; 
+            color: white; 
+            border: none; 
+            width: 30px; 
+            height: 30px; 
+            border-radius: 50%; 
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-add { background: #28a745; }
+        .btn-remove { background: #dc3545; }
+        
+        /* PREVIEW */
+        .preview-box { 
+            background: #1a1a1a; 
+            color: #e0e0e0; 
+            font-family: 'Courier New', monospace; 
+            padding: 15px; 
+            border-radius: 6px; 
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        /* BUTTONS */
+        .buttons { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px; 
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 500px) {
+            .buttons { grid-template-columns: 1fr; }
+        }
+        
+        .btn { 
+            padding: 12px; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
         .btn-save { background: #3498db; color: white; }
         .btn-send { background: #25D366; color: white; }
+        .btn-export { background: #6c757d; color: white; }
         .btn-reset { background: #e74c3c; color: white; }
-        .btn-export { background: #95a5a6; color: white; }
-        .message { padding: 10px; border-radius: 5px; margin-bottom: 10px; display: none; }
-        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
-        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
-        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; display: block; }
+        .btn-history { background: #9b59b6; color: white; }
+        
+        /* MESSAGES */
+        .message { 
+            padding: 12px; 
+            border-radius: 6px; 
+            margin-bottom: 15px; 
+            display: none;
+        }
+        
+        .message.success { 
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+            display: block; 
+        }
+        
+        .message.error { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+            display: block; 
+        }
+        
+        .message.info { 
+            background: #d1ecf1; 
+            color: #0c5460; 
+            border: 1px solid #bee5eb; 
+            display: block; 
+        }
+        
+        /* LOADING */
+        .loading { 
+            display: none;
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #eaeaea;
+            color: #666;
+            font-size: 13px;
+        }
+        
+        /* SIMPLE MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- HEADER -->
         <div class="header">
-            <h1>LAPORAN HARIAN KORAMIL 1609-05/SUKASADA</h1>
+            <div class="header-badge">
+                <i class="fas fa-shield-alt"></i> Koramil 1609-05
+            </div>
+            <h1><i class="fas fa-file-alt"></i> LAPORAN HARIAN KORAMIL 1609-05/SUKASADA</h1>
             <p>Jl. Jelantik Gingsir 32 Sukasada Bali</p>
         </div>
         
+        <!-- MAIN CONTENT -->
         <div class="main">
             <!-- FORM INPUT -->
             <div class="panel">
-                <h2>📝 INPUT DATA LAPORAN</h2>
-                
-                <div class="form-group">
-                    <label>Tanggal Laporan</label>
-                    <input type="date" id="reportDate" onchange="generateReport()">
+                <div class="panel-title">
+                    <i class="fas fa-edit"></i> INPUT DATA LAPORAN
                 </div>
                 
                 <div class="form-group">
-                    <label>Waktu Laporan</label>
-                    <select id="reportTime" onchange="generateReport()">
+                    <label class="form-label"><i class="fas fa-calendar-alt"></i> Tanggal Laporan</label>
+                    <input type="date" id="reportDate" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-clock"></i> Waktu Laporan</label>
+                    <select id="reportTime" class="form-control">
                         <option value="04.00">Pagi (04.00 WITA)</option>
                         <option value="16.00">Sore (16.00 WITA)</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label>Haljol</label>
-                    <input type="text" id="haljol" value="Nihil" oninput="generateReport()">
+                    <label class="form-label"><i class="fas fa-exclamation-triangle"></i> Haljol</label>
+                    <input type="text" id="haljol" class="form-control" value="Nihil">
                 </div>
                 
                 <div class="data-grid">
                     <div class="data-item">
                         <label>Top DSPP</label>
-                        <input type="number" id="topDspp" value="25" oninput="calculateSiapOps()">
+                        <input type="number" id="topDspp" value="25">
                     </div>
                     <div class="data-item">
                         <label>Nyata</label>
-                        <input type="number" id="nyata" value="19" oninput="calculateSiapOps()">
+                        <input type="number" id="nyata" value="19">
                     </div>
                     <div class="data-item">
                         <label>Kurang</label>
-                        <input type="number" id="kurang" value="0" oninput="calculateSiapOps()">
+                        <input type="number" id="kurang" value="0">
                     </div>
                     <div class="data-item">
                         <label>Siap Ops</label>
@@ -88,8 +394,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Keterangan</label>
-                    <textarea id="keterangan" oninput="updateKurang(); generateReport()">-DD : 0
+                    <label class="form-label"><i class="fas fa-clipboard-list"></i> Keterangan</label>
+                    <textarea id="keterangan" class="form-control" rows="5">-DD : 0
 -BP : 0
 -Sakit : 0
 -Ijin : 0
@@ -99,109 +405,202 @@
                 
                 <!-- KEGIATAN -->
                 <div class="form-group">
-                    <label>Kegiatan</label>
+                    <label class="form-label"><i class="fas fa-tasks"></i> Kegiatan</label>
                     
                     <div class="kegiatan-box">
                         <div class="kegiatan-header">
-                            <div class="kegiatan-title">Danramil</div>
-                            <button class="add-btn" onclick="addKegiatan('danramil')">+</button>
+                            <div class="kegiatan-title">
+                                <i class="fas fa-user-tie"></i> Danramil
+                            </div>
+                            <button class="btn-action btn-add" onclick="addKegiatan('danramil')">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         <div id="danramil-container">
-                            <textarea placeholder="Kegiatan Danramil..." oninput="generateReport()"></textarea>
+                            <textarea class="form-control kegiatan-text" placeholder="Kegiatan Danramil..."></textarea>
                         </div>
                     </div>
                     
                     <div class="kegiatan-box">
                         <div class="kegiatan-header">
-                            <div class="kegiatan-title">Koramil</div>
-                            <button class="add-btn" onclick="addKegiatan('koramil')">+</button>
+                            <div class="kegiatan-title">
+                                <i class="fas fa-landmark"></i> Koramil
+                            </div>
+                            <button class="btn-action btn-add" onclick="addKegiatan('koramil')">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         <div id="koramil-container">
-                            <textarea placeholder="Kegiatan Koramil..." oninput="generateReport()">2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.</textarea>
+                            <textarea class="form-control kegiatan-text" placeholder="Kegiatan Koramil...">2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.</textarea>
                         </div>
                     </div>
                     
                     <div class="kegiatan-box">
                         <div class="kegiatan-header">
-                            <div class="kegiatan-title">Babinsa</div>
-                            <button class="add-btn" onclick="addKegiatan('babinsa')">+</button>
+                            <div class="kegiatan-title">
+                                <i class="fas fa-users"></i> Babinsa
+                            </div>
+                            <button class="btn-action btn-add" onclick="addKegiatan('babinsa')">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         <div id="babinsa-container">
-                            <textarea placeholder="Kegiatan Babinsa..." oninput="generateReport()">Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.</textarea>
+                            <textarea class="form-control kegiatan-text" placeholder="Kegiatan Babinsa...">Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.</textarea>
                         </div>
                     </div>
+                </div>
+                
+                <!-- QUICK BUTTONS -->
+                <div class="buttons">
+                    <button class="btn btn-save" onclick="generateReport()">
+                        <i class="fas fa-eye"></i> PREVIEW LAPORAN
+                    </button>
+                    <button class="btn btn-reset" onclick="resetForm()">
+                        <i class="fas fa-redo"></i> RESET FORM
+                    </button>
                 </div>
             </div>
             
-            <!-- PREVIEW -->
+            <!-- PREVIEW & ACTIONS -->
             <div class="panel">
-                <h2>👁️ PREVIEW LAPORAN</h2>
-                
-                <div id="message" class="message"></div>
-                
-                <div class="preview-box" id="output">
-                    Laporan akan muncul di sini...
+                <div class="panel-title">
+                    <i class="fas fa-eye"></i> PREVIEW & AKSI
                 </div>
                 
+                <!-- MESSAGES -->
+                <div id="message" class="message"></div>
+                
+                <!-- LOADING -->
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Memproses...</p>
+                </div>
+                
+                <!-- PREVIEW BOX -->
+                <div class="preview-box" id="output">
+Laporan akan muncul di sini.
+Silakan isi form dan klik "PREVIEW LAPORAN".
+                </div>
+                
+                <!-- ACTION BUTTONS -->
                 <div class="buttons">
-                    <button class="btn btn-save" onclick="saveToCloud()">
-                        💾 SIMPAN KE CLOUD
+                    <button class="btn btn-save" onclick="saveToSpreadsheet()">
+                        <i class="fas fa-save"></i> SIMPAN KE SPREADSHEET
                     </button>
                     <button class="btn btn-send" onclick="sendToWhatsApp()">
-                        📱 KIRIM KE WHATSAPP
+                        <i class="fab fa-whatsapp"></i> WHATSAPP
                     </button>
                     <button class="btn btn-export" onclick="exportToTxt()">
-                        📥 DOWNLOAD TXT
+                        <i class="fas fa-download"></i> DOWNLOAD TXT
                     </button>
-                    <button class="btn btn-reset" onclick="resetForm()">
-                        🔄 RESET FORM
+                    <button class="btn btn-history" onclick="getLastReport()">
+                        <i class="fas fa-history"></i> LAPORAN TERAKHIR
                     </button>
                 </div>
             </div>
         </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>Sistem Pelaporan Digital Koramil 1609-05/Sukasada | 
+                <span id="lastSync"></span>
+            </p>
+            <p>Versi 2.0 | © 2024 Koramil Sukasada | 
+                <a href="#" onclick="showConnectionInfo()" style="color:#26d0ce;text-decoration:none;">
+                    <i class="fas fa-wifi"></i> Status Koneksi
+                </a>
+            </p>
+        </div>
+    </div>
+    
+    <!-- CONNECTION INFO MODAL -->
+    <div id="connectionModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#1a2980;margin-bottom:15px;">
+                <i class="fas fa-server"></i> Informasi Koneksi
+            </h3>
+            <div id="connectionInfo">
+                Memuat informasi...
+            </div>
+            <button onclick="closeModal()" style="margin-top:15px;padding:8px 15px;background:#6c757d;color:white;border:none;border-radius:4px;cursor:pointer;">
+                Tutup
+            </button>
+        </div>
     </div>
 
+    <!-- JAVASCRIPT -->
     <script>
-        // CONFIG
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdlvQbwCCB8e0RP0mGm9_2ucBTQN5-WMpGaJYtVf9cI8PutWdMH0DpypAkqnT7yymOBQ/exec';
-        const API_KEY = 'koramil2024@secure';
+        // ===================== KONFIGURASI =====================
+        const CONFIG = {
+            GOOGLE_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzdlvQbwCCB8e0RP0mGm9_2ucBTQN5-WMpGaJYtVf9cI8PutWdMH0DpypAkqnT7yymOBQ/exec',
+            API_KEY: 'koramil2024@secure'
+        };
         
-        // INITIALIZE
+        // ===================== INISIALISASI =====================
         document.addEventListener('DOMContentLoaded', function() {
-            // Set today's date
+            // Set tanggal hari ini
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('reportDate').value = today;
             
-            // Generate initial report
-            generateReport();
+            // Setup event listeners untuk kalkulasi otomatis
+            document.getElementById('topDspp').addEventListener('input', calculateSiapOps);
+            document.getElementById('nyata').addEventListener('input', calculateSiapOps);
+            document.getElementById('kurang').addEventListener('input', calculateSiapOps);
+            document.getElementById('keterangan').addEventListener('input', updateKurang);
             
-            // Test connection
+            // Event listeners untuk semua input kegiatan
+            setupKegiatanListeners();
+            
+            // Set last sync
+            updateLastSync();
+            
+            // Test koneksi awal
             setTimeout(testConnection, 1000);
         });
         
-        // TEST CONNECTION
+        // ===================== FUNGSI KONEKSI =====================
         async function testConnection() {
             try {
-                const url = `${GOOGLE_SCRIPT_URL}?action=test&apiKey=${encodeURIComponent(API_KEY)}`;
+                showMessage('🔗 Menguji koneksi ke server...', 'info');
+                
+                const url = `${CONFIG.GOOGLE_SCRIPT_URL}?action=test&apiKey=${encodeURIComponent(CONFIG.API_KEY)}`;
                 const response = await fetch(url);
                 const result = await response.json();
                 
                 if (result.success) {
-                    showMessage('✅ Terhubung ke server cloud', 'success');
+                    showMessage('✅ Terhubung dengan server spreadsheet', 'success');
                 } else {
-                    showMessage('⚠️ Server error: ' + result.error, 'error');
+                    showMessage('⚠️ ' + (result.error || 'Server error'), 'error');
                 }
             } catch (error) {
-                showMessage('❌ Tidak bisa terhubung ke server', 'error');
+                showMessage('❌ Gagal terhubung ke server', 'error');
             }
         }
         
-        // CALCULATIONS
+        function showConnectionInfo() {
+            const info = `
+            <div style="font-family: monospace; font-size: 12px;">
+                <p><strong>URL Server:</strong><br>${CONFIG.GOOGLE_SCRIPT_URL}</p>
+                <p><strong>API Key:</strong><br>${CONFIG.API_KEY.substring(0, 10)}...</p>
+                <p><strong>Status:</strong> <span style="color:green;">● Online</span></p>
+                <p><strong>Terakhir Sinkron:</strong><br><span id="syncTime"></span></p>
+            </div>
+            `;
+            document.getElementById('connectionInfo').innerHTML = info;
+            document.getElementById('syncTime').textContent = document.getElementById('lastSync').textContent;
+            document.getElementById('connectionModal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('connectionModal').style.display = 'none';
+        }
+        
+        // ===================== FUNGSI KALKULASI =====================
         function calculateSiapOps() {
             const nyata = parseInt(document.getElementById('nyata').value) || 0;
             const kurang = parseInt(document.getElementById('kurang').value) || 0;
-            document.getElementById('siapOps').value = nyata - kurang;
-            generateReport();
+            const siapOps = Math.max(0, nyata - kurang);
+            document.getElementById('siapOps').value = siapOps;
         }
         
         function updateKurang() {
@@ -220,20 +619,32 @@
             calculateSiapOps();
         }
         
-        // KEGIATAN FUNCTIONS
+        // ===================== FUNGSI KEGIATAN =====================
+        function setupKegiatanListeners() {
+            // Setup untuk textarea kegiatan yang sudah ada
+            ['danramil', 'koramil', 'babinsa'].forEach(type => {
+                const container = document.getElementById(`${type}-container`);
+                const textareas = container.querySelectorAll('textarea');
+                textareas.forEach(ta => {
+                    ta.addEventListener('input', generateReport);
+                });
+            });
+        }
+        
         function addKegiatan(type) {
             const container = document.getElementById(`${type}-container`);
             const textarea = document.createElement('textarea');
-            textarea.placeholder = `Kegiatan ${type} tambahan...`;
-            textarea.oninput = generateReport;
+            textarea.className = 'form-control kegiatan-text';
+            textarea.placeholder = `Tambahkan kegiatan ${type}...`;
+            textarea.addEventListener('input', generateReport);
             
             const div = document.createElement('div');
             div.style.position = 'relative';
             div.style.marginTop = '5px';
             
             const removeBtn = document.createElement('button');
-            removeBtn.className = 'remove-btn';
-            removeBtn.innerHTML = '-';
+            removeBtn.className = 'btn-action btn-remove';
+            removeBtn.innerHTML = '<i class="fas fa-minus"></i>';
             removeBtn.style.position = 'absolute';
             removeBtn.style.right = '5px';
             removeBtn.style.top = '5px';
@@ -247,11 +658,24 @@
             container.appendChild(div);
         }
         
-        // GENERATE REPORT
+        function getKegiatanText(type) {
+            const container = document.getElementById(`${type}-container`);
+            const textareas = container.querySelectorAll('textarea');
+            const items = [];
+            textareas.forEach(ta => {
+                if (ta.value.trim()) items.push(ta.value.trim());
+            });
+            return items.length > 0 ? items : [`Melaksanakan kegiatan ${type} sesuai tugas pokok`];
+        }
+        
+        // ===================== FUNGSI GENERATE LAPORAN =====================
         function generateReport() {
             try {
                 const date = document.getElementById('reportDate').value;
-                if (!date) return;
+                if (!date) {
+                    document.getElementById('output').textContent = '⚠️ Pilih tanggal laporan terlebih dahulu';
+                    return;
+                }
                 
                 const dateObj = new Date(date);
                 const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][dateObj.getDay()];
@@ -267,19 +691,10 @@
                 const siapOps = document.getElementById('siapOps').value;
                 const keterangan = document.getElementById('keterangan').value;
                 
-                // Get kegiatan
-                function getKegiatan(type) {
-                    const container = document.getElementById(`${type}-container`);
-                    const textareas = container.querySelectorAll('textarea');
-                    const items = [];
-                    textareas.forEach(ta => {
-                        if (ta.value.trim()) items.push(ta.value.trim());
-                    });
-                    return items.length > 0 ? items : [`Melaksanakan kegiatan ${type}`];
-                }
-                
+                // Get waktu salam
                 const waktuSalam = time === '04.00' ? 'Pagi' : 'Sore';
                 
+                // Bangun laporan
                 let report = `Perihal : Laporan perkembangan situasi Koramil 1609-05/Sukasada Hari ${hari} Tanggal, ${tanggal} ${bulan} ${tahun}.\n\n`;
                 report += `Yth. Komandan Kodim 1609/Buleleng.\n`;
                 report += `Cc. Kasdim 1609/Buleleng.\n\n`;
@@ -296,36 +711,40 @@
                 report += `5. Keterangan :\n\n${keterangan}\n\n`;
                 report += `*III. Kegiatan :*\n\n`;
                 report += `*1. Kegiatan Danramil :*\n\n`;
-                getKegiatan('danramil').forEach(item => report += `-${item}\n`);
+                getKegiatanText('danramil').forEach((item, index) => report += `${index + 1}. ${item}\n`);
                 report += `\n*2. Kegiatan Koramil :*\n\n`;
-                getKegiatan('koramil').forEach(item => report += `-${item}\n`);
+                getKegiatanText('koramil').forEach((item, index) => report += `${index + 1}. ${item}\n`);
                 report += `\n*3. Kegiatan Babinsa :*\n\n`;
-                getKegiatan('babinsa').forEach(item => report += `-${item}\n`);
+                getKegiatanText('babinsa').forEach((item, index) => report += `${index + 1}. ${item}\n`);
                 report += `\n*DEMIKIAN MMP.*\n`;
                 report += `Dokumentasi terlampir.`;
                 
                 document.getElementById('output').textContent = report;
                 
             } catch (error) {
-                console.error('Generate error:', error);
+                document.getElementById('output').textContent = '❌ Error: ' + error.message;
             }
         }
         
-        // SAVE TO CLOUD
-        async function saveToCloud() {
+        // ===================== FUNGSI SIMPAN KE SPREADSHEET =====================
+        async function saveToSpreadsheet() {
             const reportText = document.getElementById('output').textContent;
             
-            if (!document.getElementById('reportDate').value) {
-                showMessage('❌ Isi tanggal laporan terlebih dahulu', 'error');
+            // Validasi
+            if (!validateData()) return;
+            if (!reportText || reportText.includes('Laporan akan muncul')) {
+                showMessage('❌ Buat laporan terlebih dahulu', 'error');
                 return;
             }
             
+            // Tampilkan loading
+            document.getElementById('loading').style.display = 'block';
+            showMessage('⏳ Menyimpan ke spreadsheet...', 'info');
+            
             try {
-                showMessage('⏳ Menyimpan ke cloud...', 'info');
-                
                 const formData = {
                     action: 'save',
-                    apiKey: API_KEY,
+                    apiKey: CONFIG.API_KEY,
                     reportDate: document.getElementById('reportDate').value,
                     reportTime: document.getElementById('reportTime').value,
                     haljol: document.getElementById('haljol').value,
@@ -334,71 +753,93 @@
                     kurang: document.getElementById('kurang').value,
                     siapOps: document.getElementById('siapOps').value,
                     keterangan: document.getElementById('keterangan').value,
-                    kegiatanDanramil: getKegiatanText('danramil'),
-                    kegiatanKoramil: getKegiatanText('koramil'),
-                    kegiatanBabinsa: getKegiatanText('babinsa'),
+                    kegiatanDanramil: getKegiatanText('danramil').join(' | '),
+                    kegiatanKoramil: getKegiatanText('koramil').join(' | '),
+                    kegiatanBabinsa: getKegiatanText('babinsa').join(' | '),
                     fullReport: reportText
                 };
                 
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                const response = await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify(formData)
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    showMessage('✅ Data berhasil disimpan ke Google Sheets', 'success');
+                    showMessage('✅ Data berhasil disimpan ke spreadsheet', 'success');
+                    updateLastSync();
                     
-                    // Also save to Drive
-                    const date = document.getElementById('reportDate').value.replace(/-/g, '');
-                    const time = document.getElementById('reportTime').value.replace('.', '');
-                    const filename = `LAPORAN_KORAMIL_${date}_${time}.txt`;
-                    
-                    const driveData = {
-                        action: 'uploadtxttodrive',
-                        apiKey: API_KEY,
-                        filename: filename,
-                        content: reportText
-                    };
-                    
-                    const driveResponse = await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(driveData)
-                    });
-                    
-                    const driveResult = await driveResponse.json();
-                    if (driveResult.success) {
-                        showMessage('✅ Juga disimpan ke Google Drive', 'success');
-                    }
+                    // Simpan juga ke Drive
+                    setTimeout(() => saveToDrive(reportText), 1000);
                     
                 } else {
-                    showMessage('❌ Gagal: ' + result.error, 'error');
+                    showMessage('❌ Gagal: ' + (result.error || 'Unknown error'), 'error');
                 }
                 
             } catch (error) {
                 showMessage('❌ Error: ' + error.message, 'error');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
             }
         }
         
-        // GET KEGIATAN TEXT
-        function getKegiatanText(type) {
-            const container = document.getElementById(`${type}-container`);
-            const textareas = container.querySelectorAll('textarea');
-            const items = [];
-            textareas.forEach(ta => {
-                if (ta.value.trim()) items.push(ta.value.trim());
-            });
-            return items.join(' | ');
+        async function saveToDrive(reportText) {
+            try {
+                const date = document.getElementById('reportDate').value.replace(/-/g, '');
+                const time = document.getElementById('reportTime').value.replace('.', '');
+                const filename = `LAPORAN_KORAMIL_${date}_${time}.txt`;
+                
+                const driveData = {
+                    action: 'uploadtxttodrive',
+                    apiKey: CONFIG.API_KEY,
+                    filename: filename,
+                    content: reportText
+                };
+                
+                const response = await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(driveData)
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showMessage('✅ Backup berhasil disimpan ke Google Drive', 'success');
+                }
+            } catch (error) {
+                console.log('Drive save error (non-critical):', error);
+            }
         }
         
-        // SEND TO WHATSAPP
+        // ===================== FUNGSI LAINNYA =====================
+        async function getLastReport() {
+            try {
+                showMessage('⏳ Mengambil data terakhir...', 'info');
+                
+                const url = `${CONFIG.GOOGLE_SCRIPT_URL}?action=getlast&apiKey=${encodeURIComponent(CONFIG.API_KEY)}`;
+                const response = await fetch(url);
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    const data = result.data;
+                    alert(`📋 LAPORAN TERAKHIR:\n\nTanggal: ${data['Report Date']}\nWaktu: ${data['Report Time']}\nHaljol: ${data.Haljol}\nSiap Ops: ${data['Siap Ops']}\n\nLengkap di spreadsheet.`);
+                } else {
+                    showMessage('ℹ️ ' + result.message, 'info');
+                }
+            } catch (error) {
+                showMessage('❌ Gagal mengambil data', 'error');
+            }
+        }
+        
         function sendToWhatsApp() {
             const reportText = document.getElementById('output').textContent;
-            if (!reportText || reportText === 'Laporan akan muncul di sini...') {
-                showMessage('❌ Buat laporan dulu', 'error');
+            if (!reportText || reportText.includes('Laporan akan muncul')) {
+                showMessage('❌ Buat laporan terlebih dahulu', 'error');
                 return;
             }
             
@@ -407,11 +848,10 @@
             showMessage('📱 Membuka WhatsApp...', 'info');
         }
         
-        // EXPORT TO TXT
         function exportToTxt() {
             const reportText = document.getElementById('output').textContent;
-            if (!reportText || reportText === 'Laporan akan muncul di sini...') {
-                showMessage('❌ Buat laporan dulu', 'error');
+            if (!reportText || reportText.includes('Laporan akan muncul')) {
+                showMessage('❌ Buat laporan terlebih dahulu', 'error');
                 return;
             }
             
@@ -419,7 +859,10 @@
             const time = document.getElementById('reportTime').value.replace('.', '');
             const filename = `LAPORAN_KORAMIL_${date}_${time}.txt`;
             
-            const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
+            const blob = new Blob([reportText], { 
+                type: 'text/plain;charset=utf-8' 
+            });
+            
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -432,9 +875,8 @@
             showMessage('✅ File TXT berhasil diunduh', 'success');
         }
         
-        // RESET FORM
         function resetForm() {
-            if (confirm('Reset form? Data akan hilang.')) {
+            if (confirm('Reset form? Data yang belum disimpan akan hilang.')) {
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('reportDate').value = today;
                 document.getElementById('reportTime').value = '04.00';
@@ -445,35 +887,70 @@
                 document.getElementById('keterangan').value = '-DD : 0\n-BP : 0\n-Sakit : 0\n-Ijin : 0\n-Cuti : 0\n-Dinas Luar : 0';
                 
                 // Reset kegiatan
-                ['danramil', 'koramil', 'babinsa'].forEach(type => {
-                    const container = document.getElementById(`${type}-container`);
-                    const firstTextarea = container.querySelector('textarea');
-                    container.innerHTML = '';
-                    const newTextarea = document.createElement('textarea');
-                    newTextarea.placeholder = `Kegiatan ${type}...`;
-                    newTextarea.oninput = generateReport;
-                    
-                    if (type === 'koramil') {
-                        newTextarea.value = '2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.';
-                    } else if (type === 'danramil') {
-                        newTextarea.value = 'Melaksanakan monitoring perkembangan situasi dan kondisi wilayah Kecamatan Sukasada Kabupaten Buleleng.';
-                    } else if (type === 'babinsa') {
-                        newTextarea.value = 'Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.';
-                    }
-                    
-                    container.appendChild(newTextarea);
-                });
+                resetKegiatan('danramil', 'Melaksanakan monitoring perkembangan situasi wilayah.');
+                resetKegiatan('koramil', '2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.');
+                resetKegiatan('babinsa', 'Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.');
                 
                 generateReport();
                 showMessage('🔄 Form telah direset', 'info');
             }
         }
         
-        // SHOW MESSAGE
+        function resetKegiatan(type, defaultText) {
+            const container = document.getElementById(`${type}-container`);
+            container.innerHTML = '';
+            const textarea = document.createElement('textarea');
+            textarea.className = 'form-control kegiatan-text';
+            textarea.value = defaultText;
+            textarea.addEventListener('input', generateReport);
+            container.appendChild(textarea);
+        }
+        
+        // ===================== FUNGSI VALIDASI =====================
+        function validateData() {
+            const date = document.getElementById('reportDate').value;
+            const nyata = parseInt(document.getElementById('nyata').value) || 0;
+            const topDspp = parseInt(document.getElementById('topDspp').value) || 0;
+            const haljol = document.getElementById('haljol').value.trim();
+            
+            if (!date) {
+                showMessage('❌ Tanggal laporan harus diisi', 'error');
+                return false;
+            }
+            
+            if (nyata > topDspp) {
+                showMessage('❌ Jumlah nyata tidak boleh melebihi Top DSPP', 'error');
+                return false;
+            }
+            
+            if (nyata < 0 || topDspp < 0) {
+                showMessage('❌ Nilai tidak boleh negatif', 'error');
+                return false;
+            }
+            
+            if (!haljol) {
+                showMessage('❌ Haljol harus diisi', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // ===================== FUNGSI UTILITAS =====================
+        function updateLastSync() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('lastSync').textContent = `Terakhir sinkron: ${timeStr}`;
+        }
+        
         function showMessage(text, type) {
             const msg = document.getElementById('message');
             msg.textContent = text;
             msg.className = 'message ' + type;
+            
             setTimeout(() => {
                 msg.style.display = 'none';
             }, 5000);
