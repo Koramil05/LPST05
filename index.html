@@ -1,960 +1,1831 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Harian Koramil 1609-05/Sukasada</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* RESET & BASE */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Segoe UI', 'Arial', sans-serif;
-        }
-        
-        body { 
-            background: #f0f2f5;
-            min-height: 100vh;
-            padding: 15px;
-        }
-        
-        .container { 
-            max-width: 1300px; 
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        /* HEADER */
-        .header { 
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
-            color: white; 
-            padding: 20px; 
-            text-align: center;
-            position: relative;
-        }
-        
-        .header h1 { 
-            font-size: 24px; 
-            margin-bottom: 8px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-        }
-        
-        .header p { 
-            font-size: 14px; 
-            opacity: 0.9;
-        }
-        
-        .header-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            backdrop-filter: blur(5px);
-        }
-        
-        /* MAIN LAYOUT */
-        .main { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 20px;
-            padding: 20px;
-        }
-        
-        @media (max-width: 900px) { 
-            .main { grid-template-columns: 1fr; } 
-        }
-        
-        /* PANEL */
-        .panel { 
-            background: white;
-            padding: 20px; 
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            border: 1px solid #e1e5e9;
-        }
-        
-        .panel-title {
-            color: #1a2980;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #26d0ce;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 18px;
-        }
-        
-        /* FORM ELEMENTS */
-        .form-group { 
-            margin-bottom: 15px; 
-        }
-        
-        .form-label { 
-            display: block; 
-            font-weight: 600; 
-            margin-bottom: 6px; 
-            color: #333;
-            font-size: 14px;
-        }
-        
-        .form-control { 
-            width: 100%; 
-            padding: 10px 12px; 
-            border: 1px solid #ddd; 
-            border-radius: 6px; 
-            font-size: 14px;
-        }
-        
-        .form-control:focus { 
-            border-color: #26d0ce; 
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(38, 208, 206, 0.1);
-        }
-        
-        /* DATA GRID */
-        .data-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 10px; 
-            margin-bottom: 15px;
-        }
-        
-        @media (max-width: 600px) {
-            .data-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        
-        .data-item { 
-            text-align: center;
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #e9ecef;
-        }
-        
-        .data-item label {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 5px;
-            display: block;
-        }
-        
-        .data-item input { 
-            text-align: center; 
-            font-weight: bold;
-            font-size: 16px;
-            background: transparent;
-            border: none;
-            width: 100%;
-            color: #1a2980;
-        }
-        
-        .data-item input:read-only {
-            color: #28a745;
-            background: #f0fff4;
-        }
-        
-        /* KEGIATAN */
-        .kegiatan-box { 
-            background: #f8f9fa; 
-            border: 1px solid #dee2e6; 
-            border-radius: 6px; 
-            padding: 15px; 
-            margin-bottom: 15px;
-        }
-        
-        .kegiatan-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 10px; 
-        }
-        
-        .kegiatan-title { 
-            font-weight: bold; 
-            color: #1a2980; 
-            font-size: 16px;
-        }
-        
-        .btn-action { 
-            background: #26d0ce; 
-            color: white; 
-            border: none; 
-            width: 30px; 
-            height: 30px; 
-            border-radius: 50%; 
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .btn-add { background: #28a745; }
-        .btn-remove { background: #dc3545; }
-        
-        /* PREVIEW */
-        .preview-box { 
-            background: #1a1a1a; 
-            color: #e0e0e0; 
-            font-family: 'Courier New', monospace; 
-            padding: 15px; 
-            border-radius: 6px; 
-            min-height: 400px;
-            max-height: 500px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-        
-        /* BUTTONS */
-        .buttons { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 10px; 
-            margin-top: 15px;
-        }
-        
-        @media (max-width: 500px) {
-            .buttons { grid-template-columns: 1fr; }
-        }
-        
-        .btn { 
-            padding: 12px; 
-            border: none; 
-            border-radius: 6px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-        
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        .btn-save { background: #3498db; color: white; }
-        .btn-send { background: #25D366; color: white; }
-        .btn-export { background: #6c757d; color: white; }
-        .btn-reset { background: #e74c3c; color: white; }
-        .btn-history { background: #9b59b6; color: white; }
-        
-        /* MESSAGES */
-        .message { 
-            padding: 12px; 
-            border-radius: 6px; 
-            margin-bottom: 15px; 
-            display: none;
-        }
-        
-        .message.success { 
-            background: #d4edda; 
-            color: #155724; 
-            border: 1px solid #c3e6cb; 
-            display: block; 
-        }
-        
-        .message.error { 
-            background: #f8d7da; 
-            color: #721c24; 
-            border: 1px solid #f5c6cb; 
-            display: block; 
-        }
-        
-        .message.info { 
-            background: #d1ecf1; 
-            color: #0c5460; 
-            border: 1px solid #bee5eb; 
-            display: block; 
-        }
-        
-        /* LOADING */
-        .loading { 
-            display: none;
-            text-align: center;
-            padding: 15px;
-        }
-        
-        .spinner {
-            width: 30px;
-            height: 30px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* FOOTER */
-        .footer {
-            text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-top: 1px solid #eaeaea;
-            color: #666;
-            font-size: 13px;
-        }
-        
-        /* SIMPLE MODAL */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background: white;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 8px;
-            padding: 20px;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>The Royal Wedding - PWA OFFLINE</title>
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+<!-- Theme color untuk browser -->
+<meta name="theme-color" content="#C5A059">
+<!-- Apple touch icon untuk iOS -->
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+/* ===== RESET & VARIABLES ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --gold: #C5A059;
+  --gold-light: #D4B47C;
+  --cream: #F5F0E8;
+  --dark: #0A0A0A;
+  --dark-soft: #1E1E1E;
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(197, 160, 89, 0.15);
+  
+  --control-size: clamp(48px, 8vw, 70px);
+  --logo-size: clamp(40px, 6vw, 60px);
+  --logo-scale: 1;
+  --font-small: clamp(12px, 3vw, 14px);
+  --font-medium: clamp(16px, 4vw, 20px);
+  --font-large: clamp(20px, 5vw, 24px);
+  --font-xlarge: clamp(24px, 6vw, 42px);
+  
+  --running-height: clamp(60px, 10vh, 80px);
+  --bottom-bar-height: calc(var(--control-size) + 30px);
+}
+
+body {
+  background: var(--dark);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  touch-action: pan-y pinch-zoom;
+}
+
+/* Fallback icon system */
+[data-icon="prev"]:before { content: "◀◀"; }
+[data-icon="play"]:before { content: "▶"; }
+[data-icon="pause"]:before { content: "⏸"; }
+[data-icon="next"]:before { content: "▶▶"; }
+[data-icon="settings"]:before { content: "⚙"; }
+[data-icon="folder"]:before { content: "📁"; }
+[data-icon="music"]:before { content: "🎵"; }
+[data-icon="volume-up"]:before { content: "🔊"; }
+[data-icon="volume-mute"]:before { content: "🔇"; }
+[data-icon="spinner"]:before { content: "⟳"; animation: spin 1s infinite linear; display: inline-block; }
+[data-icon="fullscreen"]:before { content: "⛶"; }
+[data-icon="fullscreen-exit"]:before { content: "✕"; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* ===== STAGE ===== */
+.stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+/* ===== LOGO CORNERS ===== */
+.logo-corner {
+  position: absolute;
+  top: 0;
+  width: calc(var(--logo-size) * var(--logo-scale));
+  height: calc(var(--logo-size) * var(--logo-scale));
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  opacity: 1 !important;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.logo-corner.left { left: 0; }
+.logo-corner.right { right: 0; }
+
+.logo-corner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.5));
+}
+
+.logo-placeholder {
+  color: var(--gold);
+  font-size: calc(var(--logo-size) * 0.8 * var(--logo-scale));
+  text-shadow: 0 0 10px rgba(197, 160, 89, 0.5);
+}
+
+.logo-corner.hide-logo {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ===== SLIDE ===== */
+#slidesContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.main {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  margin: auto;
+  display: block;
+  animation: gentleZoom 12s ease-in-out infinite alternate;
+}
+
+@keyframes gentleZoom {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* ===== OM SWASTYASTU ===== */
+.om-title {
+  position: absolute;
+  top: clamp(70px, 12vh, 100px);
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 20;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  transition: opacity 0.5s ease;
+}
+
+.om-title.hide { opacity: 0; }
+
+.om-title .om-text {
+  display: inline-block;
+  color: #ffffff;
+  font-family: 'Times New Roman', Georgia, serif;
+  font-size: var(--font-xlarge);
+  letter-spacing: clamp(4px, 2vw, 16px);
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(197, 160, 89, 0.3);
+  padding: clamp(4px, 1vh, 8px) clamp(15px, 5vw, 40px);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03) 20%, rgba(197,160,89,0.05) 50%, rgba(255,255,255,0.03) 80%, transparent);
+  border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+  border-top: 1px solid rgba(197, 160, 89, 0.2);
+  backdrop-filter: blur(2px);
+}
+
+/* ===== DATETIME - TANPA GARIS VERTIKAL ===== */
+.datetime-premium {
+  position: absolute;
+  bottom: calc(var(--running-height) + var(--bottom-bar-height) + 10px);
+  right: 0;
+  z-index: 15;
+  text-align: right;
+  color: var(--cream);
+  text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  padding: clamp(10px, 2vh, 15px) clamp(15px, 3vw, 25px);
+  background: linear-gradient(135deg, rgba(0,0,0,0.2), transparent);
+  border-left: none;
+  border-top: 1px solid rgba(197,160,89,0.2);
+  backdrop-filter: blur(5px);
+  font-family: 'Courier New', monospace;
+  transition: opacity 0.5s ease;
+  margin: 0;
+  max-width: 100%;
+  pointer-events: none;
+}
+
+.datetime-premium.hide { opacity: 0; }
+
+.datetime-premium .day {
+  font-size: clamp(12px, 2.5vw, 16px);
+  color: var(--gold-light);
+  text-transform: uppercase;
+  letter-spacing: clamp(2px, 1vw, 4px);
+}
+
+.datetime-premium .date {
+  font-size: clamp(14px, 3vw, 24px);
+  font-family: 'Georgia', serif;
+}
+
+.datetime-premium .time {
+  font-size: clamp(18px, 4vw, 32px);
+  color: var(--gold);
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.datetime-premium .time .seconds {
+  font-size: 0.6em;
+  color: var(--gold-light);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 8px;
+  border: 1px solid rgba(197,160,89,0.3);
+}
+
+/* ===== RUNNING TEXT - DI ATAS TOMBOL ===== */
+.running-box {
+  position: absolute;
+  bottom: var(--bottom-bar-height);
+  left: 0;
+  width: 100%;
+  height: var(--running-height);
+  z-index: 15;
+  overflow: hidden;
+  background: linear-gradient(to right, transparent, rgba(0,0,0,0.6) 20%, rgba(0,0,0,0.6) 80%, transparent);
+  border-top: 1px solid rgba(197,160,89,0.3);
+  border-bottom: 1px solid rgba(197,160,89,0.3);
+  backdrop-filter: blur(8px);
+  transition: opacity 0.5s ease;
+}
+
+.running-box.hide { opacity: 0; }
+
+.running-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.running-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1) 10%,
+    rgba(255, 215, 0, 0.15) 30%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 215, 0, 0.15) 70%,
+    rgba(255, 255, 255, 0.1) 90%,
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: sunlightGlide 6s ease-in-out infinite;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+}
+
+.running-content::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 215, 0, 0.2) 20%,
+    transparent 70%
+  );
+  animation: sparkleBg 8s ease-in-out infinite;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.4;
+}
+
+.running-track {
+  position: absolute;
+  white-space: nowrap;
+  height: 100%;
+  line-height: var(--running-height);
+  left: 100%;
+  top: 0;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--cream);
+  font-size: 0;
+  will-change: transform;
+  animation: scrollRightToLeft linear infinite;
+  animation-duration: 30s;
+  -webkit-font-smoothing: antialiased;
+  z-index: 2;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
+
+.running-item {
+  display: inline-block;
+  font-size: clamp(16px, 4vw, 24px);
+  padding: 0 clamp(15px, 5vw, 40px);
+  color: var(--cream);
+  opacity: 1;
+  vertical-align: top;
+  line-height: var(--running-height);
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 0 5px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5);
+}
+
+@keyframes sunlightGlide {
+  0% { background-position: 200% 0; opacity: 0.2; }
+  20% { opacity: 0.8; }
+  50% { background-position: 0% 0; opacity: 0.9; }
+  80% { opacity: 0.5; }
+  100% { background-position: -200% 0; opacity: 0.2; }
+}
+
+@keyframes sparkleBg {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.2; }
+  25% { transform: scale(1.2) rotate(5deg); opacity: 0.5; }
+  50% { transform: scale(1.5) rotate(10deg); opacity: 0.3; }
+  75% { transform: scale(1.1) rotate(-5deg); opacity: 0.4; }
+}
+
+.running-box .fade-left,
+.running-box .fade-right {
+  position: absolute;
+  top: 0;
+  width: clamp(50px, 15vw, 150px);
+  height: 100%;
+  z-index: 16;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.running-box .fade-left {
+  left: 0;
+  background: linear-gradient(to right, #000, transparent);
+}
+
+.running-box .fade-right {
+  right: 0;
+  background: linear-gradient(to left, #000, transparent);
+}
+
+.running-box .fade-left.hide,
+.running-box .fade-right.hide { opacity: 0; }
+
+@keyframes scrollRightToLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-200%); }
+}
+
+/* ===== BOTTOM BAR - SATU BARIS TOMBOL BULAT ===== */
+.bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--bottom-bar-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 20px);
+  z-index: 30;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  padding: 0 15px;
+  backdrop-filter: blur(10px);
+  border-top: 2px solid rgba(197,160,89,0.3);
+  pointer-events: auto;
+}
+
+/* SEMUA TOMBOL BULAT SEMPURNA */
+.bottom-bar button,
+.bottom-bar label {
+  width: var(--control-size);
+  height: var(--control-size);
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  font-size: clamp(20px, 4vw, 30px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 15px rgba(197, 160, 89, 0.7);
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+}
+
+.bottom-bar button:hover,
+.bottom-bar label:hover {
+  background: var(--gold);
+  color: var(--dark);
+  transform: scale(1.1);
+  border-color: var(--gold-light);
+  box-shadow: 0 0 20px rgba(197, 160, 89, 0.5);
+}
+
+.bottom-bar button:active,
+.bottom-bar label:active {
+  transform: scale(0.95);
+}
+
+/* Folder input */
+.folder-input input[type="file"] {
+  display: none;
+}
+
+.folder-input span[data-icon="folder"] {
+  font-size: clamp(20px, 4vw, 30px);
+}
+
+/* Audio control - sembunyikan teks */
+.audio-control button {
+  font-size: 0;
+}
+
+.audio-control button span[data-icon] {
+  font-size: clamp(20px, 4vw, 30px);
+}
+
+.audio-control button span#audioBtnText {
+  display: none;
+}
+
+/* Folder info */
+.folder-info {
+  position: absolute;
+  bottom: calc(var(--running-height) + var(--bottom-bar-height) + 5px);
+  left: 15px;
+  color: var(--gold-light);
+  font-size: 12px;
+  white-space: nowrap;
+  transition: opacity 0.5s ease;
+  background: rgba(0,0,0,0.4);
+  padding: 4px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(197,160,89,0.2);
+  pointer-events: none;
+  z-index: 16;
+}
+
+.folder-info.hide { opacity: 0; }
+
+/* Loading indicator */
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--gold);
+  font-size: 18px;
+  z-index: 100;
+  display: none;
+  text-align: center;
+  background: transparent;
+  text-shadow: 0 0 20px rgba(197, 160, 89, 0.8);
+}
+.loading-indicator.show { display: block; }
+.loading-indicator span[data-icon="spinner"] { font-size: 24px; margin-right: 10px; }
+
+/* Empty state */
+.empty-state {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--cream);
+  text-align: center;
+  z-index: 5;
+  transition: opacity 0.5s ease;
+  background: transparent;
+  text-shadow: 0 0 15px rgba(0,0,0,0.8);
+}
+.empty-state.hide { opacity: 0; pointer-events: none; }
+.empty-state span[data-icon="folder"] { font-size: 80px; color: var(--gold); margin-bottom: 20px; display: block; text-shadow: 0 0 30px rgba(197, 160, 89, 0.5); }
+.empty-state h2 { font-family: 'Times New Roman', serif; font-size: 32px; color: var(--gold); }
+
+/* Settings panel */
+.settings-panel {
+  position: absolute;
+  top: clamp(70px, 15vh, 110px);
+  left: clamp(10px, 5vw, 40px);
+  width: min(90vw, 550px);
+  max-height: 80vh;
+  background: rgba(20, 20, 20, 0.98);
+  backdrop-filter: blur(20px);
+  border: 2px solid var(--gold);
+  padding: clamp(15px, 4vh, 25px);
+  color: var(--cream);
+  z-index: 40;
+  transition: all 0.3s ease;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  overflow-y: auto;
+  opacity: 1 !important;
+  border-radius: 20px;
+}
+
+.settings-panel.hide {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.settings-panel h3 {
+  font-family: 'Times New Roman', serif;
+  font-size: var(--font-large);
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--gold);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 15px;
+}
+
+.settings-section {
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(197,160,89,0.2);
+  padding-bottom: 15px;
+}
+
+.settings-section h4 {
+  font-size: var(--font-small);
+  color: var(--gold-light);
+  margin-bottom: 12px;
+}
+
+.setting-item { margin-bottom: 15px; }
+.setting-label { display: block; margin-bottom: 5px; font-size: clamp(11px, 2.5vw, 13px); color: var(--gold-light); text-transform: uppercase; }
+.setting-value { float: right; color: var(--cream); }
+.setting-slider { width: 100%; height: 6px; background: var(--glass-border); outline: none; -webkit-appearance: none; border-radius: 3px; }
+.setting-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: var(--gold); cursor: pointer; border: 2px solid var(--cream); border-radius: 50%; }
+.setting-toggle { display: flex; align-items: center; justify-content: space-between; }
+.toggle-switch { position: relative; width: 56px; height: 28px; background: var(--glass); border: 2px solid var(--glass-border); cursor: pointer; transition: all 0.3s; border-radius: 14px; }
+.toggle-switch.active { background: var(--gold); border-color: var(--gold); }
+.toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: var(--cream); transition: all 0.3s; border-radius: 50%; }
+.toggle-switch.active::after { left: 30px; background: var(--dark); }
+.setting-select { width: 100%; padding: 12px; background: var(--glass); border: 2px solid var(--glass-border); color: var(--cream); font-family: inherit; font-size: 13px; cursor: pointer; outline: none; border-radius: 8px; }
+.setting-color { width: 100%; height: 45px; border: 2px solid var(--glass-border); cursor: pointer; padding: 2px; border-radius: 8px; }
+.setting-textarea { width: 100%; height: 100px; background: var(--glass); border: 2px solid var(--glass-border); color: var(--cream); padding: 12px; font-family: inherit; font-size: 13px; resize: vertical; border-radius: 8px; }
+.font-preview-box { margin-top: 10px; padding: 15px; background: var(--dark-soft); border: 1px solid var(--glass-border); text-align: center; font-size: 18px; color: var(--gold); border-left: 3px solid var(--gold); border-radius: 8px; }
+.button-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.settings-btn-small { 
+  flex: 1; 
+  min-width: 80px; 
+  padding: 12px; 
+  background: transparent; 
+  border: 2px solid var(--glass-border); 
+  color: var(--cream); 
+  cursor: pointer; 
+  transition: all 0.2s; 
+  font-size: clamp(11px, 2.5vw, 13px); 
+  font-weight: 500;
+  border-radius: 30px !important;
+}
+.settings-btn-small:hover { background: var(--gold); border-color: var(--gold); color: var(--dark); }
+.settings-btn-small:active { transform: scale(0.95); }
+.settings-btn-small.save { background: rgba(197, 160, 89, 0.3); border-color: var(--gold); }
+
+.developer-info {
+  background: linear-gradient(145deg, var(--dark-soft), #0a0a0a);
+  padding: 15px;
+  margin-top: 15px;
+  border: 1px solid var(--gold);
+  text-align: center;
+  border-radius: 12px;
+}
+.developer-info h4 { color: var(--gold); font-size: 16px; margin-bottom: 10px; letter-spacing: 2px; text-transform: uppercase; }
+.developer-info .developer-name { color: var(--gold-light); font-size: 18px; font-weight: 500; font-family: 'Times New Roman', serif; }
+.developer-info .developer-address { color: var(--cream); font-size: 14px; margin-bottom: 8px; }
+.developer-info .developer-unit { color: var(--gold); font-size: 14px; font-weight: 500; border-top: 1px dashed var(--glass-border); border-bottom: 1px dashed var(--glass-border); padding: 8px 0; margin: 8px 0; }
+.developer-info .developer-copyright { color: var(--gold-light); font-size: 13px; font-family: 'Courier New', monospace; }
+.developer-info .separator { width: 50px; height: 2px; background: var(--gold); margin: 10px auto; }
+
+.hide { opacity: 0 !important; pointer-events: none !important; }
+*:not(textarea) { -webkit-user-select: none; user-select: none; }
+
+/* Install button untuk PWA */
+.install-btn {
+  width: var(--control-size);
+  height: var(--control-size);
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  font-size: clamp(18px, 4vw, 26px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 15px rgba(197, 160, 89, 0.7);
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+}
+
+.install-btn:hover {
+  background: var(--gold);
+  color: var(--dark);
+  transform: scale(1.1);
+  border-color: var(--gold-light);
+  box-shadow: 0 0 20px rgba(197, 160, 89, 0.5);
+}
+
+.install-btn.hide {
+  display: none;
+}
+
+/* Online indicator */
+.online-indicator {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.6);
+  color: var(--gold-light);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  border: 1px solid var(--gold);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+  pointer-events: none;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- HEADER -->
-        <div class="header">
-            <div class="header-badge">
-                <i class="fas fa-shield-alt"></i> Koramil 1609-05
-            </div>
-            <h1><i class="fas fa-file-alt"></i> LAPORAN HARIAN KORAMIL 1609-05/SUKASADA</h1>
-            <p>Jl. Jelantik Gingsir 32 Sukasada Bali</p>
-        </div>
-        
-        <!-- MAIN CONTENT -->
-        <div class="main">
-            <!-- FORM INPUT -->
-            <div class="panel">
-                <div class="panel-title">
-                    <i class="fas fa-edit"></i> INPUT DATA LAPORAN
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-calendar-alt"></i> Tanggal Laporan</label>
-                    <input type="date" id="reportDate" class="form-control">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-clock"></i> Waktu Laporan</label>
-                    <select id="reportTime" class="form-control">
-                        <option value="04.00">Pagi (04.00 WITA)</option>
-                        <option value="16.00">Sore (16.00 WITA)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-exclamation-triangle"></i> Haljol</label>
-                    <input type="text" id="haljol" class="form-control" value="Nihil">
-                </div>
-                
-                <div class="data-grid">
-                    <div class="data-item">
-                        <label>Top DSPP</label>
-                        <input type="number" id="topDspp" value="25">
-                    </div>
-                    <div class="data-item">
-                        <label>Nyata</label>
-                        <input type="number" id="nyata" value="19">
-                    </div>
-                    <div class="data-item">
-                        <label>Kurang</label>
-                        <input type="number" id="kurang" value="0">
-                    </div>
-                    <div class="data-item">
-                        <label>Siap Ops</label>
-                        <input type="number" id="siapOps" value="19" readonly>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-clipboard-list"></i> Keterangan</label>
-                    <textarea id="keterangan" class="form-control" rows="5">-DD : 0
--BP : 0
--Sakit : 0
--Ijin : 0
--Cuti : 0
--Dinas Luar : 0</textarea>
-                </div>
-                
-                <!-- KEGIATAN -->
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-tasks"></i> Kegiatan</label>
-                    
-                    <div class="kegiatan-box">
-                        <div class="kegiatan-header">
-                            <div class="kegiatan-title">
-                                <i class="fas fa-user-tie"></i> Danramil
-                            </div>
-                            <button class="btn-action btn-add" onclick="addKegiatan('danramil')">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <div id="danramil-container">
-                            <textarea class="form-control kegiatan-text" placeholder="Kegiatan Danramil..."></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="kegiatan-box">
-                        <div class="kegiatan-header">
-                            <div class="kegiatan-title">
-                                <i class="fas fa-landmark"></i> Koramil
-                            </div>
-                            <button class="btn-action btn-add" onclick="addKegiatan('koramil')">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <div id="koramil-container">
-                            <textarea class="form-control kegiatan-text" placeholder="Kegiatan Koramil...">2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.</textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="kegiatan-box">
-                        <div class="kegiatan-header">
-                            <div class="kegiatan-title">
-                                <i class="fas fa-users"></i> Babinsa
-                            </div>
-                            <button class="btn-action btn-add" onclick="addKegiatan('babinsa')">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <div id="babinsa-container">
-                            <textarea class="form-control kegiatan-text" placeholder="Kegiatan Babinsa...">Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.</textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- QUICK BUTTONS -->
-                <div class="buttons">
-                    <button class="btn btn-save" onclick="generateReport()">
-                        <i class="fas fa-eye"></i> PREVIEW LAPORAN
-                    </button>
-                    <button class="btn btn-reset" onclick="resetForm()">
-                        <i class="fas fa-redo"></i> RESET FORM
-                    </button>
-                </div>
-            </div>
-            
-            <!-- PREVIEW & ACTIONS -->
-            <div class="panel">
-                <div class="panel-title">
-                    <i class="fas fa-eye"></i> PREVIEW & AKSI
-                </div>
-                
-                <!-- MESSAGES -->
-                <div id="message" class="message"></div>
-                
-                <!-- LOADING -->
-                <div id="loading" class="loading">
-                    <div class="spinner"></div>
-                    <p>Memproses...</p>
-                </div>
-                
-                <!-- PREVIEW BOX -->
-                <div class="preview-box" id="output">
-Laporan akan muncul di sini.
-Silakan isi form dan klik "PREVIEW LAPORAN".
-                </div>
-                
-                <!-- ACTION BUTTONS -->
-                <div class="buttons">
-                    <button class="btn btn-save" onclick="saveToSpreadsheet()">
-                        <i class="fas fa-save"></i> SIMPAN KE SPREADSHEET
-                    </button>
-                    <button class="btn btn-send" onclick="sendToWhatsApp()">
-                        <i class="fab fa-whatsapp"></i> WHATSAPP
-                    </button>
-                    <button class="btn btn-export" onclick="exportToTxt()">
-                        <i class="fas fa-download"></i> DOWNLOAD TXT
-                    </button>
-                    <button class="btn btn-history" onclick="getLastReport()">
-                        <i class="fas fa-history"></i> LAPORAN TERAKHIR
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- FOOTER -->
-        <div class="footer">
-            <p>Sistem Pelaporan Digital Koramil 1609-05/Sukasada | 
-                <span id="lastSync"></span>
-            </p>
-            <p>Versi 2.0 | © 2024 Koramil Sukasada | 
-                <a href="#" onclick="showConnectionInfo()" style="color:#26d0ce;text-decoration:none;">
-                    <i class="fas fa-wifi"></i> Status Koneksi
-                </a>
-            </p>
-        </div>
+
+<div class="stage">
+  <!-- PWA Install Button (akan muncul jika belum diinstall) -->
+  <button class="install-btn hide" id="installBtn" title="Install App">
+    <span data-icon="download">📲</span>
+  </button>
+
+  <!-- Online/Offline Indicator -->
+  <div class="online-indicator" id="onlineIndicator">ONLINE</div>
+
+  <!-- LOGO CORNERS -->
+  <div class="logo-corner left hide-logo" id="logoLeft">
+    <div class="logo-placeholder" id="logoLeftPlaceholder">⚜️</div>
+    <img id="logoLeftImg" src="" alt="Logo Kiri" style="display: none;">
+  </div>
+  
+  <div class="logo-corner right hide-logo" id="logoRight">
+    <div class="logo-placeholder" id="logoRightPlaceholder">⚜️</div>
+    <img id="logoRightImg" src="" alt="Logo Kanan" style="display: none;">
+  </div>
+  
+  <div id="slidesContainer">
+    <div class="empty-state" id="emptyState">
+      <span data-icon="folder"></span>
+      <h2>SELECT FOLDER</h2>
+      <p>Klik ikon folder di bawah untuk memulai</p>
+    </div>
+  </div>
+  
+  <div class="loading-indicator" id="loadingIndicator">
+    <div><span data-icon="spinner"></span> LOADING MEDIA</div>
+  </div>
+
+  <div class="om-title" id="omTitle">
+    <div class="om-text">OM SWASTYASTU</div>
+  </div>
+
+  <!-- DATETIME -->
+  <div class="datetime-premium" id="datetime">
+    <div class="day" id="day"></div>
+    <div class="date" id="date"></div>
+    <div class="time">
+      <span class="hours-minutes" id="hoursMinutes"></span>
+      <span class="seconds" id="seconds"></span>
+    </div>
+  </div>
+
+  <!-- RUNNING TEXT - DI ATAS TOMBOL -->
+  <div class="running-box" id="runningBox">
+    <div class="fade-left" id="fadeLeft"></div>
+    <div class="fade-right" id="fadeRight"></div>
+    <div class="running-content">
+      <div class="running-track" id="runningTrack"></div>
+    </div>
+  </div>
+
+  <!-- FOLDER INFO -->
+  <div class="folder-info hide" id="folderInfo">
+    <span data-icon="folder"></span> <span id="folderInfoText">KLIK SELECT FOLDER</span>
+  </div>
+
+  <!-- BOTTOM BAR - SATU BARIS TOMBOL BULAT + FULLSCREEN -->
+  <div class="bottom-bar" id="bottomBar">
+    <button class="settings-btn" id="settingsBtn" title="Settings"><span data-icon="settings"></span></button>
+    
+    <label class="folder-input" id="folderWrapper" title="Select Folder">
+      <span data-icon="folder"></span>
+      <input type="file" id="folderInput" webkitdirectory multiple>
+    </label>
+    
+    <div class="audio-control" id="audioControl">
+      <button onclick="toggleAudio()" id="audioToggleBtn" title="Play/Pause MP3">
+        <span data-icon="music"></span>
+        <span id="audioBtnText">Play MP3</span>
+      </button>
     </div>
     
-    <!-- CONNECTION INFO MODAL -->
-    <div id="connectionModal" class="modal">
-        <div class="modal-content">
-            <h3 style="color:#1a2980;margin-bottom:15px;">
-                <i class="fas fa-server"></i> Informasi Koneksi
-            </h3>
-            <div id="connectionInfo">
-                Memuat informasi...
-            </div>
-            <button onclick="closeModal()" style="margin-top:15px;padding:8px 15px;background:#6c757d;color:white;border:none;border-radius:4px;cursor:pointer;">
-                Tutup
-            </button>
-        </div>
+    <button onclick="prevSlide()" title="Previous" id="prevBtn"><span data-icon="prev"></span></button>
+    <button onclick="togglePlay()" id="playBtn" title="Play/Pause"><span data-icon="pause"></span></button>
+    <button onclick="nextSlide()" title="Next" id="nextBtn"><span data-icon="next"></span></button>
+    <button class="fullscreen-btn" id="fullscreenBtn" title="Fullscreen"><span data-icon="fullscreen"></span></button>
+  </div>
+  
+  <!-- SETTINGS PANEL -->
+  <div class="settings-panel hide" id="settingsPanel">
+    <h3><span data-icon="settings"></span> PENGATURAN OFFLINE</h3>
+    
+    <div class="settings-section">
+      <h4>✨ EFEK BACKGROUND RUNNING TEXT</h4>
+      <div class="setting-item">
+        <span class="setting-label">Efek Kilatan Cahaya di Background</span>
+        <span style="color: var(--gold);">AKTIF</span>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Animasi</span>
+        <span style="color: var(--gold-light); font-size: 12px;">
+          • sunlightGlide: sinar menyapu di latar belakang<br>
+          • sparkleBg: kilatan di background<br>
+          • Titik-titik cahaya statis
+        </span>
+      </div>
     </div>
+    
+    <div class="settings-section">
+      <h4>AUTO HIDE</h4>
+      <div class="setting-item setting-toggle">
+        <span class="setting-label">Auto Hide Controls</span>
+        <div class="toggle-switch" id="autoHideToggle"></div>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Hide Delay</span>
+        <span class="setting-value" id="hideDelayValue">4s</span>
+        <input type="range" class="setting-slider" id="hideDelaySlider" min="2" max="10" value="4" step="1">
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4>TANGGAL & WAKTU</h4>
+      <div class="setting-item setting-toggle">
+        <span class="setting-label">Tampilkan Tanggal</span>
+        <div class="toggle-switch active" id="dateToggle"></div>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4>VIDEO VOLUME</h4>
+      <div class="setting-item">
+        <span class="setting-label">Volume</span>
+        <span class="setting-value" id="videoVolumeValue">70%</span>
+        <input type="range" class="setting-slider" id="videoVolumeSlider" min="0" max="100" value="70" step="5">
+      </div>
+      <div class="setting-item setting-toggle">
+        <span class="setting-label">Mute Videos</span>
+        <div class="toggle-switch" id="videoMuteToggle"></div>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4>EFEK SLIDE</h4>
+      <div class="setting-item setting-toggle">
+        <span class="setting-label">Ken Burns Effect</span>
+        <div class="toggle-switch active" id="kenBurnsToggle"></div>
+      </div>
+      <div class="setting-item setting-toggle">
+        <span class="setting-label">Shuffle Mode</span>
+        <div class="toggle-switch" id="shuffleToggle"></div>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Brightness</span>
+        <span class="setting-value" id="brightnessValue">100%</span>
+        <input type="range" class="setting-slider" id="brightnessSlider" min="50" max="150" value="100" step="5">
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4>LOGO SETTINGS</h4>
+      <div class="setting-item">
+        <span class="setting-label">Ukuran Logo (Scale)</span>
+        <span class="setting-value" id="logoScaleValue">100%</span>
+        <input type="range" class="setting-slider" id="logoScaleSlider" min="50" max="200" value="100" step="5">
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Ganti Logo Setiap (detik)</span>
+        <span class="setting-value" id="logoIntervalValue">60s</span>
+        <input type="range" class="setting-slider" id="logoIntervalSlider" min="10" max="300" value="60" step="5">
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4>TEXT SETTINGS</h4>
+      <div class="setting-item setting-toggle">
+        <span class="setting-label">Show Running Text</span>
+        <div class="toggle-switch active" id="runningTextToggle"></div>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Text Content</span>
+        <textarea class="setting-textarea" id="runningTextInput" placeholder="Enter text">OM SWASTYASTU
+WELCOME TO OUR WEDDING
+THANK YOU FOR YOUR BLESSINGS</textarea>
+        <button class="settings-btn-small" id="updateRunningText" style="margin-top:5px;width:100%;">Update</button>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Font Family</span>
+        <select class="setting-select" id="fontFamilySelect">
+          <option value="'Roboto', sans-serif" selected>Roboto</option>
+          <option value="'Segoe UI', sans-serif">Segoe UI</option>
+          <option value="'Georgia', serif">Georgia</option>
+        </select>
+      </div>
+      <div class="font-preview-box" id="fontPreview">Sample Text 123</div>
+      <div class="setting-item">
+        <span class="setting-label">Scroll Speed</span>
+        <span class="setting-value" id="speedValue">30s</span>
+        <input type="range" class="setting-slider" id="speedSlider" min="15" max="120" value="30" step="5">
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Text Size</span>
+        <span class="setting-value" id="fontSizeValue">20px</span>
+        <input type="range" class="setting-slider" id="fontSizeSlider" min="14" max="40" value="20" step="1">
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Text Color</span>
+        <input type="color" class="setting-color" id="textColor" value="#C5A059">
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4>LOGO / ICON</h4>
+      <div class="setting-item">
+        <span class="setting-label">Upload Logo Kiri</span>
+        <input type="file" id="logoLeftInput" accept="image/gif,image/x-icon,image/png,image/jpeg">
+        <button class="settings-btn-small" id="clearLogoLeft" style="margin-top:5px;">Hapus</button>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Upload Logo Kanan</span>
+        <input type="file" id="logoRightInput" accept="image/gif,image/x-icon,image/png,image/jpeg">
+        <button class="settings-btn-small" id="clearLogoRight" style="margin-top:5px;">Hapus</button>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h4>AUDIO MP3</h4>
+      <div class="setting-item">
+        <span class="setting-label">Volume</span>
+        <span class="setting-value" id="bgVolumeValue">70%</span>
+        <input type="range" class="setting-slider" id="bgVolumeSlider" min="0" max="100" value="70" step="5">
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">Playlist</span>
+        <div id="audioPlaylist" style="max-height:80px;overflow-y:auto;background:var(--glass);padding:8px;border:1px solid var(--glass-border);font-size:12px;border-radius:8px;">No audio files</div>
+      </div>
+      <div class="button-group">
+        <button class="settings-btn-small" id="prevAudioBtn"><span data-icon="prev"></span> Prev</button>
+        <button class="settings-btn-small" id="nextAudioBtn"><span data-icon="next"></span> Next</button>
+      </div>
+    </div>
+    
+    <!-- INFO DEVELOPER -->
+    <div class="developer-info">
+      <h4>📋 INFORMATION</h4>
+      <div class="separator"></div>
+      <div class="developer-name">I Nyoman Arta</div>
+      <div class="developer-address">Buleleng, Bali</div>
+      <div class="developer-unit">Koramil 1609-05/Sukasada</div>
+      <div class="developer-copyright">© 2026 Android TV Display System</div>
+      <div class="pwa-status" style="margin-top:10px; color: var(--gold-light); font-size:12px;">
+        <span id="pwaStatus">⚡ PWA Ready • Dapat diinstall</span>
+      </div>
+    </div>
+    
+    <div class="button-group">
+      <button class="settings-btn-small save" id="saveSettings"><span data-icon="settings"></span> Save</button>
+      <button class="settings-btn-small" id="resetSettings"><span data-icon="settings"></span> Reset</button>
+      <button class="settings-btn-small" id="closeSettings"><span data-icon="settings"></span> Close</button>
+    </div>
+  </div>
+</div>
 
-    <!-- JAVASCRIPT -->
-    <script>
-        // ===================== KONFIGURASI =====================
-        const CONFIG = {
-            GOOGLE_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzdlvQbwCCB8e0RP0mGm9_2ucBTQN5-WMpGaJYtVf9cI8PutWdMH0DpypAkqnT7yymOBQ/exec',
-            API_KEY: 'koramil2024@secure'
+<div id="audioContainer"></div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ===== PWA INSTALL =====
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
+  const onlineIndicator = document.getElementById('onlineIndicator');
+
+  // Cek online/offline
+  function updateOnlineStatus() {
+    if (navigator.onLine) {
+      onlineIndicator.textContent = 'ONLINE';
+      onlineIndicator.style.color = '#4CAF50';
+    } else {
+      onlineIndicator.textContent = 'OFFLINE • Mode PWA';
+      onlineIndicator.style.color = '#C5A059';
+    }
+  }
+
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+  updateOnlineStatus();
+
+  // Tangkap event beforeinstallprompt
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.classList.remove('hide');
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+      console.log('User accepted the install prompt');
+      installBtn.classList.add('hide');
+    }
+    deferredPrompt = null;
+  });
+
+  window.addEventListener('appinstalled', () => {
+    console.log('PWA was installed');
+    installBtn.classList.add('hide');
+    onlineIndicator.textContent = 'INSTALLED';
+  });
+
+  // ===== REGISTER SERVICE WORKER =====
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('Service Worker registered:', reg.scope))
+        .catch(err => console.log('Service Worker registration failed:', err));
+    });
+  }
+
+  // ===== VARIABLES (semua variabel dari kode sebelumnya) =====
+  let slides = [];
+  let currentSlide = 0;
+  let autoPlay = true;
+  let slideTimeout;
+  let durations = [9000, 11000, 10000, 12000];
+  
+  let imageFiles = [];
+  let videoFiles = [];
+  let audioFiles = [];
+  let logoFiles = [];
+  let currentMediaIndex = 0;
+  let currentAudioIndex = 0;
+  
+  let videoVolume = 70;
+  let videoMuted = false;
+  
+  let audioPlayer = null;
+  let bgVolume = 70;
+
+  let runningLines = [];
+  let currentLineIndex = 0;
+  let textSpeed = 30;
+  let fontSize = 20;
+  let letterSpacing = 4;
+  let textColor = '#C5A059';
+  let runningTextEnabled = true;
+  
+  let fontFamily = "'Roboto', sans-serif";
+  let fontWeight = 400;
+  let fontItalic = false;
+  let textTransform = 'uppercase';
+  let textGlow = true;
+  let glowIntensity = 5;
+
+  let kenBurnsEnabled = true;
+  let dateEnabled = true;
+  let shuffleEnabled = false;
+  let brightness = 100;
+  let fadeEnabled = true;
+
+  let autoHideEnabled = false;
+  let hideDelay = 4;
+  let hideTimer;
+
+  // Logo variables
+  let logoLeftData = null;
+  let logoRightData = null;
+  let logoScale = 100;
+  let logoInterval = 60;
+  let logoRotationTimer = null;
+  let currentLogoIndex = 0;
+
+  // DOM Elements
+  const container = document.getElementById("slidesContainer");
+  const emptyState = document.getElementById("emptyState");
+  const omTitle = document.getElementById("omTitle");
+  const datetime = document.getElementById("datetime");
+  const runningBox = document.getElementById("runningBox");
+  const runningTrack = document.getElementById("runningTrack");
+  const fadeLeft = document.getElementById("fadeLeft");
+  const fadeRight = document.getElementById("fadeRight");
+  const folderInfo = document.getElementById("folderInfo");
+  const folderInfoText = document.getElementById("folderInfoText");
+  const audioControl = document.getElementById("audioControl");
+  const settingsBtn = document.getElementById("settingsBtn");
+  const fullscreenBtn = document.getElementById("fullscreenBtn");
+  const loadingIndicator = document.getElementById("loadingIndicator");
+  const folderInput = document.getElementById("folderInput");
+  const dayEl = document.getElementById('day');
+  const dateEl = document.getElementById('date');
+  const hoursMinutesEl = document.getElementById('hoursMinutes');
+  const secondsEl = document.getElementById('seconds');
+  const playBtn = document.getElementById('playBtn');
+  const audioToggleBtn = document.getElementById('audioToggleBtn');
+  const audioBtnText = document.getElementById('audioBtnText');
+  const audioContainer = document.getElementById('audioContainer');
+  const settingsPanel = document.getElementById('settingsPanel');
+  const audioPlaylist = document.getElementById('audioPlaylist');
+  const fontPreview = document.getElementById('fontPreview');
+  
+  // Logo elements
+  const logoLeft = document.getElementById('logoLeft');
+  const logoRight = document.getElementById('logoRight');
+  const logoLeftImg = document.getElementById('logoLeftImg');
+  const logoRightImg = document.getElementById('logoRightImg');
+  const logoLeftPlaceholder = document.getElementById('logoLeftPlaceholder');
+  const logoRightPlaceholder = document.getElementById('logoRightPlaceholder');
+  const logoLeftInput = document.getElementById('logoLeftInput');
+  const logoRightInput = document.getElementById('logoRightInput');
+  const clearLogoLeft = document.getElementById('clearLogoLeft');
+  const clearLogoRight = document.getElementById('clearLogoRight');
+
+  // ===== FUNGSI VALIDASI FILE =====
+  function isValidImageForSlideshow(file) {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/bmp', 'image/webp'];
+    if (allowedTypes.includes(file.type)) return true;
+    const fileName = file.name.toLowerCase();
+    return ['.jpg', '.jpeg', '.png', '.bmp', '.webp'].some(ext => fileName.endsWith(ext));
+  }
+
+  function isValidVideoFile(file) {
+    return file.type.startsWith("video/");
+  }
+
+  function isValidAudioFile(file) {
+    return file.type.startsWith("audio/") && !file.type.includes('m3u');
+  }
+
+  function isValidLogoFile(file) {
+    const fileName = file.name.toLowerCase();
+    return file.type === 'image/x-icon' || file.type === 'image/vnd.microsoft.icon' || 
+           fileName.endsWith('.ico') || isValidImageForSlideshow(file);
+  }
+
+  // ===== FUNGSI LOGO =====
+  function updateLogo(position, dataUrl) {
+    const img = position === 'left' ? logoLeftImg : logoRightImg;
+    const placeholder = position === 'left' ? logoLeftPlaceholder : logoRightPlaceholder;
+    const logoCorner = position === 'left' ? logoLeft : logoRight;
+    
+    if (dataUrl) {
+      img.src = dataUrl;
+      img.style.display = 'block';
+      placeholder.style.display = 'none';
+      logoCorner.classList.remove('hide-logo');
+    } else {
+      img.src = '';
+      img.style.display = 'none';
+      placeholder.style.display = 'flex';
+      logoCorner.classList.add('hide-logo');
+    }
+  }
+
+  function handleLogoUpload(input, position) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      if (position === 'left') {
+        logoLeftData = e.target.result;
+        updateLogo('left', logoLeftData);
+      } else {
+        logoRightData = e.target.result;
+        updateLogo('right', logoRightData);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearLogo(position) {
+    if (position === 'left') {
+      logoLeftData = null;
+      logoLeftInput.value = '';
+      updateLogo('left', null);
+    } else {
+      logoRightData = null;
+      logoRightInput.value = '';
+      updateLogo('right', null);
+    }
+  }
+
+  function startLogoRotation() {
+    if (logoRotationTimer) clearInterval(logoRotationTimer);
+    if (logoFiles.length === 0) return;
+    
+    logoRotationTimer = setInterval(() => {
+      if (logoFiles.length > 0) {
+        currentLogoIndex = (currentLogoIndex + 1) % logoFiles.length;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          logoLeftData = e.target.result;
+          updateLogo('left', logoLeftData);
+        };
+        reader.readAsDataURL(logoFiles[currentLogoIndex]);
+        
+        setTimeout(() => {
+          const rightReader = new FileReader();
+          rightReader.onload = function(ev) {
+            logoRightData = ev.target.result;
+            updateLogo('right', logoRightData);
+          };
+          rightReader.readAsDataURL(logoFiles[(currentLogoIndex + 1) % logoFiles.length]);
+        }, 100);
+      }
+    }, logoInterval * 1000);
+  }
+
+  function updateLogoScale(scalePercent) {
+    document.documentElement.style.setProperty('--logo-scale', scalePercent / 100);
+  }
+
+  logoLeftInput.addEventListener('change', () => handleLogoUpload(logoLeftInput, 'left'));
+  logoRightInput.addEventListener('change', () => handleLogoUpload(logoRightInput, 'right'));
+  clearLogoLeft.addEventListener('click', () => clearLogo('left'));
+  clearLogoRight.addEventListener('click', () => clearLogo('right'));
+
+  // ===== TANGGAL =====
+  function updateDateTime() {
+    const now = new Date();
+    const days = ['MINGGU','SENIN','SELASA','RABU','KAMIS','JUMAT','SABTU'];
+    const months = ['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
+    if (dayEl) dayEl.textContent = days[now.getDay()];
+    if (dateEl) dateEl.textContent = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    if (hoursMinutesEl) hoursMinutesEl.textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    if (secondsEl) secondsEl.textContent = String(now.getSeconds()).padStart(2,'0');
+  }
+  setInterval(updateDateTime, 1000);
+  updateDateTime();
+
+  function updateAllVideoVolumes() {
+    document.querySelectorAll('video').forEach(v => { v.volume = videoMuted ? 0 : (videoVolume/100); });
+  }
+
+  // ===== AUTO HIDE =====
+  function showAllControls() {
+    if (!autoHideEnabled) return;
+    
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      if (autoHideEnabled) {
+        omTitle.classList.add("hide");
+        if (!dateEnabled) datetime.classList.add("hide");
+        if (!runningTextEnabled) runningBox.classList.add("hide");
+        folderInfo.classList.add("hide");
+      }
+    }, hideDelay * 1000);
+  }
+  
+  document.addEventListener("mousemove", showAllControls);
+  document.addEventListener("click", showAllControls);
+  
+  // Tampilkan sesuai status
+  if (!dateEnabled) datetime.classList.add("hide");
+  if (!runningTextEnabled) runningBox.classList.add("hide");
+
+  // ===== FULLSCREEN =====
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      fullscreenBtn.querySelector('span[data-icon]').setAttribute('data-icon', 'fullscreen-exit');
+    } else {
+      document.exitFullscreen();
+      fullscreenBtn.querySelector('span[data-icon]').setAttribute('data-icon', 'fullscreen');
+    }
+  }
+  
+  fullscreenBtn.addEventListener('click', toggleFullscreen);
+  
+  document.addEventListener('fullscreenchange', function() {
+    if (document.fullscreenElement) {
+      fullscreenBtn.querySelector('span[data-icon]').setAttribute('data-icon', 'fullscreen-exit');
+    } else {
+      fullscreenBtn.querySelector('span[data-icon]').setAttribute('data-icon', 'fullscreen');
+    }
+  });
+
+  // ===== AUDIO =====
+  function initAudioPlayer() {
+    if (!audioPlayer) {
+      audioPlayer = document.createElement('audio');
+      audioPlayer.id = 'dynamicAudio';
+      audioPlayer.loop = false;
+      audioContainer.appendChild(audioPlayer);
+      audioPlayer.volume = bgVolume/100;
+      audioPlayer.addEventListener('play', () => {
+        audioBtnText.textContent = 'Pause';
+        audioToggleBtn.querySelector('span[data-icon]').setAttribute('data-icon', 'volume-up');
+      });
+      audioPlayer.addEventListener('pause', () => {
+        audioBtnText.textContent = 'Play MP3';
+        audioToggleBtn.querySelector('span[data-icon]').setAttribute('data-icon', 'music');
+      });
+      audioPlayer.addEventListener('ended', () => {
+        if (audioFiles.length > 0) {
+          currentAudioIndex = (currentAudioIndex + 1) % audioFiles.length;
+          playAudioAtIndex(currentAudioIndex);
+        }
+      });
+    }
+    return audioPlayer;
+  }
+
+  function playAudioAtIndex(index) {
+    if (!audioPlayer) audioPlayer = initAudioPlayer();
+    if (audioFiles.length === 0) { 
+      audioBtnText.textContent = 'No MP3'; 
+      return; 
+    }
+    const audioFile = audioFiles[index];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      audioPlayer.src = e.target.result;
+      audioPlayer.volume = bgVolume/100;
+      audioPlayer.play().catch(() => {
+        if (audioFiles.length > 0) {
+          currentAudioIndex = (currentAudioIndex + 1) % audioFiles.length;
+          playAudioAtIndex(currentAudioIndex);
+        }
+      });
+    };
+    reader.readAsDataURL(audioFile);
+  }
+
+  window.toggleAudio = function() {
+    if (!audioPlayer) audioPlayer = initAudioPlayer();
+    if (audioFiles.length === 0) { 
+      alert('Tidak ada file MP3'); 
+      return; 
+    }
+    if (audioPlayer.paused) {
+      if (!audioPlayer.src) { 
+        currentAudioIndex = 0; 
+        playAudioAtIndex(0); 
+      } else audioPlayer.play();
+    } else audioPlayer.pause();
+  };
+
+  // ===== RUNNING TEXT =====
+  function createRunningItem(text) {
+    const item = document.createElement('div');
+    item.className = 'running-item';
+    let html = '';
+    for (let i = 0; i < text.length; i++) {
+      html += text[i] === ' ' ? '<span>&nbsp;</span>' : `<span>${text[i]}</span>`;
+    }
+    item.innerHTML = html; 
+    return item;
+  }
+
+  function updateRunningTextStyle() {
+    if (!runningTrack) return;
+    let fontStyle = `${fontItalic ? 'italic' : 'normal'} ${fontWeight} ${fontSize}px ${fontFamily}`;
+    runningTrack.style.font = fontStyle;
+    runningTrack.style.letterSpacing = letterSpacing + 'px';
+    runningTrack.style.textTransform = textTransform;
+    runningTrack.style.color = textColor;
+    runningTrack.style.textShadow = textGlow ? `0 0 ${glowIntensity}px ${textColor}` : 'none';
+    
+    if (fontPreview) {
+      fontPreview.style.font = `normal ${fontWeight} 18px ${fontFamily}`;
+      fontPreview.style.color = textColor;
+    }
+    
+    document.querySelectorAll('.running-item, .running-item span').forEach(el => {
+      el.style.lineHeight = (fontSize + 30) + 'px';
+      el.style.fontSize = fontSize + 'px';
+      el.style.color = textColor;
+    });
+    
+    if (fadeLeft && fadeRight) {
+      fadeLeft.classList.toggle('hide', !fadeEnabled);
+      fadeRight.classList.toggle('hide', !fadeEnabled);
+    }
+  }
+
+  function updateRunningTextContent() {
+    if (!runningTrack || !runningTextEnabled) return;
+    if (runningLines.length === 0) runningLines = ['WELCOME'];
+    let combined = '';
+    for (let i = 0; i < 5; i++) {
+      const idx = (currentLineIndex + i) % runningLines.length;
+      if (runningLines[idx].trim()) combined += ` ✦ ${runningLines[idx].trim()} ✦ `;
+    }
+    runningTrack.innerHTML = '';
+    runningTrack.appendChild(createRunningItem(combined));
+    currentLineIndex = (currentLineIndex + 1) % runningLines.length;
+    updateRunningTextStyle();
+  }
+
+  function updateRunningTextSpeed() {
+    if (runningTrack) runningTrack.style.animationDuration = textSpeed + 's';
+  }
+
+  // ===== SLIDESHOW =====
+  window.nextSlide = function() {
+    if (slides.length === 0) return;
+    document.querySelectorAll('video').forEach(v => v.pause());
+    if (slides[currentSlide]) slides[currentSlide].classList.remove("active");
+    
+    if (shuffleEnabled) {
+      do { 
+        currentMediaIndex = Math.floor(Math.random() * slides.length); 
+      } while (currentMediaIndex === currentSlide && slides.length > 1);
+    } else {
+      currentMediaIndex = (currentMediaIndex + 1) % slides.length;
+    }
+    
+    currentSlide = currentMediaIndex;
+    if (slides[currentSlide]) {
+      slides[currentSlide].classList.add("active");
+      const video = slides[currentSlide].querySelector('video');
+      if (video) {
+        video.volume = videoMuted ? 0 : (videoVolume / 100);
+        video.play();
+        if (video.duration) { 
+          clearTimeout(slideTimeout); 
+          slideTimeout = setTimeout(window.nextSlide, video.duration * 1000); 
+        } else startSlideshow();
+      } else startSlideshow();
+    }
+  };
+
+  window.prevSlide = function() {
+    if (slides.length === 0) return;
+    document.querySelectorAll('video').forEach(v => v.pause());
+    if (slides[currentSlide]) slides[currentSlide].classList.remove("active");
+    
+    if (shuffleEnabled) {
+      do { 
+        currentMediaIndex = Math.floor(Math.random() * slides.length); 
+      } while (currentMediaIndex === currentSlide && slides.length > 1);
+    } else {
+      currentMediaIndex = (currentMediaIndex - 1 + slides.length) % slides.length;
+    }
+    
+    currentSlide = currentMediaIndex;
+    if (slides[currentSlide]) {
+      slides[currentSlide].classList.add("active");
+      const video = slides[currentSlide].querySelector('video');
+      if (video) {
+        video.volume = videoMuted ? 0 : (videoVolume / 100);
+        video.play();
+      }
+      startSlideshow();
+    }
+  };
+
+  function startSlideshow() {
+    if (!autoPlay || slides.length === 0) return;
+    clearTimeout(slideTimeout);
+    slideTimeout = setTimeout(window.nextSlide, durations[currentMediaIndex % durations.length]);
+  }
+
+  window.togglePlay = function() {
+    autoPlay = !autoPlay;
+    playBtn.querySelector('span[data-icon]').setAttribute('data-icon', autoPlay ? 'pause' : 'play');
+    if (autoPlay) { 
+      startSlideshow(); 
+      slides[currentSlide]?.querySelector('video')?.play(); 
+    } else { 
+      clearTimeout(slideTimeout); 
+      document.querySelectorAll('video').forEach(v => v.pause()); 
+    }
+  };
+
+  // ===== LOAD MEDIA =====
+  if (folderInput) {
+    folderInput.addEventListener('change', async function(e) {
+      emptyState?.classList.add('hide');
+      container.innerHTML = "";
+      slides = []; 
+      imageFiles = []; 
+      videoFiles = []; 
+      audioFiles = []; 
+      logoFiles = [];
+      loadingIndicator.classList.add("show");
+      
+      const files = Array.from(e.target.files);
+      
+      for (const file of files) {
+        if (isValidImageForSlideshow(file)) {
+          imageFiles.push(file);
+        } else if (isValidVideoFile(file)) {
+          videoFiles.push(file);
+        } else if (isValidAudioFile(file)) {
+          audioFiles.push(file);
+        } else if (isValidLogoFile(file)) {
+          logoFiles.push(file);
+        }
+      }
+      
+      if (audioFiles.length > 0) { 
+        audioBtnText.textContent = 'Play MP3'; 
+        initAudioPlayer();
+        audioPlaylist.innerHTML = audioFiles.map(f => `<div>🎵 ${f.name}</div>`).join('');
+      }
+
+      if (logoFiles.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          logoLeftData = e.target.result;
+          updateLogo('left', logoLeftData);
+          
+          if (logoFiles.length > 1) {
+            const rightReader = new FileReader();
+            rightReader.onload = function(ev) {
+              logoRightData = ev.target.result;
+              updateLogo('right', logoRightData);
+            };
+            rightReader.readAsDataURL(logoFiles[1 % logoFiles.length]);
+          } else {
+            logoRightData = logoLeftData;
+            updateLogo('right', logoRightData);
+          }
+          
+          startLogoRotation();
+        };
+        reader.readAsDataURL(logoFiles[0]);
+      }
+      
+      const media = [...imageFiles, ...videoFiles];
+      if (media.length === 0) {
+        loadingIndicator.classList.remove("show");
+        folderInfo.classList.remove("hide");
+        folderInfoText.innerText = `${media.length} media, ${audioFiles.length} MP3, ${logoFiles.length} logo`;
+        return;
+      }
+      
+      folderInfo.classList.remove("hide");
+      folderInfoText.innerText = `${media.length} media (${imageFiles.length} gambar, ${videoFiles.length} video), ${audioFiles.length} MP3, ${logoFiles.length} logo`;
+
+      for (let i = 0; i < media.length; i++) {
+        const file = media[i];
+        const reader = new FileReader();
+        
+        reader.onload = function(ev) {
+          const slide = document.createElement("div"); 
+          slide.className = "slide";
+          
+          if (file.type.startsWith("image/")) {
+            const img = new Image(); 
+            img.className = "main";
+            if (kenBurnsEnabled) img.style.animation = 'gentleZoom 12s ease-in-out infinite alternate';
+            img.src = ev.target.result;
+            img.onload = function() { 
+              this.classList.add(this.naturalHeight > this.naturalWidth ? 'portrait' : 'landscape'); 
+            };
+            slide.appendChild(img);
+          } else {
+            const video = document.createElement("video"); 
+            video.className = "video-main";
+            video.src = ev.target.result; 
+            video.volume = videoMuted ? 0 : (videoVolume / 100);
+            slide.appendChild(video);
+          }
+          
+          container.appendChild(slide);
+          slides = document.querySelectorAll(".slide");
+          
+          if (i === media.length - 1) {
+            loadingIndicator.classList.remove("show");
+            if (slides.length > 0) { 
+              slides[0].classList.add("active"); 
+              startSlideshow(); 
+            }
+          }
         };
         
-        // ===================== INISIALISASI =====================
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set tanggal hari ini
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('reportDate').value = today;
-            
-            // Setup event listeners untuk kalkulasi otomatis
-            document.getElementById('topDspp').addEventListener('input', calculateSiapOps);
-            document.getElementById('nyata').addEventListener('input', calculateSiapOps);
-            document.getElementById('kurang').addEventListener('input', calculateSiapOps);
-            document.getElementById('keterangan').addEventListener('input', updateKurang);
-            
-            // Event listeners untuk semua input kegiatan
-            setupKegiatanListeners();
-            
-            // Set last sync
-            updateLastSync();
-            
-            // Test koneksi awal
-            setTimeout(testConnection, 1000);
-        });
-        
-        // ===================== FUNGSI KONEKSI =====================
-        async function testConnection() {
-            try {
-                showMessage('🔗 Menguji koneksi ke server...', 'info');
-                
-                const url = `${CONFIG.GOOGLE_SCRIPT_URL}?action=test&apiKey=${encodeURIComponent(CONFIG.API_KEY)}`;
-                const response = await fetch(url);
-                const result = await response.json();
-                
-                if (result.success) {
-                    showMessage('✅ Terhubung dengan server spreadsheet', 'success');
-                } else {
-                    showMessage('⚠️ ' + (result.error || 'Server error'), 'error');
-                }
-            } catch (error) {
-                showMessage('❌ Gagal terhubung ke server', 'error');
-            }
-        }
-        
-        function showConnectionInfo() {
-            const info = `
-            <div style="font-family: monospace; font-size: 12px;">
-                <p><strong>URL Server:</strong><br>${CONFIG.GOOGLE_SCRIPT_URL}</p>
-                <p><strong>API Key:</strong><br>${CONFIG.API_KEY.substring(0, 10)}...</p>
-                <p><strong>Status:</strong> <span style="color:green;">● Online</span></p>
-                <p><strong>Terakhir Sinkron:</strong><br><span id="syncTime"></span></p>
-            </div>
-            `;
-            document.getElementById('connectionInfo').innerHTML = info;
-            document.getElementById('syncTime').textContent = document.getElementById('lastSync').textContent;
-            document.getElementById('connectionModal').style.display = 'flex';
-        }
-        
-        function closeModal() {
-            document.getElementById('connectionModal').style.display = 'none';
-        }
-        
-        // ===================== FUNGSI KALKULASI =====================
-        function calculateSiapOps() {
-            const nyata = parseInt(document.getElementById('nyata').value) || 0;
-            const kurang = parseInt(document.getElementById('kurang').value) || 0;
-            const siapOps = Math.max(0, nyata - kurang);
-            document.getElementById('siapOps').value = siapOps;
-        }
-        
-        function updateKurang() {
-            const keterangan = document.getElementById('keterangan').value;
-            const lines = keterangan.split('\n');
-            let total = 0;
-            
-            lines.forEach(line => {
-                if (line.includes(':')) {
-                    const value = parseInt(line.split(':')[1]) || 0;
-                    total += value;
-                }
-            });
-            
-            document.getElementById('kurang').value = total;
-            calculateSiapOps();
-        }
-        
-        // ===================== FUNGSI KEGIATAN =====================
-        function setupKegiatanListeners() {
-            // Setup untuk textarea kegiatan yang sudah ada
-            ['danramil', 'koramil', 'babinsa'].forEach(type => {
-                const container = document.getElementById(`${type}-container`);
-                const textareas = container.querySelectorAll('textarea');
-                textareas.forEach(ta => {
-                    ta.addEventListener('input', generateReport);
-                });
-            });
-        }
-        
-        function addKegiatan(type) {
-            const container = document.getElementById(`${type}-container`);
-            const textarea = document.createElement('textarea');
-            textarea.className = 'form-control kegiatan-text';
-            textarea.placeholder = `Tambahkan kegiatan ${type}...`;
-            textarea.addEventListener('input', generateReport);
-            
-            const div = document.createElement('div');
-            div.style.position = 'relative';
-            div.style.marginTop = '5px';
-            
-            const removeBtn = document.createElement('button');
-            removeBtn.className = 'btn-action btn-remove';
-            removeBtn.innerHTML = '<i class="fas fa-minus"></i>';
-            removeBtn.style.position = 'absolute';
-            removeBtn.style.right = '5px';
-            removeBtn.style.top = '5px';
-            removeBtn.onclick = function() {
-                div.remove();
-                generateReport();
-            };
-            
-            div.appendChild(textarea);
-            div.appendChild(removeBtn);
-            container.appendChild(div);
-        }
-        
-        function getKegiatanText(type) {
-            const container = document.getElementById(`${type}-container`);
-            const textareas = container.querySelectorAll('textarea');
-            const items = [];
-            textareas.forEach(ta => {
-                if (ta.value.trim()) items.push(ta.value.trim());
-            });
-            return items.length > 0 ? items : [`Melaksanakan kegiatan ${type} sesuai tugas pokok`];
-        }
-        
-        // ===================== FUNGSI GENERATE LAPORAN =====================
-        function generateReport() {
-            try {
-                const date = document.getElementById('reportDate').value;
-                if (!date) {
-                    document.getElementById('output').textContent = '⚠️ Pilih tanggal laporan terlebih dahulu';
-                    return;
-                }
-                
-                const dateObj = new Date(date);
-                const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][dateObj.getDay()];
-                const tanggal = dateObj.getDate();
-                const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][dateObj.getMonth()];
-                const tahun = dateObj.getFullYear();
-                
-                const time = document.getElementById('reportTime').value;
-                const haljol = document.getElementById('haljol').value;
-                const topDspp = document.getElementById('topDspp').value;
-                const nyata = document.getElementById('nyata').value;
-                const kurang = document.getElementById('kurang').value;
-                const siapOps = document.getElementById('siapOps').value;
-                const keterangan = document.getElementById('keterangan').value;
-                
-                // Get waktu salam
-                const waktuSalam = time === '04.00' ? 'Pagi' : 'Sore';
-                
-                // Bangun laporan
-                let report = `Perihal : Laporan perkembangan situasi Koramil 1609-05/Sukasada Hari ${hari} Tanggal, ${tanggal} ${bulan} ${tahun}.\n\n`;
-                report += `Yth. Komandan Kodim 1609/Buleleng.\n`;
-                report += `Cc. Kasdim 1609/Buleleng.\n\n`;
-                report += `Selamat ${waktuSalam}, Mohon ijin melaporkan Situasi Satuan Koramil 1609-05/Sukasada Hari ${hari} Tanggal, ${tanggal} ${bulan} ${tahun} Pukul ${time} Wita dalam rangka kegiatan Pembinaan Kekuatan Satuan Bulan ${bulan} tahun ${tahun} sebagai berikut :\n\n`;
-                report += `*I. Situasi dan Haljol :*\n\n`;
-                report += `${waktuSalam} :\n`;
-                report += `-Situasi : Situasi Wilayah Koramil 1609-05/Sukasada Pada Hari ${hari} Tanggal ${tanggal} ${bulan} ${tahun} Pukul ${time} Wita dalam keadaan Aman dan Kondusif\n\n`;
-                report += `-Haljol : ${haljol}.\n\n`;
-                report += `*II. Data Siap Ops :*\n\n`;
-                report += `1. Top DSPP : ${topDspp}\n`;
-                report += `2. Nyata : ${nyata}\n`;
-                report += `3. Kurang : ${kurang}\n`;
-                report += `4. Siap Ops : ${siapOps}\n\n`;
-                report += `5. Keterangan :\n\n${keterangan}\n\n`;
-                report += `*III. Kegiatan :*\n\n`;
-                report += `*1. Kegiatan Danramil :*\n\n`;
-                getKegiatanText('danramil').forEach((item, index) => report += `${index + 1}. ${item}\n`);
-                report += `\n*2. Kegiatan Koramil :*\n\n`;
-                getKegiatanText('koramil').forEach((item, index) => report += `${index + 1}. ${item}\n`);
-                report += `\n*3. Kegiatan Babinsa :*\n\n`;
-                getKegiatanText('babinsa').forEach((item, index) => report += `${index + 1}. ${item}\n`);
-                report += `\n*DEMIKIAN MMP.*\n`;
-                report += `Dokumentasi terlampir.`;
-                
-                document.getElementById('output').textContent = report;
-                
-            } catch (error) {
-                document.getElementById('output').textContent = '❌ Error: ' + error.message;
-            }
-        }
-        
-        // ===================== FUNGSI SIMPAN KE SPREADSHEET =====================
-        async function saveToSpreadsheet() {
-            const reportText = document.getElementById('output').textContent;
-            
-            // Validasi
-            if (!validateData()) return;
-            if (!reportText || reportText.includes('Laporan akan muncul')) {
-                showMessage('❌ Buat laporan terlebih dahulu', 'error');
-                return;
-            }
-            
-            // Tampilkan loading
-            document.getElementById('loading').style.display = 'block';
-            showMessage('⏳ Menyimpan ke spreadsheet...', 'info');
-            
-            try {
-                const formData = {
-                    action: 'save',
-                    apiKey: CONFIG.API_KEY,
-                    reportDate: document.getElementById('reportDate').value,
-                    reportTime: document.getElementById('reportTime').value,
-                    haljol: document.getElementById('haljol').value,
-                    topDspp: document.getElementById('topDspp').value,
-                    nyata: document.getElementById('nyata').value,
-                    kurang: document.getElementById('kurang').value,
-                    siapOps: document.getElementById('siapOps').value,
-                    keterangan: document.getElementById('keterangan').value,
-                    kegiatanDanramil: getKegiatanText('danramil').join(' | '),
-                    kegiatanKoramil: getKegiatanText('koramil').join(' | '),
-                    kegiatanBabinsa: getKegiatanText('babinsa').join(' | '),
-                    fullReport: reportText
-                };
-                
-                const response = await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showMessage('✅ Data berhasil disimpan ke spreadsheet', 'success');
-                    updateLastSync();
-                    
-                    // Simpan juga ke Drive
-                    setTimeout(() => saveToDrive(reportText), 1000);
-                    
-                } else {
-                    showMessage('❌ Gagal: ' + (result.error || 'Unknown error'), 'error');
-                }
-                
-            } catch (error) {
-                showMessage('❌ Error: ' + error.message, 'error');
-            } finally {
-                document.getElementById('loading').style.display = 'none';
-            }
-        }
-        
-        async function saveToDrive(reportText) {
-            try {
-                const date = document.getElementById('reportDate').value.replace(/-/g, '');
-                const time = document.getElementById('reportTime').value.replace('.', '');
-                const filename = `LAPORAN_KORAMIL_${date}_${time}.txt`;
-                
-                const driveData = {
-                    action: 'uploadtxttodrive',
-                    apiKey: CONFIG.API_KEY,
-                    filename: filename,
-                    content: reportText
-                };
-                
-                const response = await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(driveData)
-                });
-                
-                const result = await response.json();
-                if (result.success) {
-                    showMessage('✅ Backup berhasil disimpan ke Google Drive', 'success');
-                }
-            } catch (error) {
-                console.log('Drive save error (non-critical):', error);
-            }
-        }
-        
-        // ===================== FUNGSI LAINNYA =====================
-        async function getLastReport() {
-            try {
-                showMessage('⏳ Mengambil data terakhir...', 'info');
-                
-                const url = `${CONFIG.GOOGLE_SCRIPT_URL}?action=getlast&apiKey=${encodeURIComponent(CONFIG.API_KEY)}`;
-                const response = await fetch(url);
-                const result = await response.json();
-                
-                if (result.success && result.data) {
-                    const data = result.data;
-                    alert(`📋 LAPORAN TERAKHIR:\n\nTanggal: ${data['Report Date']}\nWaktu: ${data['Report Time']}\nHaljol: ${data.Haljol}\nSiap Ops: ${data['Siap Ops']}\n\nLengkap di spreadsheet.`);
-                } else {
-                    showMessage('ℹ️ ' + result.message, 'info');
-                }
-            } catch (error) {
-                showMessage('❌ Gagal mengambil data', 'error');
-            }
-        }
-        
-        function sendToWhatsApp() {
-            const reportText = document.getElementById('output').textContent;
-            if (!reportText || reportText.includes('Laporan akan muncul')) {
-                showMessage('❌ Buat laporan terlebih dahulu', 'error');
-                return;
-            }
-            
-            const encodedText = encodeURIComponent(reportText);
-            window.open(`https://wa.me/?text=${encodedText}`, '_blank');
-            showMessage('📱 Membuka WhatsApp...', 'info');
-        }
-        
-        function exportToTxt() {
-            const reportText = document.getElementById('output').textContent;
-            if (!reportText || reportText.includes('Laporan akan muncul')) {
-                showMessage('❌ Buat laporan terlebih dahulu', 'error');
-                return;
-            }
-            
-            const date = document.getElementById('reportDate').value.replace(/-/g, '');
-            const time = document.getElementById('reportTime').value.replace('.', '');
-            const filename = `LAPORAN_KORAMIL_${date}_${time}.txt`;
-            
-            const blob = new Blob([reportText], { 
-                type: 'text/plain;charset=utf-8' 
-            });
-            
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            showMessage('✅ File TXT berhasil diunduh', 'success');
-        }
-        
-        function resetForm() {
-            if (confirm('Reset form? Data yang belum disimpan akan hilang.')) {
-                const today = new Date().toISOString().split('T')[0];
-                document.getElementById('reportDate').value = today;
-                document.getElementById('reportTime').value = '04.00';
-                document.getElementById('haljol').value = 'Nihil';
-                document.getElementById('topDspp').value = '25';
-                document.getElementById('nyata').value = '19';
-                document.getElementById('kurang').value = '0';
-                document.getElementById('keterangan').value = '-DD : 0\n-BP : 0\n-Sakit : 0\n-Ijin : 0\n-Cuti : 0\n-Dinas Luar : 0';
-                
-                // Reset kegiatan
-                resetKegiatan('danramil', 'Melaksanakan monitoring perkembangan situasi wilayah.');
-                resetKegiatan('koramil', '2 orang anggota melaksanakan dinas dalam, jaga pangkalan Koramil 1609-05/Sukasada.');
-                resetKegiatan('babinsa', 'Melaksanakan pemantauan dan pendataan situasi wilayah desa binaan masing-masing.');
-                
-                generateReport();
-                showMessage('🔄 Form telah direset', 'info');
-            }
-        }
-        
-        function resetKegiatan(type, defaultText) {
-            const container = document.getElementById(`${type}-container`);
-            container.innerHTML = '';
-            const textarea = document.createElement('textarea');
-            textarea.className = 'form-control kegiatan-text';
-            textarea.value = defaultText;
-            textarea.addEventListener('input', generateReport);
-            container.appendChild(textarea);
-        }
-        
-        // ===================== FUNGSI VALIDASI =====================
-        function validateData() {
-            const date = document.getElementById('reportDate').value;
-            const nyata = parseInt(document.getElementById('nyata').value) || 0;
-            const topDspp = parseInt(document.getElementById('topDspp').value) || 0;
-            const haljol = document.getElementById('haljol').value.trim();
-            
-            if (!date) {
-                showMessage('❌ Tanggal laporan harus diisi', 'error');
-                return false;
-            }
-            
-            if (nyata > topDspp) {
-                showMessage('❌ Jumlah nyata tidak boleh melebihi Top DSPP', 'error');
-                return false;
-            }
-            
-            if (nyata < 0 || topDspp < 0) {
-                showMessage('❌ Nilai tidak boleh negatif', 'error');
-                return false;
-            }
-            
-            if (!haljol) {
-                showMessage('❌ Haljol harus diisi', 'error');
-                return false;
-            }
-            
-            return true;
-        }
-        
-        // ===================== FUNGSI UTILITAS =====================
-        function updateLastSync() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('id-ID', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            document.getElementById('lastSync').textContent = `Terakhir sinkron: ${timeStr}`;
-        }
-        
-        function showMessage(text, type) {
-            const msg = document.getElementById('message');
-            msg.textContent = text;
-            msg.className = 'message ' + type;
-            
-            setTimeout(() => {
-                msg.style.display = 'none';
-            }, 5000);
-        }
-    </script>
+        reader.readAsDataURL(file);
+        await new Promise(r => setTimeout(r, 10));
+      }
+    });
+  }
+
+  // ===== SETTINGS BINDINGS =====
+  settingsBtn?.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    settingsPanel.classList.toggle('hide'); 
+  });
+  
+  document.getElementById('closeSettings')?.addEventListener('click', () => { 
+    settingsPanel.classList.add('hide'); 
+  });
+
+  document.getElementById('videoVolumeSlider')?.addEventListener('input', (e) => { 
+    videoVolume = parseInt(e.target.value); 
+    document.getElementById('videoVolumeValue').textContent = videoVolume + '%'; 
+    updateAllVideoVolumes(); 
+  });
+  
+  document.getElementById('videoMuteToggle')?.addEventListener('click', function() { 
+    videoMuted = !videoMuted; 
+    this.classList.toggle('active', videoMuted); 
+    updateAllVideoVolumes(); 
+  });
+  
+  const autoHideToggle = document.getElementById('autoHideToggle');
+  autoHideToggle.classList.remove('active');
+  autoHideToggle.addEventListener('click', function() {
+    autoHideEnabled = !autoHideEnabled;
+    this.classList.toggle('active', autoHideEnabled);
+    if (autoHideEnabled) showAllControls(); 
+    else {
+      clearTimeout(hideTimer);
+      omTitle.classList.remove("hide");
+      if (dateEnabled) datetime.classList.remove("hide");
+      if (runningTextEnabled) runningBox.classList.remove("hide");
+      folderInfo.classList.remove("hide");
+    }
+  });
+
+  document.getElementById('hideDelaySlider')?.addEventListener('input', (e) => { 
+    hideDelay = parseInt(e.target.value); 
+    document.getElementById('hideDelayValue').textContent = hideDelay + 's'; 
+  });
+
+  // DATE TOGGLE
+  const dateToggle = document.getElementById('dateToggle');
+  if (dateToggle) {
+    dateToggle.classList.add('active');
+    dateToggle.addEventListener('click', function() {
+      dateEnabled = !dateEnabled;
+      this.classList.toggle('active', dateEnabled);
+      datetime.classList.toggle('hide', !dateEnabled);
+    });
+  }
+
+  // KEN BURNS TOGGLE
+  const kenBurnsToggle = document.getElementById('kenBurnsToggle');
+  if (kenBurnsToggle) {
+    kenBurnsToggle.classList.add('active');
+    kenBurnsToggle.addEventListener('click', function() {
+      kenBurnsEnabled = !kenBurnsEnabled;
+      this.classList.toggle('active', kenBurnsEnabled);
+      document.querySelectorAll('.main').forEach(img => {
+        img.style.animation = kenBurnsEnabled ? 'gentleZoom 12s ease-in-out infinite alternate' : 'none';
+      });
+    });
+  }
+
+  // SHUFFLE TOGGLE
+  const shuffleToggle = document.getElementById('shuffleToggle');
+  if (shuffleToggle) {
+    shuffleToggle.addEventListener('click', function() {
+      shuffleEnabled = !shuffleEnabled;
+      this.classList.toggle('active', shuffleEnabled);
+    });
+  }
+
+  // BRIGHTNESS
+  document.getElementById('brightnessSlider')?.addEventListener('input', (e) => {
+    brightness = parseInt(e.target.value);
+    document.getElementById('brightnessValue').textContent = brightness + '%';
+    document.body.style.filter = `brightness(${brightness / 100})`;
+  });
+
+  const logoScaleSlider = document.getElementById('logoScaleSlider');
+  const logoScaleValue = document.getElementById('logoScaleValue');
+  const logoIntervalSlider = document.getElementById('logoIntervalSlider');
+  const logoIntervalValue = document.getElementById('logoIntervalValue');
+
+  logoScaleSlider.addEventListener('input', (e) => {
+    logoScale = parseInt(e.target.value);
+    logoScaleValue.textContent = logoScale + '%';
+    updateLogoScale(logoScale);
+  });
+
+  logoIntervalSlider.addEventListener('input', (e) => {
+    logoInterval = parseInt(e.target.value);
+    logoIntervalValue.textContent = logoInterval + 's';
+    if (logoFiles.length > 0) {
+      startLogoRotation();
+    }
+  });
+
+  document.getElementById('runningTextToggle')?.addEventListener('click', function() { 
+    runningTextEnabled = !runningTextEnabled; 
+    this.classList.toggle('active', runningTextEnabled); 
+    runningBox.classList.toggle('hide', !runningTextEnabled); 
+    if (runningTextEnabled) updateRunningTextContent(); 
+  });
+  
+  document.getElementById('updateRunningText')?.addEventListener('click', () => { 
+    const inp = document.getElementById('runningTextInput'); 
+    if (inp) { 
+      runningLines = inp.value.split('\n').filter(l => l.trim()); 
+      currentLineIndex = 0; 
+      updateRunningTextContent(); 
+    } 
+  });
+  
+  document.getElementById('fontFamilySelect')?.addEventListener('change', (e) => { 
+    fontFamily = e.target.value; 
+    updateRunningTextStyle(); 
+  });
+  
+  document.getElementById('speedSlider')?.addEventListener('input', (e) => { 
+    textSpeed = parseInt(e.target.value); 
+    document.getElementById('speedValue').textContent = textSpeed + 's'; 
+    updateRunningTextSpeed(); 
+  });
+  
+  document.getElementById('fontSizeSlider')?.addEventListener('input', (e) => { 
+    fontSize = parseInt(e.target.value); 
+    document.getElementById('fontSizeValue').textContent = fontSize + 'px'; 
+    runningBox.style.height = (fontSize + 40) + 'px'; 
+    updateRunningTextStyle(); 
+  });
+  
+  document.getElementById('textColor')?.addEventListener('input', (e) => { 
+    textColor = e.target.value; 
+    updateRunningTextStyle(); 
+  });
+
+  document.getElementById('bgVolumeSlider')?.addEventListener('input', (e) => { 
+    bgVolume = parseInt(e.target.value); 
+    document.getElementById('bgVolumeValue').textContent = bgVolume + '%'; 
+    if (audioPlayer) audioPlayer.volume = bgVolume / 100; 
+  });
+  
+  document.getElementById('prevAudioBtn')?.addEventListener('click', () => { 
+    if (audioFiles.length) { 
+      currentAudioIndex = (currentAudioIndex - 1 + audioFiles.length) % audioFiles.length; 
+      playAudioAtIndex(currentAudioIndex); 
+    } 
+  });
+  
+  document.getElementById('nextAudioBtn')?.addEventListener('click', () => { 
+    if (audioFiles.length) { 
+      currentAudioIndex = (currentAudioIndex + 1) % audioFiles.length; 
+      playAudioAtIndex(currentAudioIndex); 
+    } 
+  });
+
+  document.getElementById('saveSettings')?.addEventListener('click', () => {
+    try {
+      localStorage.setItem('weddingOffline', JSON.stringify({
+        autoHideEnabled, hideDelay, videoVolume, videoMuted, textSpeed, fontSize, textColor, fadeEnabled,
+        fontFamily, dateEnabled, kenBurnsEnabled, shuffleEnabled, brightness, autoPlay, bgVolume,
+        logoScale, logoInterval,
+        runningText: document.getElementById('runningTextInput')?.value,
+        logoLeft: logoLeftData,
+        logoRight: logoRightData
+      }));
+      alert('Settings saved!');
+      settingsPanel.classList.add('hide');
+    } catch (e) {}
+  });
+  
+  document.getElementById('resetSettings')?.addEventListener('click', () => { 
+    if (confirm('Reset semua pengaturan?')) {
+      localStorage.clear(); 
+      location.reload(); 
+    }
+  });
+
+  // Load saved settings
+  try {
+    const saved = localStorage.getItem('weddingOffline');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.autoHideEnabled !== undefined) autoHideEnabled = data.autoHideEnabled;
+      if (data.hideDelay !== undefined) hideDelay = data.hideDelay;
+      if (data.videoVolume !== undefined) videoVolume = data.videoVolume;
+      if (data.videoMuted !== undefined) videoMuted = data.videoMuted;
+      if (data.textSpeed !== undefined) textSpeed = data.textSpeed;
+      if (data.fontSize !== undefined) fontSize = data.fontSize;
+      if (data.textColor !== undefined) textColor = data.textColor;
+      if (data.fadeEnabled !== undefined) fadeEnabled = data.fadeEnabled;
+      if (data.fontFamily !== undefined) fontFamily = data.fontFamily;
+      if (data.dateEnabled !== undefined) dateEnabled = data.dateEnabled;
+      if (data.kenBurnsEnabled !== undefined) kenBurnsEnabled = data.kenBurnsEnabled;
+      if (data.shuffleEnabled !== undefined) shuffleEnabled = data.shuffleEnabled;
+      if (data.brightness !== undefined) brightness = data.brightness;
+      if (data.autoPlay !== undefined) autoPlay = data.autoPlay;
+      if (data.bgVolume !== undefined) bgVolume = data.bgVolume;
+      if (data.logoScale !== undefined) logoScale = data.logoScale;
+      if (data.logoInterval !== undefined) logoInterval = data.logoInterval;
+      if (data.runningText !== undefined) {
+        document.getElementById('runningTextInput').value = data.runningText;
+        runningLines = data.runningText.split('\n').filter(l => l.trim());
+      }
+      if (data.logoLeft) {
+        logoLeftData = data.logoLeft;
+        updateLogo('left', logoLeftData);
+      }
+      if (data.logoRight) {
+        logoRightData = data.logoRight;
+        updateLogo('right', logoRightData);
+      }
+      
+      document.getElementById('videoVolumeValue').textContent = videoVolume + '%';
+      document.getElementById('videoMuteToggle').classList.toggle('active', videoMuted);
+      document.getElementById('autoHideToggle').classList.toggle('active', autoHideEnabled);
+      document.getElementById('hideDelayValue').textContent = hideDelay + 's';
+      document.getElementById('hideDelaySlider').value = hideDelay;
+      document.getElementById('speedValue').textContent = textSpeed + 's';
+      document.getElementById('speedSlider').value = textSpeed;
+      document.getElementById('fontSizeValue').textContent = fontSize + 'px';
+      document.getElementById('fontSizeSlider').value = fontSize;
+      document.getElementById('textColor').value = textColor;
+      document.getElementById('fontFamilySelect').value = fontFamily;
+      document.getElementById('brightnessValue').textContent = brightness + '%';
+      document.getElementById('brightnessSlider').value = brightness;
+      document.body.style.filter = `brightness(${brightness / 100})`;
+      document.getElementById('bgVolumeValue').textContent = bgVolume + '%';
+      document.getElementById('bgVolumeSlider').value = bgVolume;
+      
+      // Toggle elements
+      document.getElementById('dateToggle').classList.toggle('active', dateEnabled);
+      datetime.classList.toggle('hide', !dateEnabled);
+      
+      document.getElementById('kenBurnsToggle').classList.toggle('active', kenBurnsEnabled);
+      document.querySelectorAll('.main').forEach(img => {
+        img.style.animation = kenBurnsEnabled ? 'gentleZoom 12s ease-in-out infinite alternate' : 'none';
+      });
+      
+      document.getElementById('shuffleToggle').classList.toggle('active', shuffleEnabled);
+      
+      logoScaleValue.textContent = logoScale + '%';
+      logoScaleSlider.value = logoScale;
+      updateLogoScale(logoScale);
+      
+      logoIntervalValue.textContent = logoInterval + 's';
+      logoIntervalSlider.value = logoInterval;
+      
+      updateRunningTextStyle();
+      updateRunningTextContent();
+      updateRunningTextSpeed();
+    }
+  } catch (e) {}
+
+  // INIT
+  const inp = document.getElementById('runningTextInput');
+  if (inp?.value && runningLines.length === 0) runningLines = inp.value.split('\n').filter(l => l.trim()); 
+  if (runningLines.length === 0) runningLines = ['OM SWASTYASTU'];
+  
+  updateRunningTextStyle(); 
+  updateRunningTextContent(); 
+  updateRunningTextSpeed();
+  
+  if (!runningTextEnabled) runningBox.classList.add('hide');
+  if (!dateEnabled) datetime?.classList.add('hide');
+  
+  folderInfo.classList.add('hide'); // Awalnya hide, muncul setelah pilih folder
+  
+  updateLogoScale(logoScale);
+  
+  console.log('✅ PWA Ready: The Royal Wedding Display');
+})();
+</script>
+
+<noscript>
+  <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: black; color: white; padding: 20px; border: 2px solid gold;">
+    JavaScript is required.
+  </div>
+</noscript>
 </body>
 </html>
